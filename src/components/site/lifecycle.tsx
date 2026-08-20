@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { SectionHeading } from "./section";
 import { Reveal } from "./reveal";
+import { CardVisual } from "./card-visual";
 import { lifecycle } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -89,7 +90,9 @@ export function Lifecycle() {
                       transition={{ duration: 0.35, delay: 0.06 * i }}
                       className="group flex h-full flex-col rounded-xl border bg-card/40 p-6 transition-colors hover:bg-card"
                     >
-                      <div className="mb-5 h-24 rounded-lg border bg-background/60 bg-grid" />
+                      <div className="mb-5">
+                        <CardVisual id={card.title} />
+                      </div>
                       <p className="text-sm font-medium">{card.title}</p>
                       <p className="mt-1.5 flex-1 text-[13px] leading-relaxed text-muted-foreground">
                         {card.desc}

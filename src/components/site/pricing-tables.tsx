@@ -163,7 +163,9 @@ export function PricingTables() {
               <p className="mt-2 text-[13px] text-muted-foreground">
                 {tier.credits}
               </p>
-              <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+              {/* Two lines of 13px/leading-relaxed measure 42.25px; reserve 44px so
+                  every tier's CTA lands on the same baseline. */}
+              <p className="mt-3 min-h-11 text-[13px] leading-relaxed text-muted-foreground">
                 {tier.blurb}
               </p>
 
