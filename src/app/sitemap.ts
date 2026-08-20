@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
+import { platformPages } from "@/lib/platform";
 
-const routes = [
+const staticRoutes = [
   "",
   "/pricing",
   "/templates",
@@ -9,6 +10,11 @@ const routes = [
   "/blog",
   "/docs",
   "/contact",
+  "/signup",
+  "/cloud",
+  "/sdk",
+  "/inspector",
+  "/vibe",
   "/legal/privacy",
   "/legal/terms",
   "/legal/trust",
@@ -16,6 +22,10 @@ const routes = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
+  const routes = [
+    ...staticRoutes,
+    ...platformPages.map((p) => `/platform/${p.slug}`),
+  ];
   return routes.map((route) => ({
     url: `${site.url}${route}`,
     lastModified,

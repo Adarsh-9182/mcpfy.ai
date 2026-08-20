@@ -3,31 +3,96 @@
  * Testimonials are illustrative personas, not real endorsements.
  */
 
-export const platformMenu = [
-  { title: "MCP Hosting", desc: "Deploy MCP apps and servers to production.", href: "/docs" },
-  { title: "Cross-client testing", desc: "Run the same checks across ChatGPT, Claude, and more.", href: "/docs" },
-  { title: "Publishing checks", desc: "Audit your app against Apps Store and Connector requirements.", href: "/docs" },
-  { title: "Cloud Inspector", desc: "Trace, replay, and debug MCP traffic in production.", href: "/docs" },
-  { title: "Public chat", desc: "Embeddable chat surfaces for your product.", href: "/docs" },
-  { title: "Analytics", desc: "Usage, latency, and reliability in one place.", href: "/docs" },
+export type MenuItem = {
+  title: string;
+  desc: string;
+  href: string;
+  icon: string;
+  /** Tailwind gradient classes for the item's thumbnail tile. */
+  tile: string;
+};
+
+/** Left group of the Platform mega-menu. */
+export const platformCloud: MenuItem[] = [
+  {
+    title: "MCP Hosting",
+    desc: "Deploy MCP apps and servers to production.",
+    href: "/platform/hosting",
+    icon: "cloud",
+    tile: "from-sky-100 to-blue-200 dark:from-sky-500/25 dark:to-blue-500/10",
+  },
+  {
+    title: "Cross-client testing",
+    desc: "Run the same checks across ChatGPT, Claude, and more.",
+    href: "/platform/cross-client-testing",
+    icon: "flask",
+    tile: "from-fuchsia-100 to-pink-200 dark:from-fuchsia-500/25 dark:to-pink-500/10",
+  },
+  {
+    title: "Publishing checks",
+    desc: "Audit your MCP app against Apps Store and Connector requirements.",
+    href: "/platform/publishing-checks",
+    icon: "checks",
+    tile: "from-amber-100 to-orange-200 dark:from-amber-500/25 dark:to-orange-500/10",
+  },
+  {
+    title: "Cloud Inspector",
+    desc: "Trace, replay, and debug MCP traffic in production.",
+    href: "/platform/cloud-inspector",
+    icon: "search",
+    tile: "from-slate-100 to-indigo-200 dark:from-slate-500/25 dark:to-indigo-500/10",
+  },
+  {
+    title: "Public chat",
+    desc: "Embeddable chat surfaces for your product.",
+    href: "/platform/public-chat",
+    icon: "chat",
+    tile: "from-rose-100 to-pink-200 dark:from-rose-500/25 dark:to-pink-500/10",
+  },
+  {
+    title: "Analytics",
+    desc: "Usage, latency, and reliability in one place.",
+    href: "/platform/analytics",
+    icon: "chart",
+    tile: "from-teal-100 to-emerald-200 dark:from-teal-500/25 dark:to-emerald-500/10",
+  },
+  {
+    title: "Vibe",
+    desc: "Create MCP apps with natural language.",
+    href: "/vibe",
+    icon: "sparkles",
+    tile: "from-lime-100 to-stone-200 dark:from-lime-500/20 dark:to-stone-500/10",
+  },
 ];
 
-export const productsMenu = [
-  { title: "Cloud", href: "/docs" },
-  { title: "mcpfy SDK", href: "/docs" },
-  { title: "Inspector", href: "/docs" },
-  { title: "Vibe", href: "/docs" },
+/** Right group of the Platform mega-menu. */
+export const platformOpenSource = [
+  {
+    title: `${"mcpfy"} SDK`,
+    desc: "Open-source full-stack SDK for MCP. Build MCP Apps, Servers, clients, and agents in TypeScript or Python.",
+    href: "/sdk",
+    tags: ["TS", "PY"],
+  },
+  {
+    title: `${"mcpfy"} Inspector`,
+    desc: "Debug and inspect your MCP servers in real-time.",
+    href: "/inspector",
+    tags: [],
+  },
 ];
 
+/** Solutions mega-menu — a divided grid of two feature cells. */
 export const solutionsMenu = [
-  { title: "mcpfy Cloud", desc: "Deploy, monitor, and distribute MCP servers.", href: "/docs" },
-  { title: "mcpfy SDK", desc: "Build ChatGPT Apps, Claude Connectors and MCP Servers.", href: "/docs" },
-  { title: "Templates", desc: "Deploy-ready starters for every MCP framework and use case.", href: "/templates" },
-];
-
-export const solutionsSub = [
-  { title: "MCP Apps", href: "/docs" },
-  { title: "MCP Servers", href: "/docs" },
+  {
+    title: "MCP Apps",
+    desc: "Build MCP Apps for ChatGPT and other chat clients.",
+    href: "/docs",
+  },
+  {
+    title: "MCP Servers",
+    desc: "Deploy and manage MCP servers at scale.",
+    href: "/docs",
+  },
 ];
 
 export const navLinks = [
@@ -219,7 +284,7 @@ export const footerColumns = [
     title: "Pages",
     links: [
       { label: "Docs", href: "/docs" },
-      { label: "Developers", href: "/docs" },
+      { label: "Developers", href: "/developers" },
       { label: "Templates", href: "/templates" },
       { label: "Pricing", href: "/pricing" },
       { label: "Blog", href: "/blog" },
@@ -229,21 +294,21 @@ export const footerColumns = [
   {
     title: "Platform",
     links: [
-      { label: "MCP Hosting", href: "/docs" },
-      { label: "Cross-client testing", href: "/docs" },
-      { label: "Publishing checks", href: "/docs" },
-      { label: "Submission pack", href: "/docs" },
-      { label: "Cloud Inspector", href: "/docs" },
-      { label: "Public chat", href: "/docs" },
-      { label: "Analytics", href: "/docs" },
+      { label: "MCP Hosting", href: "/platform/hosting" },
+      { label: "Cross-client testing", href: "/platform/cross-client-testing" },
+      { label: "Publishing checks", href: "/platform/publishing-checks" },
+      { label: "Submission pack", href: "/platform/submission-pack" },
+      { label: "Cloud Inspector", href: "/platform/cloud-inspector" },
+      { label: "Public chat", href: "/platform/public-chat" },
+      { label: "Analytics", href: "/platform/analytics" },
     ],
   },
   {
     title: "Products",
     links: [
-      { label: "mcpfy SDK", href: "/docs" },
-      { label: "Vibecode MCP Apps", href: "/docs" },
-      { label: "Inspector", href: "/docs" },
+      { label: "mcpfy SDK", href: "/sdk" },
+      { label: "Vibecode MCP Apps", href: "/vibe" },
+      { label: "Inspector", href: "/inspector" },
     ],
   },
   {

@@ -10,37 +10,11 @@ import { ThemeToggle } from "./theme-toggle";
 import { GithubIcon } from "./icons";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
-import {
-  navLinks,
-  platformMenu,
-  productsMenu,
-  solutionsMenu,
-  solutionsSub,
-} from "@/lib/content";
-
-function MenuLink({
-  title,
-  desc,
-  href,
-}: {
-  title: string;
-  desc?: string;
-  href: string;
-}) {
-  return (
-    <NavigationMenu.Link asChild>
-      <Link href={href} className="block rounded-lg p-3 transition-colors hover:bg-accent">
-        <div className="text-sm font-medium">{title}</div>
-        {desc && (
-          <p className="mt-1 text-[13px] leading-snug text-muted-foreground">{desc}</p>
-        )}
-      </Link>
-    </NavigationMenu.Link>
-  );
-}
+import { navLinks, platformCloud } from "@/lib/content";
+import { PlatformMenu, SolutionsMenu } from "./mega-menu";
 
 const triggerClass =
-  "group inline-flex h-9 items-center gap-1 rounded-lg px-3 text-[15px] transition-colors hover:text-muted-foreground data-[state=open]:text-muted-foreground";
+  "group inline-flex h-9 items-center gap-1 rounded-full px-4 text-[15px] transition-colors hover:text-muted-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground";
 const linkClass =
   "inline-flex h-9 items-center rounded-lg px-3 text-[15px] transition-colors hover:text-muted-foreground";
 
@@ -63,33 +37,8 @@ export function Navbar() {
                 Platform
                 <ChevronDown className="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
               </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="absolute left-0 top-0 w-full">
-                <div className="grid w-[640px] grid-cols-[1fr_200px] gap-6 p-4">
-                  <div>
-                    <p className="px-3 pb-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-                      Platform
-                    </p>
-                    <ul className="grid grid-cols-2 gap-1">
-                      {platformMenu.map((item) => (
-                        <li key={item.title}>
-                          <MenuLink {...item} />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="border-l pl-4">
-                    <p className="px-3 pb-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-                      Products
-                    </p>
-                    <ul className="grid gap-1">
-                      {productsMenu.map((item) => (
-                        <li key={item.title}>
-                          <MenuLink {...item} />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+              <NavigationMenu.Content className="absolute left-0 top-0 w-auto">
+                <PlatformMenu />
               </NavigationMenu.Content>
             </NavigationMenu.Item>
 
@@ -98,25 +47,9 @@ export function Navbar() {
                 Solutions
                 <ChevronDown className="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
               </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="absolute left-0 top-0 w-full">
-                <div className="grid w-[460px] gap-1 p-4">
-                  {solutionsMenu.map((item) => (
-                    <MenuLink key={item.title} {...item} />
-                  ))}
-                  <div className="mt-2 flex gap-1 border-t pt-2">
-                    {solutionsSub.map((item) => (
-                      <NavigationMenu.Link asChild key={item.title}>
-                        <Link
-                          href={item.href}
-                          className="rounded-md px-3 py-1.5 text-[13px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                        >
-                          {item.title}
-                        </Link>
-                      </NavigationMenu.Link>
-                    ))}
-                  </div>
-                </div>
-              </NavigationMenu.Content>
+              <NavigationMenu.Content className="absolute left-0 top-0 w-auto">
+                  <SolutionsMenu />
+                </NavigationMenu.Content>
             </NavigationMenu.Item>
 
             {navLinks.map((link) => (
@@ -191,7 +124,7 @@ export function Navbar() {
                       Platform
                     </p>
                     <ul className="grid gap-0.5">
-                      {platformMenu.map((i) => (
+                      {platformCloud.map((i) => (
                         <li key={i.title}>
                           <Link
                             href={i.href}

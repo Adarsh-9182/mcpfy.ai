@@ -1,0 +1,181 @@
+import type { PlatformPage } from "./platform";
+
+/** Standalone product pages, rendered with the same template as /platform/*. */
+export const productPages: Record<string, PlatformPage> = {
+  vibe: {
+    slug: "vibe",
+    navTitle: "Vibe",
+    badge: "vibe",
+    title: "Describe it. Watch it scaffold.",
+    subtitle:
+      "Say what your MCP app should do in plain language and watch the server, the tool schemas and the interactive views build themselves — then take the code and keep going.",
+    primaryCta: { label: "Start vibecoding", href: "/signup" },
+    secondaryCta: { label: "See an example", href: "/templates" },
+    wash: "from-lime-100 via-emerald-100 to-zinc-200 dark:from-lime-950 dark:via-emerald-950 dark:to-zinc-900",
+    stepsTitle: "From a sentence to a deployed server",
+    steps: [
+      { title: "Describe", desc: "Say what the app should do." },
+      { title: "Scaffold", desc: "Tools, schemas and views generated." },
+      { title: "Preview", desc: "Try it in the Inspector instantly." },
+      { title: "Deploy", desc: "Ship it from the same screen." },
+    ],
+    features: [
+      {
+        title: "Real code, not a black box",
+        desc: "Everything it generates is ordinary SDK code in your repository. Read it, edit it, or throw it away.",
+        visual: "build",
+      },
+      {
+        title: "Views included",
+        desc: "Interactive widgets are scaffolded alongside the tools that feed them, wired up and ready to render.",
+        visual: "iterate",
+      },
+      {
+        title: "Deploy from the prompt",
+        desc: "The same session that generated the server can ship it to a live endpoint.",
+        visual: "deploy",
+      },
+    ],
+    gridTitle: "What it can build",
+    grid: [
+      { title: "Data tools", desc: "Query a database behind a typed schema." },
+      { title: "API wrappers", desc: "Wrap an existing service as MCP tools." },
+      { title: "Chart widgets", desc: "Interactive views rendered inline." },
+      { title: "Workflows", desc: "Multi-step tools an agent can chain." },
+    ],
+    ctaTitle: "Build your first MCP app by describing it",
+  },
+  sdk: {
+    slug: "sdk",
+    navTitle: "mcpfy SDK",
+    badge: "open source",
+    title: "The fullstack MCP framework",
+    subtitle:
+      "One open-source SDK for TypeScript and Python: build MCP Apps for ChatGPT and Claude, MCP Servers for agents, and the clients that talk to them — with typed tools and native views.",
+    primaryCta: { label: "Read the docs", href: "/docs" },
+    secondaryCta: { label: "View on GitHub", href: "/docs" },
+    wash: "from-sky-100 via-blue-100 to-zinc-200 dark:from-sky-950 dark:via-blue-950 dark:to-zinc-900",
+    stepsTitle: "Everything the protocol needs, in one package",
+    steps: [
+      { title: "Scaffold", desc: "One command to a working server." },
+      { title: "Define", desc: "Typed tools, resources and prompts." },
+      { title: "Bind", desc: "Attach views directly to tools." },
+      { title: "Test", desc: "Inspector and evals built in." },
+    ],
+    features: [
+      {
+        title: "Typed tools",
+        desc: "Schemas are the contract with the model. Define them once and get validation, docs and client types for free.",
+        visual: "build",
+      },
+      {
+        title: "Native views",
+        desc: "Bind a component straight to a tool and it renders inside the host client, with full state.",
+        visual: "iterate",
+      },
+      {
+        title: "Servers, clients and agents",
+        desc: "The same package builds the server, the client that calls it, and an agent that orchestrates both.",
+        visual: "monitor",
+      },
+    ],
+    gridTitle: "TypeScript and Python, first class",
+    grid: [
+      { title: "Type-safe", desc: "End-to-end types from schema to client." },
+      { title: "Framework friendly", desc: "Drop into Express, FastAPI or Hono." },
+      { title: "MIT licensed", desc: "Open from day one, no lock-in." },
+      { title: "Self-hostable", desc: "Run it anywhere, cloud optional." },
+    ],
+    ctaTitle: "Start building with the open SDK",
+  },
+  inspector: {
+    slug: "inspector",
+    navTitle: "Inspector",
+    badge: "inspector",
+    title: "See exactly what the model saw",
+    subtitle:
+      "An open-source debugger for MCP servers: invoke tools, read raw JSON-RPC, browse resources, test prompts and preview widgets — hosted, local, or self-hosted with Docker.",
+    primaryCta: { label: "Open the Inspector", href: "/signup" },
+    secondaryCta: { label: "Run it locally", href: "/docs" },
+    wash: "from-indigo-100 via-slate-100 to-zinc-200 dark:from-indigo-950 dark:via-slate-900 dark:to-zinc-900",
+    stepsTitle: "A real debugger for a real protocol",
+    steps: [
+      { title: "Connect", desc: "Point it at any MCP endpoint." },
+      { title: "Call", desc: "Invoke tools with real arguments." },
+      { title: "Read", desc: "Every frame, in and out." },
+      { title: "Fix", desc: "Replay the call after each change." },
+    ],
+    features: [
+      {
+        title: "Protocol-level logging",
+        desc: "Timestamped JSON-RPC frames you can expand, copy and diff between runs.",
+        visual: "iterate",
+      },
+      {
+        title: "Widget preview",
+        desc: "Render interactive views exactly as the host client will, with host APIs emulated.",
+        visual: "build",
+      },
+      {
+        title: "Runs anywhere",
+        desc: "Use it hosted, from the CLI against localhost, or self-hosted behind your own network.",
+        visual: "deploy",
+      },
+    ],
+    gridTitle: "Everything you need to debug MCP",
+    grid: [
+      { title: "Tool testing", desc: "Arbitrary arguments, instant results." },
+      { title: "Resource browsing", desc: "Inspect what you actually expose." },
+      { title: "Prompt testing", desc: "Exercise prompts in isolation." },
+      { title: "Open source", desc: "MIT licensed and self-hostable." },
+    ],
+    ctaTitle: "Debug your MCP server properly",
+  },
+  cloud: {
+    slug: "cloud",
+    navTitle: "Cloud",
+    badge: "mcpfy cloud",
+    title: "The platform for everything after the code",
+    subtitle:
+      "Deploy from GitHub, test across every client, watch real traffic, and publish to the marketplaces — one pipeline covering the whole MCP lifecycle.",
+    primaryCta: { label: "Start deploying", href: "/signup" },
+    secondaryCta: { label: "See pricing", href: "/pricing" },
+    wash: "from-zinc-100 via-sky-100 to-zinc-200 dark:from-zinc-900 dark:via-sky-950 dark:to-zinc-900",
+    stepsTitle: "One pipeline, end to end",
+    steps: [
+      { title: "Deploy", desc: "GitHub-native builds in seconds." },
+      { title: "Test", desc: "Cross-client suites gate the merge." },
+      { title: "Observe", desc: "MCP-native analytics and replay." },
+      { title: "Publish", desc: "Checks and a submission pack." },
+    ],
+    features: [
+      {
+        title: "Deploys that feel like web apps",
+        desc: "Connect a repository once and every push ships, with a preview URL for every pull request.",
+        visual: "deploy",
+      },
+      {
+        title: "Confidence before release",
+        desc: "Suites run your tools across clients and models, and block the merge when any of them regress.",
+        visual: "iterate",
+      },
+      {
+        title: "Visibility after release",
+        desc: "Tool-call volume, latency percentiles, error triage and full session replay.",
+        visual: "monitor",
+      },
+    ],
+    gridTitle: "What Cloud handles for you",
+    grid: [
+      { title: "Builds", desc: "TypeScript, Python or a Dockerfile." },
+      { title: "Previews", desc: "A live endpoint per branch." },
+      { title: "Auth", desc: "OAuth 2.1 with six providers." },
+      { title: "Scale", desc: "All regions, cold-start prevention." },
+    ],
+    ctaTitle: "Ship your MCP server on mcpfy Cloud",
+  },
+};
+
+export function getProductPage(slug: string) {
+  return productPages[slug];
+}
