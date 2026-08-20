@@ -2,50 +2,21 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 
-/** Wordmark: a stacked-layers glyph (build → deploy → publish) plus the name. */
-export function Logo({
-  className,
-  showName = true,
-}: {
-  className?: string;
-  showName?: boolean;
-}) {
+/** Bare geometric mark + wordmark, sized to sit on the 64px navbar. */
+export function Logo({ className }: { className?: string }) {
   return (
     <Link
       href="/"
-      className={cn("group inline-flex items-center gap-2", className)}
+      className={cn("inline-flex shrink-0 items-center gap-2", className)}
       aria-label={`${site.name} home`}
     >
-      <span className="relative inline-flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
-        <svg viewBox="0 0 24 24" className="size-4" aria-hidden fill="none">
-          <path
-            d="M12 3 21 8l-9 5-9-5 9-5Z"
-            fill="currentColor"
-            fillOpacity="0.95"
-          />
-          <path
-            d="m3 12 9 5 9-5"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.55"
-          />
-          <path
-            d="m3 16.5 9 5 9-5"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.3"
-          />
-        </svg>
-      </span>
-      {showName && (
-        <span className="text-[15px] font-semibold tracking-tight">
-          {site.name}
-        </span>
-      )}
+      <svg viewBox="0 0 24 24" className="size-[22px]" aria-hidden fill="currentColor">
+        <circle cx="7" cy="7" r="4" />
+        <circle cx="17.5" cy="6.5" r="2.6" />
+        <circle cx="6.5" cy="17.5" r="2.6" />
+        <circle cx="16.5" cy="16.5" r="4.5" />
+      </svg>
+      <span className="text-[19px] font-semibold tracking-tight">{site.name}</span>
     </Link>
   );
 }

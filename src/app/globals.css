@@ -207,3 +207,41 @@
   from { opacity: 1; transform: translateY(0) scale(1); }
   to   { opacity: 0; transform: translateY(-4px) scale(0.98); }
 }
+
+/* ---------------------------------------------------------------
+   magic-ui style animations
+   --------------------------------------------------------------- */
+@keyframes shimmer-slide {
+  to { transform: translate(calc(100cqw - 100%), 0); }
+}
+@keyframes spin-around {
+  0%   { transform: translateZ(0) rotate(0deg); }
+  15%, 35% { transform: translateZ(0) rotate(90deg); }
+  65%, 85% { transform: translateZ(0) rotate(270deg); }
+  100% { transform: translateZ(0) rotate(360deg); }
+}
+
+@utility animate-shimmer-slide {
+  animation: shimmer-slide var(--speed, 3s) ease-in-out infinite alternate;
+}
+@utility animate-spin-around {
+  animation: spin-around calc(var(--speed, 3s) * 2) infinite linear;
+}
+
+/* Hero / CTA gradient wash */
+@utility bg-hero-wash {
+  background-image:
+    linear-gradient(122deg, #e0eaff 0%, #f9ffbd 36%, #dedede 70%, #ffffff 100%),
+    radial-gradient(90% 70% at 88% 12%, #f9ffbd 0%, transparent 58%),
+    radial-gradient(70% 55% at 8% 88%, #dedede 0%, transparent 52%);
+}
+
+/* Vertical page rules + corner ticks that frame every section */
+@utility frame-x {
+  position: relative;
+}
+
+@utility mask-fade-y {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+}

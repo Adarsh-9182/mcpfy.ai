@@ -4,10 +4,10 @@ import * as React from "react";
 import Link from "next/link";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import * as Dialog from "@radix-ui/react-dialog";
-import { ChevronDown, Menu, Star, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
-import { Button } from "@/components/ui/button";
+import { GithubIcon } from "./icons";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 import {
@@ -17,20 +17,6 @@ import {
   solutionsMenu,
   solutionsSub,
 } from "@/lib/content";
-
-function StarBadge() {
-  return (
-    <Link
-      href={site.github}
-      target="_blank"
-      rel="noreferrer"
-      className="hidden items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground lg:inline-flex"
-    >
-      <Star className="size-3.5" />
-      {site.stars}
-    </Link>
-  );
-}
 
 function MenuLink({
   title,
@@ -43,15 +29,10 @@ function MenuLink({
 }) {
   return (
     <NavigationMenu.Link asChild>
-      <Link
-        href={href}
-        className="block rounded-lg p-3 transition-colors hover:bg-accent"
-      >
+      <Link href={href} className="block rounded-lg p-3 transition-colors hover:bg-accent">
         <div className="text-sm font-medium">{title}</div>
         {desc && (
-          <p className="mt-1 text-[13px] leading-snug text-muted-foreground">
-            {desc}
-          </p>
+          <p className="mt-1 text-[13px] leading-snug text-muted-foreground">{desc}</p>
         )}
       </Link>
     </NavigationMenu.Link>
@@ -59,134 +40,125 @@ function MenuLink({
 }
 
 const triggerClass =
-  "group inline-flex h-9 items-center gap-1 rounded-lg px-3 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground";
+  "group inline-flex h-9 items-center gap-1 rounded-lg px-3 text-[15px] transition-colors hover:text-muted-foreground data-[state=open]:text-muted-foreground";
+const linkClass =
+  "inline-flex h-9 items-center rounded-lg px-3 text-[15px] transition-colors hover:text-muted-foreground";
 
 export function Navbar() {
-  const [scrolled, setScrolled] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
-  React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
-        scrolled
-          ? "border-b bg-background/80 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent",
-      )}
-    >
-      <div className="container-page flex h-16 items-center justify-between gap-4">
-        <div className="flex items-center gap-1">
-          <Logo className="mr-3" />
+    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 w-full max-w-[1280px] items-center justify-between gap-4 px-4 md:px-6 lg:px-12">
+        <Logo />
 
-          <NavigationMenu.Root
-            delayDuration={80}
-            className="relative hidden md:block"
-          >
-            <NavigationMenu.List className="flex items-center gap-0.5">
-              <NavigationMenu.Item>
-                <NavigationMenu.Trigger className={triggerClass}>
-                  Platform
-                  <ChevronDown className="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                </NavigationMenu.Trigger>
-                <NavigationMenu.Content className="absolute left-0 top-0 w-full data-[motion=from-end]:animate-[nav-in_200ms_ease] data-[motion=from-start]:animate-[nav-in_200ms_ease]">
-                  <div className="grid w-[640px] grid-cols-[1fr_200px] gap-6 p-4">
-                    <div>
-                      <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                        Platform
-                      </p>
-                      <ul className="grid grid-cols-2 gap-1">
-                        {platformMenu.map((item) => (
-                          <li key={item.title}>
-                            <MenuLink {...item} />
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="border-l pl-4">
-                      <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                        Products
-                      </p>
-                      <ul className="grid gap-1">
-                        {productsMenu.map((item) => (
-                          <li key={item.title}>
-                            <MenuLink {...item} />
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </NavigationMenu.Content>
-              </NavigationMenu.Item>
-
-              <NavigationMenu.Item>
-                <NavigationMenu.Trigger className={triggerClass}>
-                  Solutions
-                  <ChevronDown className="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                </NavigationMenu.Trigger>
-                <NavigationMenu.Content className="absolute left-0 top-0 w-full">
-                  <div className="grid w-[460px] gap-1 p-4">
-                    {solutionsMenu.map((item) => (
-                      <MenuLink key={item.title} {...item} />
-                    ))}
-                    <div className="mt-2 flex gap-1 border-t pt-2">
-                      {solutionsSub.map((item) => (
-                        <NavigationMenu.Link asChild key={item.title}>
-                          <Link
-                            href={item.href}
-                            className="rounded-md px-3 py-1.5 text-[13px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                          >
-                            {item.title}
-                          </Link>
-                        </NavigationMenu.Link>
+        {/* centered primary nav */}
+        <NavigationMenu.Root
+          delayDuration={80}
+          className="relative hidden md:block"
+        >
+          <NavigationMenu.List className="flex items-center gap-1">
+            <NavigationMenu.Item>
+              <NavigationMenu.Trigger className={triggerClass}>
+                Platform
+                <ChevronDown className="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+              </NavigationMenu.Trigger>
+              <NavigationMenu.Content className="absolute left-0 top-0 w-full">
+                <div className="grid w-[640px] grid-cols-[1fr_200px] gap-6 p-4">
+                  <div>
+                    <p className="px-3 pb-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                      Platform
+                    </p>
+                    <ul className="grid grid-cols-2 gap-1">
+                      {platformMenu.map((item) => (
+                        <li key={item.title}>
+                          <MenuLink {...item} />
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
-                </NavigationMenu.Content>
+                  <div className="border-l pl-4">
+                    <p className="px-3 pb-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                      Products
+                    </p>
+                    <ul className="grid gap-1">
+                      {productsMenu.map((item) => (
+                        <li key={item.title}>
+                          <MenuLink {...item} />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </NavigationMenu.Content>
+            </NavigationMenu.Item>
+
+            <NavigationMenu.Item>
+              <NavigationMenu.Trigger className={triggerClass}>
+                Solutions
+                <ChevronDown className="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+              </NavigationMenu.Trigger>
+              <NavigationMenu.Content className="absolute left-0 top-0 w-full">
+                <div className="grid w-[460px] gap-1 p-4">
+                  {solutionsMenu.map((item) => (
+                    <MenuLink key={item.title} {...item} />
+                  ))}
+                  <div className="mt-2 flex gap-1 border-t pt-2">
+                    {solutionsSub.map((item) => (
+                      <NavigationMenu.Link asChild key={item.title}>
+                        <Link
+                          href={item.href}
+                          className="rounded-md px-3 py-1.5 text-[13px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                        >
+                          {item.title}
+                        </Link>
+                      </NavigationMenu.Link>
+                    ))}
+                  </div>
+                </div>
+              </NavigationMenu.Content>
+            </NavigationMenu.Item>
+
+            {navLinks.map((link) => (
+              <NavigationMenu.Item key={link.href}>
+                <NavigationMenu.Link asChild>
+                  <Link href={link.href} className={linkClass}>
+                    {link.label}
+                  </Link>
+                </NavigationMenu.Link>
               </NavigationMenu.Item>
+            ))}
+          </NavigationMenu.List>
 
-              {navLinks.map((link) => (
-                <NavigationMenu.Item key={link.href}>
-                  <NavigationMenu.Link asChild>
-                    <Link
-                      href={link.href}
-                      className="inline-flex h-9 items-center rounded-lg px-3 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                    >
-                      {link.label}
-                    </Link>
-                  </NavigationMenu.Link>
-                </NavigationMenu.Item>
-              ))}
-            </NavigationMenu.List>
+          <div className="absolute left-1/2 top-full flex -translate-x-1/2 justify-center">
+            <NavigationMenu.Viewport
+              className={cn(
+                "relative mt-2 h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)]",
+                "origin-top overflow-hidden rounded-xl border bg-popover shadow-xl",
+                "transition-[width,height] duration-250",
+                "data-[state=closed]:animate-[nav-out_150ms_ease] data-[state=open]:animate-[nav-in_200ms_ease]",
+              )}
+            />
+          </div>
+        </NavigationMenu.Root>
 
-            <div className="absolute left-0 top-full flex justify-start">
-              <NavigationMenu.Viewport
-                className={cn(
-                  "relative mt-2 h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)]",
-                  "origin-top-left overflow-hidden rounded-xl border bg-popover shadow-xl",
-                  "transition-[width,height] duration-250",
-                  "data-[state=closed]:animate-[nav-out_150ms_ease] data-[state=open]:animate-[nav-in_200ms_ease]",
-                )}
-              />
-            </div>
-          </NavigationMenu.Root>
-        </div>
-
+        {/* right cluster */}
         <div className="flex items-center gap-2">
-          <StarBadge />
-          <ThemeToggle className="hidden sm:inline-flex" />
-          <Button asChild variant="ghost" size="sm" className="hidden lg:inline-flex">
-            <Link href="/contact">Get a demo</Link>
-          </Button>
-          <Button asChild size="sm">
-            <Link href="/docs">Cloud</Link>
-          </Button>
+          <Link
+            href={site.github}
+            target="_blank"
+            rel="noreferrer"
+            className="hidden items-center gap-1.5 rounded-lg px-2 py-1.5 text-[15px] transition-colors hover:text-muted-foreground lg:inline-flex"
+          >
+            <GithubIcon className="size-[18px]" />
+            {site.stars}
+          </Link>
+          <Link
+            href="/docs"
+            className="inline-flex h-10 items-center rounded-full bg-foreground px-5 text-[15px] font-medium text-background transition-opacity hover:opacity-90"
+          >
+            Cloud
+          </Link>
 
           <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger asChild>
@@ -211,13 +183,11 @@ export function Navbar() {
                     <X className="size-4" />
                   </Dialog.Close>
                 </div>
-                <Dialog.Description className="sr-only">
-                  Site navigation
-                </Dialog.Description>
+                <Dialog.Description className="sr-only">Site navigation</Dialog.Description>
 
                 <nav className="mt-8 flex flex-col gap-6">
                   <div>
-                    <p className="pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <p className="pb-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
                       Platform
                     </p>
                     <ul className="grid gap-0.5">
@@ -235,7 +205,7 @@ export function Navbar() {
                     </ul>
                   </div>
                   <div>
-                    <p className="pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <p className="pb-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
                       Company
                     </p>
                     <ul className="grid gap-0.5">
@@ -255,12 +225,14 @@ export function Navbar() {
                 </nav>
 
                 <div className="mt-auto flex items-center gap-2 pt-8">
-                  <ThemeToggle />
-                  <Button asChild className="flex-1">
-                    <Link href="/docs" onClick={() => setOpen(false)}>
-                      Start deploying
-                    </Link>
-                  </Button>
+                  <ThemeToggle className="rounded-full" />
+                  <Link
+                    href="/docs"
+                    onClick={() => setOpen(false)}
+                    className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-foreground text-[15px] font-medium text-background"
+                  >
+                    Start deploying
+                  </Link>
                 </div>
               </Dialog.Content>
             </Dialog.Portal>

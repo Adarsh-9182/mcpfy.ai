@@ -1,60 +1,53 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Section, SectionHeading } from "./section";
+import { ArrowUpRight } from "lucide-react";
+import { FrameSection } from "./frame";
 import { Reveal } from "./reveal";
 import { stats } from "@/lib/content";
 
 export function Stats() {
   return (
-    <Section>
-      <Reveal>
-        <SectionHeading
-          align="center"
-          className="mx-auto"
-          title={
-            <>
-              Built in the <span className="font-serif italic font-normal">open</span>.
-            </>
-          }
-          subtitle="One of the most adopted open-source MCP frameworks. Open from day one."
-        />
-      </Reveal>
+    <>
+      <FrameSection>
+        <div className="py-16 text-center md:py-24">
+          <Reveal>
+            <h2 className="mx-auto max-w-3xl text-3xl font-medium tracking-tight md:text-4xl lg:text-5xl">
+              Built in the open.
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground md:text-lg">
+              One of the most adopted open-source MCP frameworks. Open from day one.
+            </p>
+          </Reveal>
+        </div>
+      </FrameSection>
 
-      <div className="mt-14 grid gap-4 md:grid-cols-3">
-        {stats.map((s, i) => (
-          <Reveal key={s.value} delay={i * 0.08}>
-            <div className="flex h-full flex-col rounded-xl border bg-card/40 p-8">
-              <p className="text-5xl font-semibold tracking-tight tabular-nums">
-                {s.value}
-              </p>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
-                {s.label}
-              </p>
-              {s.tags && (
-                <div className="mt-5 flex gap-2">
-                  {s.tags.map((t) => (
-                    <span
+      <FrameSection flush>
+        <div className="grid divide-y divide-border/60 md:grid-cols-3 md:divide-x md:divide-y-0">
+          {stats.map((s, i) => (
+            <Reveal key={s.value} delay={i * 0.08}>
+              <div className="px-6 py-12 md:px-8">
+                <p className="text-5xl font-medium tracking-tight tabular-nums md:text-6xl">
+                  {s.value}
+                </p>
+                <p className="mt-4 text-[15px] text-muted-foreground">{s.label}</p>
+                <div className="mt-5 flex gap-5">
+                  {(s.tags ?? [s.cta]).filter(Boolean).map((t) => (
+                    <Link
                       key={t}
-                      className="rounded-md border px-2.5 py-1 font-mono text-[11px] text-muted-foreground"
+                      href="/docs"
+                      className="group inline-flex items-center gap-1 text-[14px]"
                     >
-                      {t}
-                    </span>
+                      <span className="underline underline-offset-2 decoration-border group-hover:decoration-foreground">
+                        {t}
+                      </span>
+                      <ArrowUpRight className="size-3.5" />
+                    </Link>
                   ))}
                 </div>
-              )}
-              {s.cta && (
-                <Link
-                  href="/docs"
-                  className="group mt-5 inline-flex items-center gap-1.5 text-[13px] font-medium transition-opacity hover:opacity-70"
-                >
-                  {s.cta}
-                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                </Link>
-              )}
-            </div>
-          </Reveal>
-        ))}
-      </div>
-    </Section>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </FrameSection>
+    </>
   );
 }

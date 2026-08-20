@@ -1,119 +1,86 @@
-"use client";
-
-import * as React from "react";
 import Link from "next/link";
-import * as Tabs from "@radix-ui/react-tabs";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
-import { SectionHeading } from "./section";
+import { FrameSection } from "./frame";
 import { Reveal } from "./reveal";
-import { CardVisual } from "./card-visual";
+import { StageVisual } from "./stage-visual";
 import { lifecycle } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
-export function Lifecycle() {
-  const [value, setValue] = React.useState(lifecycle[0].id);
-  const reduce = useReducedMotion();
-  const active = lifecycle.find((s) => s.id === value) ?? lifecycle[0];
-
+function Kicker({ children }: { children: React.ReactNode }) {
   return (
-    <section className="border-t py-20 sm:py-28">
-      <div className="container-page">
-        <Reveal>
-          <SectionHeading
-            align="center"
-            className="mx-auto"
-            title={
-              <>
-                From first commit to{" "}
-                <span className="font-serif italic font-normal">production</span>.
-              </>
-            }
-            subtitle="Every step of the MCP lifecycle. No extra tools."
-          />
-        </Reveal>
+    <span className="inline-flex items-center rounded-full border px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+      {children}
+    </span>
+  );
+}
 
-        <Tabs.Root value={value} onValueChange={setValue} className="mt-12">
-          <Tabs.List
-            aria-label="MCP lifecycle stages"
-            className="mx-auto flex w-full max-w-2xl items-center justify-center gap-1 overflow-x-auto rounded-xl border bg-card/40 p-1"
+export function Lifecycle() {
+  return (
+    <>
+      <FrameSection>
+        <div className="py-16 text-center md:py-24">
+          <Reveal>
+            <h2 className="mx-auto max-w-3xl text-3xl font-medium tracking-tight md:text-4xl lg:text-5xl">
+              From first commit to production.
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground md:text-lg">
+              Every step of the MCP lifecycle. No extra tools.
+            </p>
+          </Reveal>
+        </div>
+      </FrameSection>
+
+      {lifecycle.map((stage, i) => (
+        <FrameSection key={stage.id}>
+          <div
+            className={cn(
+              "grid items-center gap-12 py-16 md:py-24 lg:grid-cols-2 lg:gap-16",
+            )}
           >
-            {lifecycle.map((stage) => (
-              <Tabs.Trigger
-                key={stage.id}
-                value={stage.id}
-                className={cn(
-                  "relative flex-1 whitespace-nowrap rounded-lg px-4 py-2 font-mono text-[12px] uppercase tracking-[0.14em] transition-colors",
-                  "text-muted-foreground hover:text-foreground",
-                  "data-[state=active]:text-foreground",
-                )}
-              >
-                {value === stage.id && !reduce && (
-                  <motion.span
-                    layoutId="lifecycle-pill"
-                    className="absolute inset-0 -z-10 rounded-lg bg-accent"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                  />
-                )}
-                {value === stage.id && reduce && (
-                  <span className="absolute inset-0 -z-10 rounded-lg bg-accent" />
-                )}
-                {stage.kicker}
-              </Tabs.Trigger>
-            ))}
-          </Tabs.List>
+            {/* copy column — alternates side on large screens */}
+            <Reveal className={cn(i % 2 === 1 && "lg:order-2")}>
+              <div>
+                <Kicker>{stage.kicker}</Kicker>
+                <h3 className="mt-5 max-w-md text-3xl font-medium tracking-tight md:text-4xl">
+                  {stage.title}
+                </h3>
+                <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">
+                  {stage.body}
+                </p>
 
-          <div className="relative mt-10">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active.id}
-                initial={reduce ? false : { opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={reduce ? undefined : { opacity: 0, y: -8 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-              >
-                <div className="mx-auto max-w-3xl text-center">
-                  <h3 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
-                    {active.title}
-                  </h3>
-                  <p className="mx-auto mt-4 max-w-2xl text-balance-pretty leading-relaxed text-muted-foreground">
-                    {active.body}
-                  </p>
-                </div>
-
-                <div className="mt-10 grid gap-4 md:grid-cols-3">
-                  {active.cards.map((card, i) => (
-                    <motion.div
-                      key={card.title}
-                      initial={reduce ? false : { opacity: 0, y: 14 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.35, delay: 0.06 * i }}
-                      className="group flex h-full flex-col rounded-xl border bg-card/40 p-6 transition-colors hover:bg-card"
-                    >
-                      <div className="mb-5">
-                        <CardVisual id={card.title} />
-                      </div>
-                      <p className="text-sm font-medium">{card.title}</p>
-                      <p className="mt-1.5 flex-1 text-[13px] leading-relaxed text-muted-foreground">
+                <div className="mt-10 grid gap-8 sm:grid-cols-3">
+                  {stage.cards.map((card) => (
+                    <div key={card.title}>
+                      <p className="text-[15px] font-medium">{card.title}</p>
+                      <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">
                         {card.desc}
                       </p>
                       {card.cta && (
                         <Link
                           href="/docs"
-                          className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-foreground transition-opacity hover:opacity-70"
+                          className="group mt-3 inline-flex items-center gap-1.5 text-[14px]"
                         >
-                          {card.cta}
+                          <span className="underline underline-offset-2 decoration-border group-hover:decoration-foreground">
+                            {card.cta}
+                          </span>
                           <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
                         </Link>
                       )}
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
-              </motion.div>
-            </AnimatePresence>
+              </div>
+            </Reveal>
+
+            <Reveal
+              delay={0.1}
+              className={cn(i % 2 === 1 && "lg:order-1")}
+            >
+              <StageVisual id={stage.id} />
+            </Reveal>
           </div>
-        </Tabs.Root>
-      </div>
-    </section>
+        </FrameSection>
+      ))}
+    </>
   );
 }

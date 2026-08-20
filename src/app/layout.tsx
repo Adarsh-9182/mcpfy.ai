@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/site/theme-provider";
 import { Navbar } from "@/components/site/navbar";
 import { Footer } from "@/components/site/footer";
 import { CookieBanner } from "@/components/site/cookie-banner";
+import { PageFrame } from "@/components/site/frame";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -62,7 +63,7 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
@@ -73,7 +74,9 @@ export default function RootLayout({
             Skip to content
           </a>
           <Navbar />
-          <main id="main">{children}</main>
+          <PageFrame>
+            <main id="main">{children}</main>
+          </PageFrame>
           <Footer />
           <CookieBanner />
         </ThemeProvider>
