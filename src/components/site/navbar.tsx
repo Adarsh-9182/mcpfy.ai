@@ -87,7 +87,7 @@ export function Navbar() {
             {site.stars}
           </Link>
           <Link
-            href="/docs"
+            href="/cloud"
             className="inline-flex h-10 items-center rounded-full bg-foreground px-5 text-[15px] font-medium text-background transition-opacity hover:opacity-90"
           >
             Cloud
