@@ -159,11 +159,17 @@
   }
 }
 
+/* Width is owned by PageFrame; this only supplies the horizontal rhythm,
+   matching the homepage's px-4 / md:px-6 / lg:px-12 scale. */
 @utility container-page {
-  margin-inline: auto;
   width: 100%;
-  max-width: 80rem;
-  padding-inline: 1.25rem;
+  padding-inline: 1rem;
+}
+@media (min-width: 768px) {
+  .container-page { padding-inline: 1.5rem; }
+}
+@media (min-width: 1024px) {
+  .container-page { padding-inline: 3rem; }
 }
 
 /* Faint blueprint grid used behind hero + section dividers */
