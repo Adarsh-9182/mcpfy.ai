@@ -11,6 +11,7 @@ type Tier = {
   name: string;
   monthly: number | null;
   credits: string;
+  requests: string;
   blurb: string;
   cta: string;
   featured?: boolean;
@@ -24,6 +25,7 @@ const tiers: Tier[] = [
     name: "Free",
     monthly: 0,
     credits: "$5 included monthly",
+    requests: "30k requests / month",
     blurb: "Everything you need to ship your first MCP server.",
     cta: "Start for free",
     features: [
@@ -31,12 +33,15 @@ const tiers: Tier[] = [
       "7 days analytics retention",
       "1 team member",
       "Deploy from GitHub organization",
+      "Publishing checklist",
+      "Community support",
     ],
   },
   {
     name: "Hobby",
     monthly: 25,
     credits: "$30 included, then pay-as-you-go",
+    requests: "300k requests / month",
     blurb: "For side projects heading to the marketplaces.",
     cta: "Get started",
     featured: true,
@@ -47,6 +52,10 @@ const tiers: Tier[] = [
       "Preview deployments",
       "Deploy from GitHub organization",
       "Cold-start prevention",
+      "End-to-end checks",
+      "Test suites",
+      "Public chat",
+      "Submission pack",
       "Email support",
     ],
   },
@@ -54,6 +63,7 @@ const tiers: Tier[] = [
     name: "Startup",
     monthly: 250,
     credits: "$300 included, then pay-as-you-go",
+    requests: "3M requests / month",
     blurb: "For teams running MCP in production.",
     cta: "Get started",
     features: [
@@ -63,14 +73,19 @@ const tiers: Tier[] = [
       "Preview deployments",
       "Deploy from GitHub organization",
       "Cold-start prevention",
-      "All regions",
+      "Auto + US, EU and APAC regions",
+      "End-to-end checks",
+      "Test suites",
+      "Public chat",
+      "Submission pack",
       "Dedicated Slack channel",
     ],
   },
   {
     name: "Enterprise",
     monthly: null,
-    credits: "Unlimited volume pricing",
+    credits: "From $1,000/month",
+    requests: "Unlimited requests",
     blurb: "Procurement, compliance and scale.",
     cta: "Contact sales",
     features: [
@@ -81,7 +96,11 @@ const tiers: Tier[] = [
       "Deploy from GitHub organization",
       "Cold-start prevention",
       "All regions",
-      "Premium support",
+      "End-to-end checks",
+      "Test suites",
+      "Public chat",
+      "Submission pack",
+      "Priority support",
     ],
   },
 ];
@@ -89,7 +108,12 @@ const tiers: Tier[] = [
 const metered = [
   { label: "Tool-call requests", price: "$0.10", unit: "per 1,000" },
   { label: "Eval runs", price: "$1.00", unit: "per run" },
+  { label: "Publishing checklist", price: "$0.10", unit: "per run" },
   { label: "End-to-end checks", price: "$2.00", unit: "per check" },
+  { label: "Submission pack", price: "$5.00", unit: "per generation" },
+  { label: "Build minutes", price: "$0.07", unit: "per minute" },
+  { label: "Bandwidth", price: "$0.15", unit: "per GB egress" },
+  { label: "LLM tokens", price: "$5.00", unit: "per 1M output" },
 ];
 
 export function PricingTables() {
@@ -163,6 +187,9 @@ export function PricingTables() {
               <p className="mt-2 text-[13px] text-muted-foreground">
                 {tier.credits}
               </p>
+              <p className="mt-1 text-[13px] font-medium text-foreground">
+                {tier.requests}
+              </p>
               {/* Two lines of 13px/leading-relaxed measure 42.25px; reserve 44px so
                   every tier's CTA lands on the same baseline. */}
               <p className="mt-3 min-h-11 text-[13px] leading-relaxed text-muted-foreground">
@@ -196,7 +223,7 @@ export function PricingTables() {
           <p className="mt-1.5 text-[13px] text-muted-foreground">
             Metered on top of your plan credits. Discovery traffic is never billed.
           </p>
-          <dl className="mt-6 grid gap-4 sm:grid-cols-3">
+          <dl className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {metered.map((m) => (
               <div key={m.label} className="rounded-lg border bg-background/60 p-4">
                 <dt className="text-[13px] text-muted-foreground">{m.label}</dt>

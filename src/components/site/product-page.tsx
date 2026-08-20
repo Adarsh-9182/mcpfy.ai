@@ -105,6 +105,47 @@ export function ProductPage({
         </FrameSection>
       ))}
 
+      {/* grouped capability matrix */}
+      {page.capabilityGroups && page.capabilityGroups.length > 0 && (
+        <FrameSection>
+          <div className="py-16 md:py-24">
+            <Reveal>
+              <h2 className="mx-auto max-w-3xl text-center text-3xl font-medium tracking-tight md:text-4xl">
+                {page.capabilityGroupsTitle ?? "Everything in the platform"}
+              </h2>
+            </Reveal>
+            {page.capabilityGroupsSubtitle && (
+              <Reveal delay={0.06}>
+                <p className="mx-auto mt-4 max-w-2xl text-balance text-center text-base text-muted-foreground">
+                  {page.capabilityGroupsSubtitle}
+                </p>
+              </Reveal>
+            )}
+            <div className="mt-14 flex flex-col gap-12">
+              {page.capabilityGroups.map((group, gi) => (
+                <Reveal key={group.name} delay={gi * 0.04}>
+                  <div className="grid gap-6 border-t border-border/60 pt-8 lg:grid-cols-[minmax(0,14rem)_1fr] lg:gap-12">
+                    <h3 className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                      {group.name}
+                    </h3>
+                    <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2 xl:grid-cols-3">
+                      {group.items.map((item) => (
+                        <div key={item.title}>
+                          <h4 className="text-[15px] font-medium">{item.title}</h4>
+                          <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">
+                            {item.desc}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </FrameSection>
+      )}
+
       {/* capability grid */}
       <FrameSection>
         <div className="py-16 md:py-24">

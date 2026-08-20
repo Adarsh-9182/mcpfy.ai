@@ -13,7 +13,21 @@ export type PlatformPage = {
   features: { title: string; desc: string; visual: string }[];
   gridTitle: string;
   grid: { title: string; desc: string }[];
+  /**
+   * Optional grouped capability matrix, rendered between the feature sections
+   * and the capability grid. Used by pages that need to show the full surface
+   * area of a product rather than a handful of highlights.
+   */
+  capabilityGroups?: CapabilityGroup[];
+  capabilityGroupsTitle?: string;
+  capabilityGroupsSubtitle?: string;
   ctaTitle: string;
+};
+
+/** A named group of related capabilities, mirroring the docs' own sectioning. */
+export type CapabilityGroup = {
+  name: string;
+  items: { title: string; desc: string }[];
 };
 
 export const platformPages: PlatformPage[] = [
