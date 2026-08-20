@@ -87,7 +87,7 @@ export function Hero() {
     <section className="relative overflow-hidden">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 top-px z-0 bg-hero-wash dark:opacity-25"
+        className="pointer-events-none absolute inset-0 top-px z-0 bg-hero-wash dark:opacity-60"
       />
       <div className="relative z-10 px-4 py-6 md:px-6 lg:px-12">
         {/* frosted panel floating on the gradient wash */}
@@ -120,7 +120,8 @@ export function Hero() {
             </ShimmerButton>
             <Link
               href="/contact"
-              className="inline-flex h-[50px] items-center justify-center rounded-full border bg-background px-6 text-[15px] font-medium transition-colors hover:bg-accent"
+              // The reference keeps both hero CTAs on fixed surfaces across themes.
+              className="inline-flex h-[50px] items-center justify-center rounded-full border border-black/10 bg-white px-6 text-[15px] font-medium text-zinc-900 transition-opacity hover:opacity-90"
             >
               Book a call
             </Link>

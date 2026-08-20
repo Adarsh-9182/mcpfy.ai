@@ -26,7 +26,7 @@ export function FinalCta() {
     <FrameSection className="relative overflow-hidden">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 top-px z-0 bg-hero-wash dark:opacity-25"
+        className="pointer-events-none absolute inset-0 top-px z-0 bg-hero-wash dark:opacity-60"
       />
       <div className="relative z-10 py-6">
         <div className="rounded-2xl border bg-background/80 p-6 backdrop-blur-md md:p-10">

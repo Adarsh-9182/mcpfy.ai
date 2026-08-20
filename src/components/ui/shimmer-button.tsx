@@ -23,7 +23,7 @@ export function ShimmerButton({
   shimmerSize = "0.05em",
   shimmerDuration = "3s",
   borderRadius = "100px",
-  background = "var(--foreground)",
+  background = "#000000",
   ...props
 }: ShimmerButtonProps) {
   const Comp = asChild ? Slot : "button";
@@ -41,7 +41,7 @@ export function ShimmerButton({
       }
       className={cn(
         "group relative z-0 inline-flex cursor-pointer items-center justify-center gap-2 overflow-hidden whitespace-nowrap",
-        "border border-white/10 px-6 py-3 text-[15px] font-medium text-[var(--background)]",
+        "border border-white/10 px-6 py-3 text-[15px] font-medium text-white",
         "[border-radius:var(--radius)] [background:var(--bg)]",
         "transform-gpu transition-transform duration-300 ease-in-out active:translate-y-px",
         className,
