@@ -264,3 +264,52 @@ export const footerColumns = [
     ],
   },
 ];
+
+/* -------------------------------- templates ------------------------------- */
+
+export type Template = {
+  name: string;
+  desc: string;
+  tags: string[];
+  category: string;
+};
+
+export const templateCategories = [
+  "All",
+  "Starters",
+  "Authentication",
+  "Examples",
+  "Frameworks",
+];
+
+export const templates: Template[] = [
+  { name: "Starter", desc: "A minimal server with tools, prompts, resources and automatic widget registration.", tags: ["TypeScript"], category: "Starters" },
+  { name: "Python Starter", desc: "The same minimal scaffold, built on the Python SDK with typed tool schemas.", tags: ["Python"], category: "Starters" },
+  { name: "Widgets Starter", desc: "Bind React views directly to tools and render interactive widgets in chat.", tags: ["TypeScript", "React"], category: "Starters" },
+
+  { name: "Supabase OAuth", desc: "MCP server with OAuth authentication backed by Supabase Auth.", tags: ["Auth", "Supabase"], category: "Authentication" },
+  { name: "Clerk OAuth", desc: "Drop-in Clerk authentication with verified user context on every tool call.", tags: ["Auth", "Clerk"], category: "Authentication" },
+  { name: "WorkOS SSO", desc: "Enterprise SSO and directory sync for MCP servers behind a corporate IdP.", tags: ["Auth", "WorkOS"], category: "Authentication" },
+  { name: "Auth0", desc: "OAuth 2.1 with PKCE using Auth0 as the identity provider.", tags: ["Auth", "Auth0"], category: "Authentication" },
+  { name: "Better Auth", desc: "Self-hosted auth with dynamic client registration support.", tags: ["Auth"], category: "Authentication" },
+
+  { name: "Chart Builder", desc: "Turn a table of numbers into an interactive chart widget rendered inline.", tags: ["Widgets"], category: "Examples" },
+  { name: "Diagram Builder", desc: "Describe a flow in plain language and render it as an editable diagram.", tags: ["Widgets"], category: "Examples" },
+  { name: "Postgres Explorer", desc: "Safe, read-only SQL access with schema introspection and row limits.", tags: ["Database"], category: "Examples" },
+  { name: "GitHub Assistant", desc: "Issues, pull requests and code search exposed as typed tools.", tags: ["API"], category: "Examples" },
+  { name: "Web Search", desc: "Search and fetch with content extraction and citation-ready output.", tags: ["API"], category: "Examples" },
+  { name: "Stripe Billing", desc: "Query subscriptions, invoices and customers with scoped credentials.", tags: ["API"], category: "Examples" },
+  { name: "Notion Workspace", desc: "Read and write pages and databases from any MCP client.", tags: ["API"], category: "Examples" },
+  { name: "Linear Issues", desc: "Triage, create and update issues directly from your coding agent.", tags: ["API"], category: "Examples" },
+  { name: "Filesystem", desc: "Sandboxed file read/write with configurable allowlists.", tags: ["Local"], category: "Examples" },
+  { name: "Slack Digest", desc: "Summarise channels and post back on a schedule.", tags: ["API"], category: "Examples" },
+  { name: "Vector Search", desc: "Embed, index and query documents with a pluggable vector store.", tags: ["RAG"], category: "Examples" },
+  { name: "Calendar", desc: "Availability lookup and event creation across providers.", tags: ["API"], category: "Examples" },
+
+  { name: "MCP TypeScript SDK", desc: "Reference server built on the official @modelcontextprotocol/sdk.", tags: ["TypeScript"], category: "Frameworks" },
+  { name: "FastMCP", desc: "A FastMCP server deployed unchanged, with analytics and checks layered on.", tags: ["Python"], category: "Frameworks" },
+  { name: "Express", desc: "Mount an MCP endpoint inside an existing Express application.", tags: ["Node"], category: "Frameworks" },
+  { name: "FastAPI", desc: "Serve MCP alongside your existing FastAPI routes.", tags: ["Python"], category: "Frameworks" },
+  { name: "Hono", desc: "Lightweight edge-ready MCP server on Hono.", tags: ["Edge"], category: "Frameworks" },
+  { name: "Docker", desc: "Bring any language or runtime with a plain Dockerfile.", tags: ["Docker"], category: "Frameworks" },
+];

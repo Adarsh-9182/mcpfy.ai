@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* next-themes toggles a `.dark` class, so bind the dark: variant to it
+   instead of Tailwind v4's default prefers-color-scheme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ---------------------------------------------------------------
    Design tokens — dark-first zinc scale.
    Light values live on :root, dark values on .dark (next-themes
@@ -107,13 +111,16 @@
   --animate-marquee-vertical: marquee-vertical var(--marquee-duration, 40s) linear infinite;
 }
 
+/* Each track holds one full copy of the children, so a full -100% of the
+   track's own width tiles the next copy exactly into place. The trailing
+   padding on the track supplies the gap between the last and first item. */
 @keyframes marquee {
   from { transform: translateX(0); }
-  to   { transform: translateX(calc(-50% - var(--marquee-gap, 1rem) / 2)); }
+  to   { transform: translateX(-100%); }
 }
 @keyframes marquee-vertical {
   from { transform: translateY(0); }
-  to   { transform: translateY(calc(-50% - var(--marquee-gap, 1rem) / 2)); }
+  to   { transform: translateY(-100%); }
 }
 
 @layer base {
