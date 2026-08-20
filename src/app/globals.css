@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: 8 9 13;
+    --surface: 14 16 22;
+    --elevated: 21 24 32;
+    --line: 38 42 54;
+    --ink: 237 239 245;
+    --muted: 154 160 176;
+    --faint: 118 125 145;
+    --brand: 124 108 255;
+    --brand-ink: 255 255 255;
+    --ok: 52 199 133;
+    --warn: 234 179 8;
+    --danger: 244 96 96;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, 'JetBrains Mono', Menlo, monospace;
+    color-scheme: dark;
+  }
+
+  * {
+    border-color: rgb(var(--line));
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: rgb(var(--bg));
+    color: rgb(var(--ink));
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: rgb(var(--brand) / 0.32);
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-shell px-5 sm:px-8;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-surface;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-elevated px-3 py-1 text-xs font-medium text-muted;
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgb(var(--line) / 0.5) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(var(--line) / 0.5) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .glow {
+    background: radial-gradient(
+      60% 60% at 50% 0%,
+      rgb(var(--brand) / 0.22) 0%,
+      transparent 70%
+    );
+  }
+
+  .focus-ring {
+    @apply outline-none ring-offset-2 ring-offset-bg focus-visible:ring-2 focus-visible:ring-brand;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
