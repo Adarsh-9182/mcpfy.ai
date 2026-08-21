@@ -4,179 +4,213 @@
    instead of Tailwind v4's default prefers-color-scheme. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ---------------------------------------------------------------
-   Tokens.
+/* ===============================================================
+   PART 1 — Design language: "Signal"
 
-   The site is dark-first and deliberately near-monochrome: the chrome
-   is black, white and grey, and every saturated colour on the page
-   comes from the product UI itself — syntax highlighting, status dots,
-   client brand marks. One cobalt accent carries interactive state.
+   MCP is the wire between a model and the world, so the chrome is
+   instrument-grade and almost colourless: a pure neutral scale, white
+   primary actions, and no coloured buttons anywhere. One violet→cyan
+   spectrum is reserved for places where the protocol is actually doing
+   work — the wire, live data, focus.
 
-   :root holds the light values so Tailwind's `dark:` variant keeps
-   working; .dark holds the values the site actually ships with.
-   --------------------------------------------------------------- */
+   The neutrals are true greys with no hue at all. Nearly every product
+   in this category tints its greys blue; staying neutral is what makes
+   the surfaces read as material rather than as UI.
+   =============================================================== */
+
 :root {
-  --background: #ffffff;
-  --surface-1: #fbfbfc;
-  --surface-2: #f4f5f7;
-  --surface-3: #eceef1;
+  /* ---- neutral scale (light) ---- */
+  --n-canvas: #ffffff;
+  --n-1: #fafafa;
+  --n-2: #f5f5f5;
+  --n-3: #efefef;
+  --n-4: #e6e6e6;
+  --n-5: #d6d6d6;
+  --n-6: #b8b8b8;
 
-  --foreground: #16181d;
-  --muted-foreground: #62666d;
-  --subtle-foreground: #8b909a;
+  --t-hi: #0a0a0a;
+  --t-mid: #575757;
+  --t-lo: #8a8a8a;
 
-  --border: #16181d14;
-  --border-strong: #16181d24;
+  --line: #0a0a0a14;
+  --line-strong: #0a0a0a24;
 
-  --brand: #3257e8;
-  --brand-hi: #1e40d8;
-  --brand-soft: #3257e814;
+  /* ---- the signal spectrum ---- */
+  --sig-a: #7c5cff;
+  --sig-b: #5b7cff;
+  --sig-c: #22c8ee;
+  --sig-solid: #6d4df0;
+  --sig-soft: #7c5cff14;
+  --sig-grad: linear-gradient(100deg, var(--sig-a), var(--sig-b) 52%, var(--sig-c));
 
-  --live: #109f65;
-  --warn: #b57912;
-  --fail: #d13b42;
+  /* ---- status ---- */
+  --live: #0f9d6a;
+  --warn: #b4791a;
+  --fail: #d0454c;
 
-  /* syntax tokens */
-  --tok-key: #8145d1;
-  --tok-str: #0a7d55;
-  --tok-num: #b5590a;
-  --tok-fn: #2f5ce0;
-  --tok-cmt: #8b909a;
-  --tok-punc: #62666d;
+  /* ---- materials ---- */
+  --edge: #ffffff;                 /* specular top edge on raised surfaces */
+  --edge-alpha: 0.9;
+  --glass: #ffffffb8;
+  --bloom: #7c5cff26;
 
-  /* shadcn-compatible aliases, kept so the app chrome keeps building */
-  --card: var(--surface-1);
-  --card-foreground: var(--foreground);
-  --popover: #ffffff;
-  --popover-foreground: var(--foreground);
-  --primary: var(--foreground);
-  --primary-foreground: #ffffff;
-  --secondary: var(--surface-2);
-  --secondary-foreground: var(--foreground);
-  --muted: var(--surface-2);
-  --accent: var(--surface-2);
-  --accent-foreground: var(--foreground);
-  --destructive: var(--fail);
-  --destructive-foreground: #ffffff;
-  --input: var(--border-strong);
-  --ring: var(--brand);
+  --shadow-1: 0 1px 2px #0a0a0a0d, 0 1px 1px #0a0a0a08;
+  --shadow-2: 0 1px 2px #0a0a0a0d, 0 8px 20px -10px #0a0a0a1f;
+  --shadow-3:
+    0 1px 2px #0a0a0a0f,
+    0 12px 28px -12px #0a0a0a1f,
+    0 48px 88px -40px #0a0a0a2e;
 
-  --shadow-panel:
-    0 0 0 1px #16181d0f,
-    0 1px 2px #16181d0d,
-    0 12px 28px -12px #16181d1f,
-    0 40px 80px -32px #16181d24;
-  --shadow-card: 0 1px 2px #16181d0d, 0 8px 20px -14px #16181d1f;
+  /* ---- syntax ---- */
+  --tok-key: #7c3aed;
+  --tok-str: #0b7a55;
+  --tok-num: #b45309;
+  --tok-fn: #2563eb;
+  --tok-cmt: #8a8a8a;
+  --tok-punc: #575757;
 
-  --radius: 0.5rem;
+  /* ---- geometry ---- */
+  --r-1: 8px;
+  --r-2: 12px;
+  --r-3: 18px;
+  --r-4: 26px;
+  --r-pill: 999px;
+
+  /* ---- motion ---- */
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1);      /* expo out — the house curve */
+  --e-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --e-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --d-1: 120ms;
+  --d-2: 200ms;
+  --d-3: 340ms;
+  --d-4: 620ms;
 }
 
 .dark {
-  --background: #08090a;
-  --surface-1: #0e0f12;
-  --surface-2: #16181c;
-  --surface-3: #1e2126;
+  --n-canvas: #0a0a0a;
+  --n-1: #101010;
+  --n-2: #161616;
+  --n-3: #1d1d1d;
+  --n-4: #262626;
+  --n-5: #333333;
+  --n-6: #4d4d4d;
 
-  --foreground: #eef0f2;
-  --muted-foreground: #8b909a;
-  --subtle-foreground: #5f646d;
+  --t-hi: #fafafa;
+  --t-mid: #a1a1a1;
+  --t-lo: #6b6b6b;
 
-  --border: #ffffff14;
-  --border-strong: #ffffff26;
+  --line: #ffffff14;
+  --line-strong: #ffffff29;
 
-  --brand: #4c74ff;
-  --brand-hi: #7b96ff;
-  --brand-soft: #4c74ff1f;
+  --sig-a: #8b5cff;
+  --sig-b: #6d8bff;
+  --sig-c: #35d8f5;
+  --sig-solid: #8b5cff;
+  --sig-soft: #8b5cff1f;
 
-  --live: #3ecf8e;
-  --warn: #f2b441;
-  --fail: #f2545b;
+  --live: #34d399;
+  --warn: #fbbf24;
+  --fail: #fb7185;
 
-  --tok-key: #c792ea;
+  --edge: #ffffff;
+  --edge-alpha: 0.14;
+  --glass: #101010b8;
+  --bloom: #8b5cff2e;
+
+  --shadow-1: 0 1px 2px #00000066;
+  --shadow-2: 0 1px 2px #00000073, 0 10px 24px -14px #000000cc;
+  --shadow-3:
+    0 1px 2px #00000080,
+    0 20px 44px -18px #000000e6,
+    0 64px 120px -56px #000000;
+
+  --tok-key: #c4a7ff;
   --tok-str: #7ee0a8;
-  --tok-num: #ffb86c;
-  --tok-fn: #82aaff;
-  --tok-cmt: #5f646d;
-  --tok-punc: #8b909a;
-
-  --card: var(--surface-1);
-  --card-foreground: var(--foreground);
-  --popover: var(--surface-2);
-  --popover-foreground: var(--foreground);
-  --primary: var(--foreground);
-  --primary-foreground: #08090a;
-  --secondary: var(--surface-2);
-  --secondary-foreground: var(--foreground);
-  --muted: var(--surface-2);
-  --accent: var(--surface-2);
-  --accent-foreground: var(--foreground);
-  --destructive: var(--fail);
-  --destructive-foreground: #08090a;
-  --input: var(--border-strong);
-  --ring: var(--brand);
-
-  --shadow-panel:
-    0 0 0 1px #ffffff0f,
-    0 2px 4px #00000080,
-    0 24px 48px -16px #000000b3,
-    0 64px 120px -48px #000000e6;
-  --shadow-card: 0 1px 2px #00000059, 0 12px 28px -18px #00000099;
+  --tok-num: #ffc06c;
+  --tok-fn: #8fb4ff;
+  --tok-cmt: #6b6b6b;
+  --tok-punc: #a1a1a1;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-surface-1: var(--surface-1);
-  --color-surface-2: var(--surface-2);
-  --color-surface-3: var(--surface-3);
-  --color-foreground: var(--foreground);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-subtle-foreground: var(--subtle-foreground);
-  --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
+  /* the scale, exposed as utilities */
+  --color-canvas: var(--n-canvas);
+  --color-n1: var(--n-1);
+  --color-n2: var(--n-2);
+  --color-n3: var(--n-3);
+  --color-n4: var(--n-4);
+  --color-n5: var(--n-5);
+  --color-n6: var(--n-6);
 
-  --color-brand: var(--brand);
-  --color-brand-hi: var(--brand-hi);
-  --color-brand-soft: var(--brand-soft);
+  --color-t-hi: var(--t-hi);
+  --color-t-mid: var(--t-mid);
+  --color-t-lo: var(--t-lo);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-sig: var(--sig-solid);
+  --color-sig-a: var(--sig-a);
+  --color-sig-b: var(--sig-b);
+  --color-sig-c: var(--sig-c);
+  --color-sig-soft: var(--sig-soft);
+
   --color-live: var(--live);
   --color-warn: var(--warn);
   --color-fail: var(--fail);
 
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  /* ---- compatibility aliases -----------------------------------
+     The sections are rebuilt one at a time (parts 5–20), so the names
+     the current components use keep resolving onto the new scale. */
+  --color-background: var(--n-canvas);
+  --color-foreground: var(--t-hi);
+  --color-surface-1: var(--n-1);
+  --color-surface-2: var(--n-2);
+  --color-surface-3: var(--n-3);
+  --color-muted-foreground: var(--t-mid);
+  --color-subtle-foreground: var(--t-lo);
+  --color-border: var(--line);
+  --color-border-strong: var(--line-strong);
+  --color-brand: var(--sig-solid);
+  --color-brand-hi: var(--sig-a);
+  --color-brand-soft: var(--sig-soft);
+  --color-card: var(--n-1);
+  --color-card-foreground: var(--t-hi);
+  --color-popover: var(--n-1);
+  --color-popover-foreground: var(--t-hi);
+  --color-primary: var(--t-hi);
+  --color-primary-foreground: var(--n-canvas);
+  --color-secondary: var(--n-2);
+  --color-secondary-foreground: var(--t-hi);
+  --color-muted: var(--n-2);
+  --color-accent: var(--n-2);
+  --color-accent-foreground: var(--t-hi);
+  --color-destructive: var(--fail);
+  --color-destructive-foreground: var(--n-canvas);
+  --color-input: var(--line-strong);
+  --color-ring: var(--sig-solid);
 
   --font-sans: var(--sans-family);
   --font-mono: var(--mono-family);
 
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.25rem;
+  --radius-sm: var(--r-1);
+  --radius-md: var(--r-2);
+  --radius-lg: var(--r-3);
+  --radius-xl: var(--r-4);
+  --radius-2xl: var(--r-4);
 
-  --shadow-panel: var(--shadow-panel);
-  --shadow-card: var(--shadow-card);
+  --shadow-panel: var(--shadow-3);
+  --shadow-card: var(--shadow-2);
+
+  --ease-out-expo: var(--e-out);
 
   --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
   --animate-marquee-vertical: marquee-vertical var(--marquee-duration, 40s) linear infinite;
 }
 
-/* Font stacks live on :root rather than in @theme, because an `@theme inline`
-   variable is folded into the utilities Tailwind generates and never emitted
-   as a custom property — hand-written rules cannot var() against it. The
-   next/font classes sit on <html> so these resolve at :root. */
+/* Font stacks live on :root, not in @theme: an `@theme inline` variable is
+   folded into generated utilities and never emitted, so hand-written rules
+   cannot var() against it. The next/font classes sit on <html>. */
 :root {
   --sans-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --mono-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -193,30 +227,30 @@
 
 @layer base {
   * {
-    border-color: var(--border);
+    border-color: var(--line);
   }
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
-    background-color: var(--background);
+    background-color: var(--n-canvas);
   }
   body {
-    background-color: var(--background);
-    color: var(--foreground);
+    background-color: var(--n-canvas);
+    color: var(--t-hi);
     font-family: var(--sans-family);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  /* Display sizes need noticeably tighter tracking than body copy. */
   h1, h2, h3 {
     letter-spacing: -0.028em;
   }
   ::selection {
-    background-color: color-mix(in oklab, var(--brand) 32%, transparent);
+    background-color: color-mix(in oklab, var(--sig-solid) 30%, transparent);
   }
+  /* Focus is one of the few places the spectrum is allowed to appear. */
   :focus-visible {
-    outline: 2px solid var(--brand);
+    outline: 2px solid var(--sig-solid);
     outline-offset: 2px;
   }
 }
@@ -246,47 +280,115 @@
 }
 
 /* ---------------------------------------------------------------
-   Surfaces
+   Materials
+
+   Three ways a surface can sit above the canvas. Every raised surface
+   carries a specular top edge — that hairline of light is what stops
+   dark UI reading as flat blocks.
    --------------------------------------------------------------- */
 
-/* A raised product surface: hairline border, a 1px lit top edge and a deep
-   soft shadow. This is what makes a mock read as a real window. */
-@utility panel {
+@utility edge-lit {
   position: relative;
-  background-color: var(--surface-1);
-  box-shadow: var(--shadow-panel);
 }
-.panel::before {
+.edge-lit::before {
   content: "";
   position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 1px;
+  inset: 0;
+  border-radius: inherit;
+  padding-top: 1px;
   background: linear-gradient(
-    to right,
-    transparent,
-    color-mix(in oklab, var(--foreground) 22%, transparent),
-    transparent
+    to bottom,
+    color-mix(in oklab, var(--edge) calc(var(--edge-alpha) * 100%), transparent),
+    transparent 42%
   );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
   pointer-events: none;
 }
 
-@utility card-surface {
-  background-color: var(--surface-1);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-card);
+/* Flat card: the workhorse. */
+@utility surface {
+  background-color: var(--n-1);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-1);
 }
 
-/* The wash sitting behind the hero product shot. */
-@utility hero-glow {
+/* Raised card: hovers, popovers, anything that lifts. */
+@utility surface-2 {
+  background-color: var(--n-1);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-2);
+}
+
+/* Product surfaces — the deepest shadow on the site. */
+@utility surface-3 {
+  background-color: var(--n-1);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-3);
+}
+
+/* Frosted chrome: nav bars, floating controls. */
+@utility glass {
+  background-color: var(--glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--line);
+}
+
+/* A well — content that sits *below* the surface, for code and inputs. */
+@utility inset-well {
+  background-color: color-mix(in oklab, var(--t-hi) 3%, transparent);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 2px color-mix(in oklab, #000 12%, transparent);
+}
+
+/* ---------------------------------------------------------------
+   Signal — the only place colour is allowed
+   --------------------------------------------------------------- */
+
+@utility signal-text {
+  background-image: var(--sig-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility signal-line {
+  background-image: var(--sig-grad);
+}
+
+/* A 1px gradient hairline drawn as a border, for the one or two elements
+   that deserve to look energised. */
+@utility signal-border {
+  position: relative;
+}
+.signal-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--sig-grad);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Soft light behind a hero object. */
+@utility bloom {
   background:
-    radial-gradient(48% 40% at 50% 0%, color-mix(in oklab, var(--brand) 26%, transparent) 0%, transparent 70%),
-    radial-gradient(70% 50% at 50% 34%, color-mix(in oklab, var(--foreground) 5%, transparent) 0%, transparent 72%);
+    radial-gradient(42% 38% at 50% 0%, var(--bloom) 0%, transparent 72%),
+    radial-gradient(60% 44% at 50% 26%, color-mix(in oklab, var(--t-hi) 4%, transparent) 0%, transparent 74%);
 }
 
-/* Faint dot field, masked to fade out — used behind section headers. */
 @utility bg-dots {
-  background-image: radial-gradient(var(--border-strong) 1px, transparent 1px);
+  background-image: radial-gradient(var(--line-strong) 1px, transparent 1px);
   background-size: 22px 22px;
 }
 
@@ -303,15 +405,15 @@
   mask-image: radial-gradient(60% 60% at 50% 40%, black, transparent);
 }
 
-/* Hairline grid where the container draws the outer top/left rule and each
-   cell draws its own bottom/right, so a partly filled last row stays clean. */
+/* Hairline grid: container draws the outer top/left rule, each cell its own
+   bottom/right, so a partly filled last row stays clean. */
 @utility rule-grid {
-  border-top: 1px solid var(--border);
-  border-left: 1px solid var(--border);
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
 }
 @utility rule-cell {
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
 }
 
 /* ---------------------------------------------------------------
@@ -333,14 +435,10 @@
 /* ---------------------------------------------------------------
    Motion
    --------------------------------------------------------------- */
-
-/* Scroll reveal. The hidden state is gated on `html.js` so the page stays
-   readable without scripts; `.is-in` is added by the shared observer in
-   components/site/reveal.tsx. */
 .reveal {
   transition:
-    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    opacity var(--d-4) var(--e-out),
+    transform var(--d-4) var(--e-out);
 }
 .js .reveal {
   opacity: 0;
@@ -360,7 +458,7 @@
   100% { box-shadow: 0 0 0 0 transparent; }
 }
 @utility animate-pulse-ring {
-  animation: pulse-ring 2.4s ease-out infinite;
+  animation: pulse-ring 2.4s var(--e-out) infinite;
 }
 
 @keyframes caret {
@@ -371,7 +469,6 @@
   animation: caret 1.1s steps(1) infinite;
 }
 
-/* Radix accordion */
 @keyframes acc-down {
   from { height: 0; opacity: 0; }
   to   { height: var(--radix-accordion-content-height); opacity: 1; }
@@ -380,17 +477,32 @@
   from { height: var(--radix-accordion-content-height); opacity: 1; }
   to   { height: 0; opacity: 0; }
 }
-
-/* Radix navigation menu viewport */
 @keyframes nav-in {
-  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  from { opacity: 0; transform: translateY(-4px) scale(0.985); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes nav-out {
   from { opacity: 1; transform: translateY(0) scale(1); }
-  to   { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to   { opacity: 0; transform: translateY(-4px) scale(0.985); }
 }
 
 @utility text-balance-pretty {
   text-wrap: pretty;
+}
+
+/* Legacy aliases still referenced by not-yet-rebuilt sections. */
+@utility panel {
+  background-color: var(--n-1);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-3);
+}
+@utility card-surface {
+  background-color: var(--n-1);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-1);
+}
+@utility hero-glow {
+  background:
+    radial-gradient(42% 38% at 50% 0%, var(--bloom) 0%, transparent 72%),
+    radial-gradient(60% 44% at 50% 26%, color-mix(in oklab, var(--t-hi) 4%, transparent) 0%, transparent 74%);
 }
