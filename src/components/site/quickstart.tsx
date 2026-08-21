@@ -4,6 +4,7 @@ import * as React from "react";
 import { Check, Copy } from "lucide-react";
 import { Section, SectionHeading, Title } from "./section";
 import { Reveal } from "./reveal";
+import { ScrollScene } from "./scroll-scene";
 import { quickstart, alternatives } from "@/lib/content";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -77,7 +78,8 @@ export function Quickstart() {
         </Reveal>
 
         <Reveal delay={0.08}>
-          <div className="card-surface overflow-hidden rounded-xl">
+          <ScrollScene intensity={0.7}>
+          <div className="surface-2 edge-lit overflow-hidden rounded-[var(--r-2)]">
             <div className="flex items-center gap-1 border-b border-border bg-surface-2/60 px-2 py-1.5">
               {quickstart.map((t, i) => (
                 <button
@@ -120,6 +122,7 @@ export function Quickstart() {
               ))}
             </ol>
           </div>
+          </ScrollScene>
         </Reveal>
       </div>
     </Section>

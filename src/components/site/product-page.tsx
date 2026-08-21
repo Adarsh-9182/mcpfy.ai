@@ -12,6 +12,7 @@ import { Reveal } from "./reveal";
 import { StageVisual } from "./stage-visual";
 import { LogoCloud } from "./logo-cloud";
 import { ProductShot } from "./product-shot";
+import { ScrollScene } from "./scroll-scene";
 import { type PlatformPage } from "@/lib/platform";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
@@ -71,7 +72,9 @@ export function ProductPage({
           </div>
 
           <div className="relative mt-14">
-            <ProductShot className="mx-auto max-w-[1000px]" />
+            <ScrollScene intensity={1.3}>
+              <ProductShot className="mx-auto max-w-[1000px]" />
+            </ScrollScene>
           </div>
         </div>
       </section>
@@ -132,7 +135,9 @@ export function ProductPage({
                 </div>
               </Reveal>
               <Reveal delay={0.08} className={cn(i % 2 === 1 && "lg:order-1")}>
-                <StageVisual id={f.visual} />
+                <ScrollScene intensity={0.8}>
+                  <StageVisual id={f.visual} />
+                </ScrollScene>
               </Reveal>
             </div>
           ))}

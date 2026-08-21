@@ -1,6 +1,7 @@
 import { Section, SectionHeading, Title, Lead, ArrowLink } from "./section";
 import { Reveal } from "./reveal";
 import { StageVisual } from "./stage-visual";
+import { ScrollScene } from "./scroll-scene";
 import { lifecycle } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -84,7 +85,9 @@ export function Lifecycle() {
             </Reveal>
 
             <Reveal delay={0.08} className={cn(i % 2 === 1 && "lg:order-1")}>
-              <StageVisual id={stage.id} />
+              <ScrollScene intensity={0.8}>
+                <StageVisual id={stage.id} />
+              </ScrollScene>
             </Reveal>
           </div>
         ))}

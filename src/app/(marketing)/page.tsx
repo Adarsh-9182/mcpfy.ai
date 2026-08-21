@@ -1,6 +1,6 @@
 import { Hero } from "@/components/site/hero";
 import { LogoCloud } from "@/components/site/logo-cloud";
-import { Surfaces } from "@/components/site/surfaces";
+import { Distribution } from "@/components/site/distribution";
 import { Comparison } from "@/components/site/comparison";
 import { Lifecycle } from "@/components/site/lifecycle";
 import { Alternatives, Quickstart } from "@/components/site/quickstart";
@@ -15,7 +15,7 @@ export default function Home() {
     <>
       <Hero />
       <LogoCloud />
-      <Surfaces />
+      <Distribution />
       <Comparison />
       <Lifecycle />
       <Quickstart />

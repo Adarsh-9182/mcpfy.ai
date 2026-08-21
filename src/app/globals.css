@@ -452,6 +452,21 @@
   .js .reveal { opacity: 1; transform: none; }
 }
 
+/* A packet running down a wire: a short dash chasing the full path length. */
+@keyframes wire-comet {
+  from { stroke-dashoffset: 620; }
+  to   { stroke-dashoffset: -60; }
+}
+.wire-comet {
+  stroke-dasharray: 26 620;
+  animation: wire-comet 3.4s linear infinite;
+}
+.wire-comet-slow {
+  stroke-dasharray: 12 620;
+  animation-duration: 5.6s;
+  opacity: 0.6;
+}
+
 @keyframes pulse-ring {
   0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--live) 55%, transparent); }
   70%  { box-shadow: 0 0 0 5px transparent; }

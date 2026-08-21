@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Check, Copy } from "lucide-react";
 import { ProductShot } from "./product-shot";
+import { ScrollScene } from "./scroll-scene";
 import { GithubIcon } from "./icons";
 import { site } from "@/lib/site";
 
@@ -125,7 +126,9 @@ export function Hero() {
 
         {/* the product itself, cropped by the fold so it reads as a real app */}
         <div className="relative mt-14 md:mt-16">
-          <ProductShot className="mx-auto max-w-[1120px]" />
+          <ScrollScene intensity={1.5}>
+            <ProductShot className="mx-auto max-w-[1120px]" />
+          </ScrollScene>
         </div>
       </div>
     </section>
