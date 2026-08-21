@@ -1,25 +1,48 @@
-/** Sidebar structure for the signed-in app, grouped like the Cloud docs. */
-export const sidebarGroups = [
+export type NavItem = {
+  label: string;
+  href: string;
+  icon: string;
+  /** Match the path exactly — only the Dashboard root needs it. */
+  exact?: boolean;
+  /** Render the server count as a trailing badge. */
+  count?: boolean;
+};
+
+export type NavGroup = { label: string | null; items: NavItem[] };
+
+/**
+ * Sidebar structure for the signed-in app: a single Dashboard root, then the
+ * server surfaces, then the org-level admin screens.
+ */
+export const sidebarGroups: NavGroup[] = [
   {
     label: null,
     items: [
-      { label: "Overview", href: "/dashboard", icon: "home", exact: true },
-      { label: "Servers", href: "/dashboard/servers", icon: "server" },
+      { label: "Dashboard", href: "/dashboard", icon: "home", exact: true },
+    ],
+  },
+  {
+    label: "Servers",
+    items: [
+      { label: "Servers", href: "/dashboard/servers", icon: "server", count: true },
       { label: "Testing", href: "/dashboard/testing", icon: "flask" },
       { label: "Analytics", href: "/dashboard/analytics", icon: "chart" },
     ],
   },
   {
-    label: "Organization",
+    label: "Admin",
     items: [
+      { label: "Org settings", href: "/dashboard/settings", icon: "settings" },
       { label: "Team", href: "/dashboard/team", icon: "users" },
-      { label: "API keys", href: "/dashboard/api-keys", icon: "key" },
       { label: "Integrations", href: "/dashboard/integrations", icon: "plug" },
-      { label: "Billing & plans", href: "/dashboard/billing", icon: "card" },
-      { label: "Settings", href: "/dashboard/settings", icon: "settings" },
+      { label: "API Keys", href: "/dashboard/api-keys", icon: "key" },
+      { label: "Billing", href: "/dashboard/billing", icon: "card" },
     ],
   },
-] as const;
+];
+
+/** Flat lookup used by the topbar breadcrumb to name the current screen. */
+export const navItems = sidebarGroups.flatMap((g) => g.items);
 
 /** Sections of a single server, rendered as tabs on the server detail page. */
 export const serverSections = [

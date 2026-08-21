@@ -1,14 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { supabaseConfigured } from "@/lib/supabase/config";
-import { GithubIcon } from "@/components/site/icons";
-import { GoogleIcon } from "@/components/site/icons";
+import { GithubIcon, GoogleIcon } from "@/components/site/icons";
+import { cn } from "@/lib/utils";
 
-type Pending = "google" | "github" | "email" | null;
+type Provider = "google" | "github";
+type Pending = Provider | "email" | null;
+
+const LAST_USED_KEY = "mcpfy:last-auth-provider";
 
 /** Callback errors arrive as raw provider strings; keep them readable. */
 function friendlyError(raw: string | null) {
@@ -22,6 +26,33 @@ function friendlyError(raw: string | null) {
   return raw;
 }
 
+/**
+ * Reads the remembered provider from localStorage. useSyncExternalStore keeps
+ * the server snapshot (null) and the first client paint in agreement, so the
+ * badge appears without a hydration mismatch.
+ */
+const noopSubscribe = () => () => {};
+
+function useLastUsedProvider(): Provider | null {
+  return useSyncExternalStore(
+    noopSubscribe,
+    () => {
+      const stored = window.localStorage.getItem(LAST_USED_KEY);
+      return stored === "google" || stored === "github" ? stored : null;
+    },
+    () => null,
+  );
+}
+
+/** Small pill that straddles the top border of the provider used last time. */
+function LastUsedBadge() {
+  return (
+    <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border bg-background px-2 py-0.5 text-[11px] text-muted-foreground">
+      Last used
+    </span>
+  );
+}
+
 export function LoginForm() {
   const params = useSearchParams();
   const next = params.get("next") ?? "/dashboard";
@@ -33,6 +64,7 @@ export function LoginForm() {
     friendlyError(params.get("error")),
   );
   const [sent, setSent] = useState(false);
+  const lastUsed = useLastUsedProvider();
 
   function guard() {
     if (supabaseConfigured) return true;
@@ -42,10 +74,11 @@ export function LoginForm() {
     return false;
   }
 
-  async function signInWithOAuth(provider: "google" | "github") {
+  async function signInWithOAuth(provider: Provider) {
     setError(null);
     if (!guard()) return;
     setPending(provider);
+    window.localStorage.setItem(LAST_USED_KEY, provider);
 
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOAuth({
@@ -83,15 +116,18 @@ export function LoginForm() {
   if (sent) {
     return (
       <div className="text-center">
-        <h1 className="text-2xl font-medium tracking-tight">Check your inbox</h1>
-        <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-          We sent a sign-in link to <span className="text-foreground">{email}</span>.
-          Open it on this device to continue.
+        <h1 className="text-[30px] font-semibold tracking-tight">
+          Check your inbox
+        </h1>
+        <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
+          We sent a sign-in link to{" "}
+          <span className="text-foreground">{email}</span>. Open it on this
+          device to continue.
         </p>
         <button
           type="button"
           onClick={() => setSent(false)}
-          className="mt-6 text-[14px] font-medium underline underline-offset-4"
+          className="mt-7 text-[14px] font-medium underline underline-offset-4"
         >
           Use a different email
         </button>
@@ -99,14 +135,17 @@ export function LoginForm() {
     );
   }
 
+  const providerClass =
+    "relative inline-flex h-12 items-center justify-center gap-2.5 rounded-full border bg-background text-[15px] font-medium transition-colors hover:bg-accent disabled:opacity-60";
+
   return (
     <div>
-      <h1 className="text-center text-2xl font-medium tracking-tight">
+      <h1 className="text-center text-[34px] font-semibold tracking-tight sm:text-[38px]">
         Log in or sign up
       </h1>
 
-      <form onSubmit={signInWithEmail} className="mt-8 space-y-3">
-        <label htmlFor="email" className="block text-[13px] font-medium">
+      <form onSubmit={signInWithEmail} className="mt-9">
+        <label htmlFor="email" className="block text-[14px] font-medium">
           Email
         </label>
         <input
@@ -116,22 +155,24 @@ export function LoginForm() {
           autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@company.com"
-          className="h-11 w-full rounded-lg border bg-background px-3.5 text-[15px] outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground/30"
+          placeholder="Enter your email"
+          className="mt-2.5 h-12 w-full rounded-full border bg-background px-4.5 text-[15px] outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground/30"
         />
         <button
           type="submit"
           disabled={pending !== null}
-          className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-foreground text-[15px] font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-60"
+          className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground text-[15px] font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {pending === "email" && <Loader2 className="size-4 animate-spin" />}
           Continue
         </button>
       </form>
 
-      <div className="my-6 flex items-center gap-3">
+      <div className="my-7 flex items-center gap-3">
         <span className="h-px flex-1 bg-border" />
-        <span className="text-[12px] text-muted-foreground">Or continue with</span>
+        <span className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
+          Or continue with
+        </span>
         <span className="h-px flex-1 bg-border" />
       </div>
 
@@ -140,8 +181,9 @@ export function LoginForm() {
           type="button"
           onClick={() => signInWithOAuth("google")}
           disabled={pending !== null}
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border bg-background text-[15px] font-medium transition-colors hover:bg-accent disabled:opacity-60"
+          className={cn(providerClass, lastUsed === "google" && "border-foreground/25")}
         >
+          {lastUsed === "google" && <LastUsedBadge />}
           {pending === "google" ? (
             <Loader2 className="size-4 animate-spin" />
           ) : (
@@ -153,8 +195,9 @@ export function LoginForm() {
           type="button"
           onClick={() => signInWithOAuth("github")}
           disabled={pending !== null}
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border bg-background text-[15px] font-medium transition-colors hover:bg-accent disabled:opacity-60"
+          className={cn(providerClass, lastUsed === "github" && "border-foreground/25")}
         >
+          {lastUsed === "github" && <LastUsedBadge />}
           {pending === "github" ? (
             <Loader2 className="size-4 animate-spin" />
           ) : (
@@ -167,11 +210,22 @@ export function LoginForm() {
       {error && (
         <p
           role="alert"
-          className="mt-5 rounded-lg border border-red-500/30 bg-red-500/5 px-3.5 py-3 text-[13px] leading-relaxed text-red-600 dark:text-red-400"
+          className="mt-5 rounded-xl border border-red-500/30 bg-red-500/5 px-3.5 py-3 text-[13px] leading-relaxed text-red-600 dark:text-red-400"
         >
           {error}
         </p>
       )}
+
+      <p className="mt-7 text-center text-[13px] leading-relaxed text-muted-foreground">
+        By continuing, you agree to our{" "}
+        <Link href="/legal/terms" className="underline underline-offset-2">
+          TOS
+        </Link>{" "}
+        and{" "}
+        <Link href="/legal/privacy" className="underline underline-offset-2">
+          Privacy
+        </Link>
+      </p>
     </div>
   );
 }

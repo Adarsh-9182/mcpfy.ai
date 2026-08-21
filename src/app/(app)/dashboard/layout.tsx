@@ -27,13 +27,17 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-dvh">
-      <Sidebar />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar email={email} avatarUrl={avatarUrl} />
-        <div className="flex-1 px-5 py-8 lg:px-8">
-          <div className="mx-auto max-w-6xl space-y-8">{children}</div>
-        </div>
+    /* The chrome sits on the muted page ground; the screen itself is a raised
+       card that runs off the bottom edge, so scrolling stays on the document. */
+    <div className="min-h-dvh bg-muted/50">
+      <Topbar email={email} avatarUrl={avatarUrl} />
+
+      <div className="flex items-start gap-0">
+        <Sidebar className="sticky top-14 hidden h-[calc(100dvh-3.5rem)] lg:flex" />
+
+        <main className="min-h-[calc(100dvh-3.5rem)] min-w-0 flex-1 rounded-tl-2xl border-l border-t bg-background px-5 py-7 lg:mr-4 lg:rounded-tr-2xl lg:border-r lg:px-8">
+          <div className="mx-auto max-w-6xl space-y-7">{children}</div>
+        </main>
       </div>
     </div>
   );

@@ -139,12 +139,17 @@ export function Th({
 export function Td({
   children,
   className,
+  colSpan,
 }: {
   children?: React.ReactNode;
   className?: string;
+  colSpan?: number;
 }) {
   return (
-    <td className={cn("whitespace-nowrap px-5 py-3.5 align-middle", className)}>
+    <td
+      colSpan={colSpan}
+      className={cn("whitespace-nowrap px-5 py-3.5 align-middle", className)}
+    >
       {children}
     </td>
   );
@@ -207,5 +212,97 @@ export function BarChart({ data, className }: { data: number[]; className?: stri
         />
       ))}
     </div>
+  );
+}
+
+/* ------------------------------ counter cards ----------------------------- */
+
+/** Icon + big number + label. Used for the three totals on the home screen. */
+export function CounterCard({
+  icon: Icon,
+  value,
+  label,
+  className,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  value: string;
+  label: string;
+  className?: string;
+}) {
+  return (
+    <div className={cn("border-border/70 p-6", className)}>
+      <Icon className="size-[18px] text-muted-foreground" />
+      <p className="mt-5 text-[34px] font-semibold leading-none tracking-tight tabular-nums">
+        {value}
+      </p>
+      <p className="mt-2.5 text-[14px] text-muted-foreground">{label}</p>
+    </div>
+  );
+}
+
+/** Three counters sharing one bordered frame, split by hairlines. */
+export function CounterRow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="grid divide-y overflow-hidden rounded-xl border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+      {children}
+    </div>
+  );
+}
+
+/* ---------------------------------- pills --------------------------------- */
+
+export function Pill({
+  children,
+  tone = "neutral",
+}: {
+  children: React.ReactNode;
+  tone?: "neutral" | "success" | "warning" | "danger";
+}) {
+  const tones = {
+    neutral: "border-border bg-muted text-muted-foreground",
+    success:
+      "border-emerald-500/25 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+    warning:
+      "border-amber-500/25 bg-amber-500/10 text-amber-700 dark:text-amber-400",
+    danger: "border-red-500/25 bg-red-500/10 text-red-700 dark:text-red-400",
+  } as const;
+
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-md border px-2 py-0.5 text-[12px] font-medium",
+        tones[tone],
+      )}
+    >
+      {children}
+    </span>
+  );
+}
+
+/* --------------------------------- inputs --------------------------------- */
+
+export const fieldClass =
+  "h-10 w-full rounded-lg border bg-background px-3 text-[14px] outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-foreground/30";
+
+export function Field({
+  label,
+  hint,
+  children,
+  required,
+}: {
+  label: string;
+  hint?: string;
+  children: React.ReactNode;
+  required?: boolean;
+}) {
+  return (
+    <label className="block">
+      <span className="text-[14px] font-medium">
+        {label}
+        {required && <span className="text-muted-foreground"> *</span>}
+      </span>
+      <div className="mt-2">{children}</div>
+      {hint && <p className="mt-1.5 text-[13px] text-muted-foreground">{hint}</p>}
+    </label>
   );
 }

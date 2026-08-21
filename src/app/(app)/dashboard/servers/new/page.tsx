@@ -1,75 +1,127 @@
 import Link from "next/link";
-import { FileCode2, Link2, Sparkles } from "lucide-react";
+import { ArrowUpRight, HelpCircle, Undo2 } from "lucide-react";
 import { GithubIcon } from "@/components/site/icons";
-import { PageHeader } from "@/components/dashboard/ui";
+import { ConnectServerForm } from "@/components/dashboard/connect-server-form";
+import { starterTemplates } from "@/lib/dashboard";
 
 export const metadata = { title: "New server" };
-
-const options: {
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  desc: string;
-  cta: string;
-}[] = [
-  {
-    icon: GithubIcon,
-    title: "Import a Git repository",
-    desc: "Connect the mcpfy GitHub App once. Every push to the default branch deploys, and every pull request gets a preview URL.",
-    cta: "Connect GitHub",
-  },
-  {
-    icon: FileCode2,
-    title: "Start from a template",
-    desc: "Deploy-ready starters for mcp-use, the MCP TypeScript and Python SDKs, FastMCP and a plain Dockerfile.",
-    cta: "Browse templates",
-  },
-  {
-    icon: Sparkles,
-    title: "Vibecode it",
-    desc: "Describe what the server should do and watch the tools, schemas and widgets scaffold in front of you.",
-    cta: "Start vibecoding",
-  },
-  {
-    icon: Link2,
-    title: "Connect an existing server",
-    desc: "Already hosting elsewhere? Point mcpfy at a URL and use testing, analytics and publish checks without moving.",
-    cta: "Connect by URL",
-  },
-];
 
 export default function NewServerPage() {
   return (
     <>
-      <PageHeader
-        title="Create a new server"
-        description="Four ways to get an MCP server running on mcpfy Cloud."
-      />
+      <Link
+        href="/dashboard/servers"
+        className="inline-flex items-center gap-2 text-[14px] text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <Undo2 className="size-4" />
+        Back to servers
+      </Link>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {options.map((o) => (
-          <div key={o.title} className="rounded-xl border bg-card/40 p-6">
-            <o.icon className="size-5 text-muted-foreground" />
-            <h2 className="mt-4 text-[15px] font-medium">{o.title}</h2>
-            <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-              {o.desc}
+      <div className="grid gap-7 lg:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)]">
+        <section>
+          <h1 className="flex items-center gap-2.5 text-[20px] font-semibold tracking-tight">
+            <GithubIcon className="size-5" />
+            Import from GitHub
+          </h1>
+
+          <div className="mt-5 flex flex-col items-center justify-center rounded-xl border px-6 py-14 text-center">
+            <span className="flex size-12 items-center justify-center rounded-full bg-muted">
+              <GithubIcon className="size-6 text-muted-foreground" />
+            </span>
+            <h2 className="mt-5 text-[15px] font-medium">Connect to GitHub</h2>
+            <p className="mt-1.5 text-[14px] text-muted-foreground">
+              Connect your GitHub account to deploy repositories
             </p>
             <button
               type="button"
-              className="mt-5 inline-flex h-9 items-center rounded-lg border px-3.5 text-[14px] font-medium transition-colors hover:bg-accent"
+              className="mt-6 inline-flex h-11 items-center rounded-full bg-foreground px-5 text-[14px] font-medium text-background transition-opacity hover:opacity-90"
             >
-              {o.cta}
+              Connect GitHub
             </button>
+            <p className="mt-6 inline-flex items-center gap-1.5 text-[13px] text-muted-foreground">
+              <HelpCircle className="size-3.5" />
+              Having trouble?{" "}
+              <Link
+                href="/dashboard/integrations"
+                className="underline underline-offset-2 hover:text-foreground"
+              >
+                Reinstall the GitHub App.
+              </Link>
+            </p>
           </div>
-        ))}
+        </section>
+
+        <section>
+          <h2 className="text-[20px] font-semibold tracking-tight">
+            Build Something New
+          </h2>
+
+          <div className="relative isolate mt-5 flex min-h-[300px] flex-col justify-between overflow-hidden rounded-xl border bg-panel-wash p-7">
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-grain mix-blend-multiply opacity-30"
+            />
+            <p className="relative font-serif text-[30px] font-medium leading-tight tracking-tight text-zinc-900">
+              Vibecode your MCP App
+            </p>
+            <div className="relative flex justify-end">
+              <Link
+                href="/vibe"
+                className="inline-flex h-10 items-center gap-1.5 rounded-full bg-zinc-900 px-4 text-[14px] font-medium text-white transition-opacity hover:opacity-90"
+              >
+                Try now
+                <ArrowUpRight className="size-4" />
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
 
-      <p className="text-[13px] text-muted-foreground">
-        Prefer the terminal?{" "}
-        <Link href="/docs" className="underline underline-offset-2">
-          npx mcpfy deploy
-        </Link>{" "}
-        works from any directory with an MCP server in it.
-      </p>
+      <section className="flex flex-col gap-6 rounded-xl border p-7 sm:flex-row sm:items-start sm:justify-between">
+        <div className="max-w-md">
+          <h2 className="text-[17px] font-semibold tracking-tight">
+            Connect an existing server
+          </h2>
+          <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
+            Already hosting your MCP server elsewhere? Connect it by URL to run
+            evals, publishing checks, and the submission pack. No deploy
+            required.
+          </p>
+        </div>
+        <ConnectServerForm />
+      </section>
+
+      <section>
+        <h2 className="text-[20px] font-semibold tracking-tight">
+          Starter Templates
+        </h2>
+
+        <div className="mt-5 grid gap-5 md:grid-cols-3">
+          {starterTemplates.map((t) => (
+            <div
+              key={t.name}
+              className="flex flex-col rounded-xl border p-6"
+            >
+              <h3 className="text-[15px] font-medium">{t.name}</h3>
+              <p className="mt-2.5 flex-1 text-[14px] leading-relaxed text-muted-foreground">
+                {t.description}
+              </p>
+              <div className="mt-6 flex items-center gap-2.5">
+                <GithubIcon className="size-4 text-muted-foreground" />
+                <Link
+                  href={`https://github.com/${t.repo}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-[14px] underline underline-offset-2"
+                >
+                  Try now
+                  <ArrowUpRight className="size-3.5" />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     </>
   );
 }

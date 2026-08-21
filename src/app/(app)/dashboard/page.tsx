@@ -1,133 +1,140 @@
 import Link from "next/link";
-import { AlertTriangle, ArrowRight, GitBranch } from "lucide-react";
 import {
-  BarChart,
-  Mono,
-  Panel,
-  StatCard,
-  StatusBadge,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  PageHeader,
-} from "@/components/dashboard/ui";
+  AlertTriangle,
+  ArrowRight,
+  CheckCircle2,
+  MessageSquare,
+  Server,
+  Wrench,
+} from "lucide-react";
+import { CounterCard, CounterRow, Panel } from "@/components/dashboard/ui";
+import { WelcomeHero } from "@/components/dashboard/welcome-hero";
 import {
+  changelog,
+  homeStats,
   needsAttention,
-  orgStats,
   organization,
-  servers,
-  trafficSeries,
 } from "@/lib/dashboard";
+import { createClient } from "@/lib/supabase/server";
+import { supabaseConfigured } from "@/lib/supabase/config";
 import { cn } from "@/lib/utils";
 
-export default function OverviewPage() {
+const statIcons = {
+  server: Server,
+  tool: Wrench,
+  chat: MessageSquare,
+} as const;
+
+/** "priya.nair@acme.com" -> "Priya". Falls back to the whole local part. */
+function greetingName(email: string, fullName?: string | null) {
+  if (fullName) return fullName.split(" ")[0];
+  const local = email.split("@")[0].split(/[._-]/)[0];
+  return local.charAt(0).toUpperCase() + local.slice(1);
+}
+
+export default async function DashboardHomePage() {
+  let email = "you@example.com";
+  let fullName: string | null = null;
+
+  if (supabaseConfigured) {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    email = user?.email ?? email;
+    fullName =
+      (user?.user_metadata?.full_name as string | undefined) ??
+      (user?.user_metadata?.name as string | undefined) ??
+      null;
+  }
+
   return (
     <>
-      <PageHeader
-        title={organization.name}
-        description="Everything you have deployed on mcpfy Cloud, at a glance."
+      <WelcomeHero
+        name={greetingName(email, fullName)}
+        organizationName={organization.name}
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {orgStats.map((s) => (
-          <StatCard key={s.label} {...s} />
+      <CounterRow>
+        {homeStats.map((s) => (
+          <CounterCard
+            key={s.label}
+            icon={statIcons[s.icon]}
+            value={s.value}
+            label={s.label}
+          />
         ))}
-      </div>
+      </CounterRow>
 
-      {needsAttention.length > 0 && (
-        <Panel title="Needs attention" description="Issues across your organization">
+      <div className="grid gap-5 lg:grid-cols-2">
+        <Panel title="Needs Attention" className="flex flex-col">
+          {needsAttention.length === 0 ? (
+            <p className="flex-1 px-5 py-5 text-[13px] italic text-muted-foreground">
+              You will see here items that need attention, like failed
+              deployments or issues related to your MCP servers.
+            </p>
+          ) : (
+            <ul className="flex-1 divide-y divide-border/60">
+              {needsAttention.map((item) => (
+                <li key={item.title} className="flex items-start gap-3.5 px-5 py-4">
+                  <AlertTriangle
+                    className={cn(
+                      "mt-0.5 size-4 shrink-0",
+                      item.severity === "error"
+                        ? "text-red-500"
+                        : "text-amber-500",
+                    )}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[14px] font-medium">{item.title}</p>
+                    <p className="mt-1 text-[13px] text-muted-foreground">
+                      {item.detail}
+                    </p>
+                  </div>
+                  <Link
+                    href={item.href}
+                    className="inline-flex shrink-0 items-center gap-1 text-[13px] font-medium hover:underline"
+                  >
+                    {item.action}
+                    <ArrowRight className="size-3.5" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <p className="flex items-center gap-2 border-t px-5 py-3.5 text-[13px] text-muted-foreground">
+            <CheckCircle2 className="size-4 text-emerald-500" />
+            All systems operational
+          </p>
+        </Panel>
+
+        <Panel
+          title="Latest Updates"
+          action={
+            <Link
+              href="/blog"
+              className="text-[13px] underline underline-offset-2 hover:text-foreground"
+            >
+              Changelog
+            </Link>
+          }
+        >
           <ul className="divide-y divide-border/60">
-            {needsAttention.map((item) => (
-              <li key={item.title} className="flex items-start gap-3.5 px-5 py-4">
-                <AlertTriangle
-                  className={cn(
-                    "mt-0.5 size-4 shrink-0",
-                    item.severity === "error"
-                      ? "text-red-500"
-                      : "text-amber-500",
-                  )}
-                />
-                <div className="min-w-0 flex-1">
-                  <p className="text-[14px] font-medium">{item.title}</p>
-                  <p className="mt-1 text-[13px] text-muted-foreground">
-                    {item.detail}
-                  </p>
-                </div>
-                <Link
-                  href={item.href}
-                  className="inline-flex shrink-0 items-center gap-1 text-[13px] font-medium hover:underline"
-                >
-                  {item.action}
-                  <ArrowRight className="size-3.5" />
-                </Link>
+            {changelog.map((entry) => (
+              <li key={entry.title} className="px-5 py-5">
+                <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                  {entry.date}
+                </p>
+                <p className="mt-2 text-[15px] font-medium">{entry.title}</p>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+                  {entry.body}
+                </p>
               </li>
             ))}
           </ul>
         </Panel>
-      )}
-
-      <Panel
-        title="Tool calls"
-        description="Last 30 days across all servers"
-        className="p-5"
-      >
-        <div className="px-5 pb-5 pt-5">
-          <BarChart data={trafficSeries} />
-        </div>
-      </Panel>
-
-      <Panel
-        title="Servers"
-        action={
-          <Link
-            href="/dashboard/servers"
-            className="text-[13px] font-medium hover:underline"
-          >
-            View all
-          </Link>
-        }
-      >
-        <Table>
-          <Thead>
-            <Th>Name</Th>
-            <Th>Status</Th>
-            <Th>Repository</Th>
-            <Th className="text-right">Tool calls</Th>
-            <Th className="text-right">p95</Th>
-            <Th>Last deploy</Th>
-          </Thead>
-          <Tbody>
-            {servers.map((s) => (
-              <tr key={s.slug} className="transition-colors hover:bg-accent/40">
-                <Td>
-                  <Link
-                    href={`/dashboard/servers/${s.slug}`}
-                    className="font-medium hover:underline"
-                  >
-                    {s.name}
-                  </Link>
-                </Td>
-                <Td>
-                  <StatusBadge status={s.status} />
-                </Td>
-                <Td className="text-muted-foreground">
-                  <span className="inline-flex items-center gap-1.5">
-                    <GitBranch className="size-3.5" />
-                    <Mono>{s.repo}</Mono>
-                  </span>
-                </Td>
-                <Td className="text-right tabular-nums">
-                  {s.toolCalls30d.toLocaleString()}
-                </Td>
-                <Td className="text-right tabular-nums">{s.p95}ms</Td>
-                <Td className="text-muted-foreground">{s.lastDeployed}</Td>
-              </tr>
-            ))}
-          </Tbody>
-        </Table>
-      </Panel>
+      </div>
     </>
   );
 }

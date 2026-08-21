@@ -11,12 +11,13 @@ import {
   Plug,
   Server,
   Settings,
+  Undo2,
   Users,
 } from "lucide-react";
-import { Logo } from "@/components/site/logo";
 import { cn } from "@/lib/utils";
-import { organization } from "@/lib/dashboard";
+import { servers } from "@/lib/dashboard";
 import { sidebarGroups } from "./nav";
+import { UpgradeCard } from "./upgrade-card";
 
 const icons: Record<string, React.ComponentType<{ className?: string }>> = {
   home: Home,
@@ -30,22 +31,29 @@ const icons: Record<string, React.ComponentType<{ className?: string }>> = {
   settings: Settings,
 };
 
-export function Sidebar() {
+export function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-60 shrink-0 flex-col border-r bg-card/30 lg:flex">
-      <div className="flex h-14 items-center border-b px-5">
-        <Link href="/dashboard" className="flex items-center gap-2">
-          <Logo className="h-5" />
+    <aside
+      className={cn(
+        "flex w-[268px] shrink-0 flex-col bg-background",
+        className,
+      )}
+    >
+      <nav className="flex-1 overflow-y-auto px-3 py-4">
+        <Link
+          href="/dashboard/organizations"
+          className="mb-1 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[14px] text-muted-foreground transition-colors hover:bg-accent/60 hover:text-foreground"
+        >
+          <Undo2 className="size-4 shrink-0" />
+          Back to all organizations
         </Link>
-      </div>
 
-      <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-5">
         {sidebarGroups.map((group, gi) => (
-          <div key={group.label ?? gi}>
+          <div key={group.label ?? gi} className={gi === 0 ? "" : "mt-6"}>
             {group.label && (
-              <p className="px-2.5 pb-2 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+              <p className="px-2.5 pb-1.5 text-[13px] text-muted-foreground">
                 {group.label}
               </p>
             )}
@@ -69,7 +77,12 @@ export function Sidebar() {
                       )}
                     >
                       <Icon className="size-4 shrink-0" />
-                      {item.label}
+                      <span className="flex-1">{item.label}</span>
+                      {item.count && (
+                        <span className="rounded-full bg-muted px-1.5 py-0.5 text-[11px] tabular-nums text-muted-foreground">
+                          {servers.length}
+                        </span>
+                      )}
                     </Link>
                   </li>
                 );
@@ -79,21 +92,7 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className="border-t px-5 py-4">
-        <p className="text-[13px] font-medium">{organization.name}</p>
-        <p className="mt-0.5 text-[12px] text-muted-foreground">
-          {organization.plan} · ${organization.creditsUsed} of $
-          {organization.creditsIncluded} credits
-        </p>
-        <div className="mt-2.5 h-1 overflow-hidden rounded-full bg-muted">
-          <div
-            className="h-full rounded-full bg-foreground/60"
-            style={{
-              width: `${(organization.creditsUsed / organization.creditsIncluded) * 100}%`,
-            }}
-          />
-        </div>
-      </div>
+      <UpgradeCard />
     </aside>
   );
 }

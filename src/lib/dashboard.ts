@@ -39,13 +39,44 @@ export type McpServer = {
   deployments: Deployment[];
 };
 
-export const organization = {
+export type Organization = {
+  name: string;
+  slug: string;
+  plan: string;
+  description: string;
+  creditsUsed: number;
+  creditsIncluded: number;
+};
+
+export const organization: Organization = {
   name: "Acme Labs",
   slug: "acme-labs",
   plan: "Hobby",
+  description: "MCP servers powering the Acme support and billing agents.",
   creditsUsed: 18.4,
   creditsIncluded: 25,
 };
+
+/** Every org the signed-in user belongs to, for the topbar switcher. */
+export const organizations: Organization[] = [
+  organization,
+  {
+    name: "Nutritiscan",
+    slug: "nutritiscan",
+    plan: "Free",
+    description: "",
+    creditsUsed: 0,
+    creditsIncluded: 5,
+  },
+  {
+    name: "Personal",
+    slug: "personal",
+    plan: "Free",
+    description: "",
+    creditsUsed: 1.2,
+    creditsIncluded: 5,
+  },
+];
 
 export const servers: McpServer[] = [
   {
@@ -401,14 +432,129 @@ export const testSuites = [
   { name: "Docs retrieval quality", clients: "Claude", models: "Claude", result: "passing", ran: "1d ago" },
 ];
 
-export const team = [
-  { name: "Priya Nair", email: "priya@acme.com", role: "Owner", added: "Jan 2026" },
-  { name: "Arjun Mehta", email: "arjun@acme.com", role: "Admin", added: "Feb 2026" },
-  { name: "Sam Okafor", email: "sam@acme.com", role: "Developer", added: "Apr 2026" },
-  { name: "Lena Fischer", email: "lena@acme.com", role: "Viewer", added: "Jun 2026" },
+export type MemberStatus = "active" | "invited";
+
+export type Member = {
+  name: string;
+  email: string;
+  role: "Owner" | "Admin" | "Developer" | "Viewer";
+  status: MemberStatus;
+  added: string;
+  lastActivity: string | null;
+  you?: boolean;
+};
+
+export const team: Member[] = [
+  { name: "Priya Nair", email: "priya@acme.com", role: "Owner", status: "active", added: "Jan 2026", lastActivity: "12m ago", you: true },
+  { name: "Arjun Mehta", email: "arjun@acme.com", role: "Admin", status: "active", added: "Feb 2026", lastActivity: "3h ago" },
+  { name: "Sam Okafor", email: "sam@acme.com", role: "Developer", status: "active", added: "Apr 2026", lastActivity: "yesterday" },
+  { name: "Lena Fischer", email: "lena@acme.com", role: "Viewer", status: "invited", added: "Jun 2026", lastActivity: null },
 ];
 
-export const apiKeys = [
-  { name: "CI deploys", prefix: "mcpfy_sk_live_9f2a", created: "Feb 2026", lastUsed: "2h ago" },
-  { name: "Local CLI", prefix: "mcpfy_sk_live_31bd", created: "Mar 2026", lastUsed: "yesterday" },
+export const roles = [
+  { role: "Owner", can: "Everything, including billing and deleting the organization." },
+  { role: "Admin", can: "Manage servers, domains, secrets and members." },
+  { role: "Developer", can: "Deploy, run tests and read logs and analytics." },
+  { role: "Viewer", can: "Read-only access to analytics and deployments." },
+] as const;
+
+export type ApiKey = {
+  name: string;
+  prefix: string;
+  status: "active" | "expired";
+  expires: string;
+  created: string;
+  lastUsed: string | null;
+};
+
+export const apiKeys: ApiKey[] = [
+  { name: "CI deploys", prefix: "mcpfy_sk_live_9f2a", status: "active", expires: "Never", created: "Feb 2026", lastUsed: "2h ago" },
+  { name: "Local CLI", prefix: "mcpfy_sk_live_31bd", status: "active", expires: "1 Mar 2027", created: "Mar 2026", lastUsed: "yesterday" },
+];
+
+/* -------------------------- dashboard home summary ------------------------- */
+
+/** The three headline counters on the dashboard home. */
+export const homeStats = [
+  { label: "Servers", value: servers.length.toLocaleString(), icon: "server" as const },
+  { label: "Tool Calls", value: "192,412", icon: "tool" as const },
+  { label: "Sessions", value: "12,737", icon: "chat" as const },
+];
+
+/** Product changelog surfaced in the "Latest Updates" panel. */
+export const changelog = [
+  {
+    date: "AUG 2026",
+    title: "GitHub repository access status on Integrations",
+    body: "The Integrations page now shows when a GitHub App installation loses repository access, lists affected servers, and lets you recheck access after restoring permissions on GitHub.",
+  },
+  {
+    date: "AUG 2026",
+    title: "Inspector Chat default model updated",
+    body: "The dashboard Inspector and Chat tabs now default to the newest reasoning model. Earlier models are still available in the model picker.",
+  },
+  {
+    date: "JUL 2026",
+    title: "Preview deployments for every pull request",
+    body: "Opening a pull request against a connected repository now builds an isolated preview URL with its own logs, sessions and analytics.",
+  },
+];
+
+/* ------------------------------- new server ------------------------------- */
+
+export const starterTemplates = [
+  {
+    name: "Starter",
+    description:
+      "A minimal template with everything you need to get started. Tools, prompts, resources, and automatic UI widget registration.",
+    repo: "mcpfy/template-starter",
+  },
+  {
+    name: "MCP Apps",
+    description:
+      "Build MCP Apps with interactive widgets. A cute fruit shop demo template to showcase advanced widget features.",
+    repo: "mcpfy/template-mcp-apps",
+  },
+  {
+    name: "Blank",
+    description:
+      "Start from scratch. A clean slate to build your server or MCP app the way you like it.",
+    repo: "mcpfy/template-blank",
+  },
+];
+
+/* -------------------------------- billing --------------------------------- */
+
+/** Line items behind the credit meter, shown in the collapsible breakdown. */
+export const usageBreakdown = [
+  { item: "Tool-call requests", qty: "192,412", rate: "$0.10 / 1k", amount: "$19.24" },
+  { item: "Eval runs", qty: "34", rate: "$1.00 each", amount: "$34.00" },
+  { item: "E2E checks", qty: "6", rate: "$2.00 each", amount: "$12.00" },
+  { item: "Discovery traffic", qty: "84,120", rate: "not billed", amount: "$0.00" },
+];
+
+/* ------------------------------ integrations ------------------------------ */
+
+export type GithubInstallation = {
+  account: string;
+  type: "User" | "Organization";
+  repositories: number;
+  status: "connected" | "needs-attention";
+  detail?: string;
+};
+
+export const githubInstallations: GithubInstallation[] = [
+  {
+    account: "acme-labs",
+    type: "Organization",
+    repositories: 14,
+    status: "connected",
+  },
+  {
+    account: "priya-nair",
+    type: "User",
+    repositories: 3,
+    status: "needs-attention",
+    detail: "Lost access to 1 repository used by billing-connector.",
+  },
 ];
