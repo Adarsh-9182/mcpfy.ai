@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight, HelpCircle, Undo2 } from "lucide-react";
 import { GithubIcon } from "@/components/site/icons";
 import { ConnectServerForm } from "@/components/dashboard/connect-server-form";
+import { UseTemplateButton } from "@/components/dashboard/use-template-button";
 import { starterTemplates } from "@/lib/dashboard";
 
 export const metadata = { title: "New server" };
@@ -106,15 +107,20 @@ export default function NewServerPage() {
               <p className="mt-2.5 flex-1 text-[14px] leading-relaxed text-muted-foreground">
                 {t.description}
               </p>
-              <div className="mt-6 flex items-center gap-2.5">
-                <GithubIcon className="size-4 text-muted-foreground" />
+              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+                <UseTemplateButton
+                  name={t.name}
+                  repo={t.repo}
+                  description={t.description}
+                />
                 <Link
                   href={`https://github.com/${t.repo}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-[14px] underline underline-offset-2"
+                  className="inline-flex items-center gap-1.5 text-[14px] text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  Try now
+                  <GithubIcon className="size-4" />
+                  Source
                   <ArrowUpRight className="size-3.5" />
                 </Link>
               </div>
