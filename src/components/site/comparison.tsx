@@ -1,88 +1,83 @@
-import { Band, Slug } from "./frame";
-import { Display, Em, Lede } from "./section";
+import * as React from "react";
+import { Check, X } from "lucide-react";
+import { Section, SectionHeading } from "./section";
 import { Reveal } from "./reveal";
 import { comparisonRows } from "@/lib/content";
 import { site } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 /**
- * The ledger: every job an MCP server needs around it, costed twice. The
- * platform column is the one with the surface and the signal rule; the
- * hand-rolled column is hatched, the way a struck line is on paper.
+ * Build-it-yourself against the platform, row by row. The platform column is
+ * a raised card with a brand hairline so the eye lands on it first.
  */
 export function Comparison() {
   return (
-    <Band index="02" label="the ledger">
+    <Section>
       <Reveal>
-        <Display size="lg" className="max-w-[18ch]">
-          Every MCP server needs the same scaffolding. The question is who{" "}
-          <Em>writes</Em> it.
-        </Display>
-        <Lede className="mt-7">
-          Seven jobs stand between a working tool and a product people can
-          actually install. Here is the bill for each one.
-        </Lede>
+        <SectionHeading
+          align="center"
+          eyebrow="What you skip"
+          title="Every MCP server needs the same scaffolding"
+          lead="Seven jobs stand between a working tool and something people can install."
+          leadDim="You can write all of them, or none of them."
+          className="mx-auto max-w-2xl"
+        />
       </Reveal>
 
       <Reveal delay={0.08}>
-        <div className="mt-14 overflow-x-auto">
-          <table className="w-full min-w-[48rem] border-collapse text-left">
-            <thead>
-              <tr>
-                <th className="w-[22%] border-b border-rule-strong/25 pb-3 pr-6">
-                  <Slug>the job</Slug>
-                </th>
-                <th className="w-[39%] border-b border-rule-strong/25 px-6 pb-3">
-                  <Slug>by hand</Slug>
-                </th>
-                <th className="w-[39%] border-b-2 border-signal px-6 pb-3">
-                  <Slug className="text-signal">with {site.name}</Slug>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparisonRows.map((row, i) => (
-                <tr key={row.job} className="group align-top">
-                  <th
-                    scope="row"
-                    className="border-b border-rule py-6 pr-6 text-left"
-                  >
-                    <span className="flex items-baseline gap-3">
-                      <span className="font-mono text-[10.5px] text-muted-foreground">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="display text-[21px] md:text-[24px]">
-                        {row.job}
-                      </span>
-                    </span>
-                  </th>
+        <div className="mt-12 overflow-x-auto">
+          {/* One grid so the job label and both answers always share a row. */}
+          <div className="grid min-w-[44rem] grid-cols-[minmax(0,0.85fr)_minmax(0,1.1fr)_minmax(0,1.1fr)]">
+            <span />
+            <p className="px-5 pb-3 text-[13px] font-medium text-muted-foreground">
+              By hand
+            </p>
+            <p className="px-5 pb-3 text-[13px] font-medium text-brand">
+              With {site.name}
+            </p>
 
-                  <td className="border-b border-rule px-6 py-6">
-                    <span className="flex gap-3 text-[14.5px] leading-relaxed text-muted-foreground">
-                      <span
-                        aria-hidden
-                        className="mt-[3px] h-3 w-3 shrink-0 bg-hatch"
-                      />
+            {comparisonRows.map((row, i) => {
+              const first = i === 0;
+              const last = i === comparisonRows.length - 1;
+              return (
+                <React.Fragment key={row.job}>
+                  <div className="flex items-center py-5 pr-6 text-[14.5px] font-medium">
+                    {row.job}
+                  </div>
+
+                  <div
+                    className={cn(
+                      "flex items-center gap-3 border-x border-border px-5 py-5",
+                      first && "rounded-t-xl border-t",
+                      last && "rounded-b-xl border-b",
+                      !last && "border-b border-b-border/60",
+                    )}
+                  >
+                    <X className="size-3.5 shrink-0 text-subtle-foreground" />
+                    <span className="text-[13.5px] leading-relaxed text-muted-foreground">
                       {row.byHand}
                     </span>
-                  </td>
+                  </div>
 
-                  <td className="border-b border-rule bg-signal-soft/40 px-6 py-6 transition-colors group-hover:bg-signal-soft">
-                    <span className="flex gap-3 text-[14.5px] leading-relaxed">
-                      <span
-                        aria-hidden
-                        className="mt-px shrink-0 font-mono text-[13px] text-signal"
-                      >
-                        ✓
-                      </span>
+                  <div
+                    className={cn(
+                      "flex items-center gap-3 border-x border-brand/30 bg-brand-soft px-5 py-5",
+                      first && "rounded-t-xl border-t",
+                      last && "rounded-b-xl border-b",
+                      !last && "border-b border-b-border/60",
+                    )}
+                  >
+                    <Check className="size-3.5 shrink-0 text-brand" />
+                    <span className="text-[13.5px] leading-relaxed text-foreground/90">
                       {row.withUs}
                     </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+          </div>
         </div>
       </Reveal>
-    </Band>
+    </Section>
   );
 }

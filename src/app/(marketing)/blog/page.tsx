@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/site/page-hero";
-import { Section, Em } from "@/components/site/section";
+import { Section } from "@/components/site/section";
 import { Reveal } from "@/components/site/reveal";
 import { site } from "@/lib/site";
 
@@ -72,11 +72,10 @@ export default function BlogPage() {
   return (
     <>
       <PageHero
-        eyebrow="writing"
-        meta="product notes & guides"
+        eyebrow="Blog"
         title={
           <>
-            Notes from the <Em>build</Em>.
+            Notes from the build.
           </>
         }
         subtitle="Product updates, engineering notes, and guides for building on MCP."

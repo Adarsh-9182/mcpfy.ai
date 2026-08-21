@@ -3,14 +3,12 @@
 import * as React from "react";
 import Link from "next/link";
 import { Check, Copy } from "lucide-react";
-import { Display, Em, Lede, ArrowLink } from "./section";
-import { Slug } from "./frame";
+import { ProductShot } from "./product-shot";
 import { GithubIcon } from "./icons";
 import { site } from "@/lib/site";
 
 const AGENT_PROMPT = `Build an MCP server with the ${site.name} SDK. Scaffold it with \`npx create-mcpfy-app\`, add a typed tool, then deploy with \`${site.cli}\`.`;
 
-/** The mono line under the CTAs: one click, one prompt, straight to an agent. */
 function CopyPrompt() {
   const [copied, setCopied] = React.useState(false);
   const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -37,198 +35,98 @@ function CopyPrompt() {
     <button
       type="button"
       onClick={copy}
-      className="group inline-flex items-center gap-2 slug text-muted-foreground transition-colors hover:text-signal"
+      className="inline-flex items-center gap-2 text-[13.5px] text-muted-foreground transition-colors hover:text-foreground"
     >
       {copied ? (
-        <Check className="size-3.5 text-pine" />
+        <Check className="size-3.5 text-live" />
       ) : (
         <Copy className="size-3.5" />
       )}
-      <span className="border-b border-rule pb-0.5 group-hover:border-signal">
-        {copied ? "Prompt copied" : "Copy prompt for agents"}
-      </span>
+      {copied ? "Copied to clipboard" : "Copy prompt for agents"}
     </button>
   );
 }
 
-/**
- * The hero's right column: the whole product compressed into the shell
- * session it replaces. Static output with a live caret on the last line.
- */
-function TerminalCard() {
-  const lines: { text: string; tone?: "cmd" | "ok" | "dim" | "url" }[] = [
-    { text: "npx create-mcpfy-app acme-mcp", tone: "cmd" },
-    { text: "scaffolded  tools/  widgets/  mcpfy.config.ts", tone: "dim" },
-    { text: "mcpfy dev", tone: "cmd" },
-    { text: "inspector ready on :4141 — 6 tools registered", tone: "dim" },
-    { text: "mcpfy deploy", tone: "cmd" },
-    { text: "build 2.4s · evals 18/18 · checks passed", tone: "ok" },
-    { text: "https://acme-mcp.mcpfy.app/mcp", tone: "url" },
-  ];
-
-  return (
-    <div className="border border-rule bg-card shadow-[var(--drop)]">
-      <div className="flex items-center justify-between border-b border-rule px-4 py-2.5">
-        <span className="font-mono text-[11px] text-muted-foreground">
-          ~/acme-mcp
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span className="size-1.5 rounded-full bg-pine" />
-          <Slug className="text-[10px]">live</Slug>
-        </span>
-      </div>
-
-      <div className="bg-ruled px-4 py-4 font-mono text-[12.5px] leading-[2.05] md:text-[13px]">
-        {lines.map((line, i) => (
-          <p key={i} className="flex gap-2 whitespace-nowrap">
-            {line.tone === "cmd" ? (
-              <>
-                <span className="text-signal">$</span>
-                <span className="text-foreground">{line.text}</span>
-              </>
-            ) : line.tone === "ok" ? (
-              <>
-                <span className="text-pine">✓</span>
-                <span className="text-muted-foreground">{line.text}</span>
-              </>
-            ) : line.tone === "url" ? (
-              <>
-                <span className="text-muted-foreground">→</span>
-                <span className="truncate text-foreground underline decoration-signal decoration-1 underline-offset-4">
-                  {line.text}
-                </span>
-              </>
-            ) : (
-              <>
-                <span className="text-muted-foreground/50">·</span>
-                <span className="truncate text-muted-foreground">{line.text}</span>
-              </>
-            )}
-          </p>
-        ))}
-        <p className="flex gap-2">
-          <span className="text-signal">$</span>
-          <span aria-hidden className="animate-caret text-foreground">
-            ▍
-          </span>
-        </p>
-      </div>
-    </div>
-  );
-}
-
-const facts = [
-  { value: site.stars, label: "GitHub stars" },
-  { value: "12k+", label: "servers deployed" },
-  { value: "38ms", label: "median tool call" },
-  { value: "2", label: "SDK languages" },
-];
-
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
+      {/* glow behind the product shot */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-paper"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[820px] hero-glow"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-grain opacity-[0.035] mix-blend-multiply dark:opacity-[0.05] dark:mix-blend-screen"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[560px] bg-dots opacity-[0.5] mask-radial"
       />
 
-      <div className="container-page relative">
-        {/* running head */}
-        <div className="flex items-center gap-4 border-b border-rule py-4">
-          <Slug className="text-signal">00 / the platform</Slug>
-          <span aria-hidden className="h-px flex-1 bg-rule" />
+      <div className="container-page relative pt-14 md:pt-20">
+        <div className="mx-auto max-w-3xl text-center">
           <Link
             href="/blog"
-            className="slug text-muted-foreground transition-colors hover:text-foreground"
+            className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface-1/80 py-1 pl-1 pr-3 text-[13px] backdrop-blur transition-colors hover:border-border-strong"
           >
-            backed by Foundry&nbsp;Labs
+            <span className="rounded-full bg-brand/15 px-2 py-0.5 text-[11.5px] font-medium text-brand">
+              New
+            </span>
+            <span className="text-muted-foreground">
+              Cloud Inspector is out of beta
+            </span>
+            <span
+              aria-hidden
+              className="text-subtle-foreground transition-transform duration-300 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
           </Link>
-        </div>
 
-        <div className="grid gap-14 py-16 md:py-24 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center lg:gap-16">
-          <div>
-            <Display as="h1" size="xl" className="max-w-[15ch]">
-              Build MCP servers that <Em>actually</Em> reach users.
-            </Display>
+          <h1 className="mt-7 text-[40px] font-semibold leading-[1.04] tracking-[-0.035em] sm:text-[54px] md:text-[64px]">
+            Build and deploy MCP
+            <br className="hidden sm:block" /> servers and apps
+          </h1>
 
-            <div className="mt-9 flex items-center gap-4">
-              <Slug className="shrink-0 text-foreground">
-                the fullstack MCP framework
-              </Slug>
-              <span aria-hidden className="h-px flex-1 bg-rule-strong/30" />
-            </div>
+          <p className="mx-auto mt-6 max-w-xl text-[17px] leading-[1.6] text-muted-foreground">
+            <span className="text-foreground">
+              One SDK, one cloud, every client.
+            </span>{" "}
+            Ship to ChatGPT and Claude, run for your own agents, and see every
+            tool call in production.
+          </p>
 
-            <Lede className="mt-7">
-              One SDK for MCP Apps in ChatGPT and Claude, and MCP Servers for
-              your agents. One cloud to deploy, test, observe and publish them —
-              from first commit to the app store.
-            </Lede>
-
-            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-              <Link
-                href="/signup"
-                className="group inline-flex h-12 items-center gap-3 bg-foreground px-7 text-[14px] font-medium tracking-tight text-background transition-colors hover:bg-signal"
-              >
-                Start deploying
-                <span
-                  aria-hidden
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                >
-                  →
-                </span>
-              </Link>
-              <ArrowLink href="/contact" tone="muted">
-                Book a call
-              </ArrowLink>
-              <CopyPrompt />
-            </div>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href="/signup"
+              className="inline-flex h-11 items-center justify-center rounded-lg bg-foreground px-5 text-[14.5px] font-medium text-background transition-opacity hover:opacity-90"
+            >
+              Start deploying
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex h-11 items-center justify-center rounded-lg border border-border bg-surface-1 px-5 text-[14.5px] font-medium transition-colors hover:border-border-strong hover:bg-surface-2"
+            >
+              Book a call
+            </Link>
           </div>
 
-          <div className="lg:pl-4">
-            <TerminalCard />
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            <CopyPrompt />
+            <span aria-hidden className="hidden h-3 w-px bg-border sm:block" />
             <Link
               href={site.github}
               target="_blank"
               rel="noreferrer"
-              className="group mt-4 flex items-center gap-2.5 slug text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-2 text-[13.5px] text-muted-foreground transition-colors hover:text-foreground"
             >
               <GithubIcon className="size-3.5" />
-              <span>open source · {site.stars} stars</span>
-              <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              >
-                →
-              </span>
+              {site.stars} stars
             </Link>
           </div>
         </div>
 
-        {/* fact strip closing the hero */}
-        <dl className="grid grid-cols-2 border-t border-rule md:grid-cols-4">
-          {facts.map((f, i) => (
-            <div
-              key={f.label}
-              className={
-                "px-1 py-6 md:py-8" +
-                (i > 0 ? " md:border-l md:border-rule md:pl-6" : "") +
-                (i % 2 === 1 ? " border-l border-rule pl-6 md:pl-6" : "")
-              }
-            >
-              <dt className="sr-only">{f.label}</dt>
-              <dd>
-                <span className="display block text-[30px] tabular-nums md:text-[38px]">
-                  {f.value}
-                </span>
-                <Slug className="mt-2 block">{f.label}</Slug>
-              </dd>
-            </div>
-          ))}
-        </dl>
+        {/* the product itself, cropped by the fold so it reads as a real app */}
+        <div className="relative mt-14 md:mt-16">
+          <ProductShot className="mx-auto max-w-[1120px]" />
+        </div>
       </div>
     </section>
   );

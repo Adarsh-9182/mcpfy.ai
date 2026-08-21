@@ -1,37 +1,25 @@
 import * as React from "react";
+import { Check, GitBranch, Play } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 
 /**
- * The mock surfaces that sit beside each lifecycle stage. They are drawn in
- * the same language as the rest of the site: square corners, hairline rules,
- * mono type, one signal accent and pine for anything passing.
+ * The mock surfaces beside each lifecycle stage. Same rules as the hero shot:
+ * real UI chrome, real syntax colours, status carried by colour rather than
+ * by a label.
  */
 
-const panel = "border border-rule bg-card";
-const head =
-  "flex items-center justify-between border-b border-rule px-3.5 py-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-muted-foreground";
-const row = "flex items-center gap-2.5 border-b border-rule-soft px-3.5 py-2.5 last:border-b-0";
+const shell = "card-surface overflow-hidden rounded-xl";
+const bar =
+  "flex items-center justify-between gap-2 border-b border-border bg-surface-2/60 px-3 py-2 text-[11px] text-muted-foreground";
 
-function Term({ lines }: { lines: [string, ("ok" | "dim" | "sig")?][] }) {
+function Dots() {
   return (
-    <div className="bg-ruled px-3.5 py-3 font-mono text-[11.5px] leading-[1.9]">
-      {lines.map(([text, tone], i) => (
-        <p
-          key={i}
-          className={
-            tone === "ok"
-              ? "text-pine"
-              : tone === "dim"
-                ? "text-muted-foreground"
-                : tone === "sig"
-                  ? "text-signal"
-                  : "text-foreground"
-          }
-        >
-          {text}
-        </p>
+    <span className="flex gap-1">
+      {["bg-fail/50", "bg-warn/50", "bg-live/50"].map((c) => (
+        <span key={c} className={cn("size-2 rounded-full", c)} />
       ))}
-    </div>
+    </span>
   );
 }
 
@@ -41,7 +29,7 @@ function Bars({ w = [92, 74, 58] }: { w?: number[] }) {
       {w.map((width, i) => (
         <span
           key={i}
-          className="h-1.5 bg-foreground/10"
+          className="h-1.5 rounded-full bg-foreground/10"
           style={{ width: `${width}%` }}
         />
       ))}
@@ -49,94 +37,118 @@ function Bars({ w = [92, 74, 58] }: { w?: number[] }) {
   );
 }
 
-function Status({ ok, children }: { ok: boolean; children: React.ReactNode }) {
-  return (
-    <span
-      className={
-        "shrink-0 border px-1.5 py-px font-mono text-[9.5px] uppercase tracking-wider " +
-        (ok ? "border-pine/40 text-pine" : "border-signal/40 text-signal")
-      }
-    >
-      {children}
-    </span>
-  );
-}
-
 export function StageVisual({ id }: { id: string }) {
   switch (id) {
     case "build":
       return (
-        <div className={panel}>
-          <div className={head}>
-            <span>scaffold</span>
-            <span className="normal-case tracking-normal">create-mcpfy-app</span>
+        <div className={shell}>
+          <div className={bar}>
+            <Dots />
+            <span className="font-mono">acme-mcp — zsh</span>
           </div>
-          <Term
-            lines={[
-              ["$ npx create-mcpfy-app", "sig"],
-              ["  ├ tools/chart-sales.ts", "dim"],
-              ["  ├ widgets/Chart.tsx", "dim"],
-              ["  └ mcpfy.config.ts", "dim"],
-              ["✓ skill installed into your agent", "ok"],
-            ]}
-          />
-          <div className="border-t border-rule">
-            <div className={head}>
-              <span>assistant</span>
-            </div>
-            <div className="space-y-2.5 p-3.5">
-              <p className="ml-auto w-[70%] border border-rule bg-accent px-3 py-2 text-[11.5px]">
-                add a tool that charts monthly sales
-              </p>
-              <div className="w-[80%] border border-rule px-3 py-2.5">
-                <Bars />
-              </div>
-            </div>
+          <div className="code p-3.5">
+            <p>
+              <span className="text-live">➜</span>{" "}
+              <span className="text-foreground">npx create-mcpfy-app</span>
+            </p>
+            <p className="tok-cmt">  ✓ tools/chart-sales.ts</p>
+            <p className="tok-cmt">  ✓ widgets/Chart.tsx</p>
+            <p className="tok-cmt">  ✓ mcpfy.config.ts</p>
+            <p className="mt-2">
+              <span className="text-live">➜</span>{" "}
+              <span className="text-foreground">mcpfy dev</span>
+            </p>
+            <p className="text-live">  ready on :4141 · 6 tools registered</p>
+          </div>
+          <div className="border-t border-border p-3.5">
+            <p className="text-[11px] text-subtle-foreground">tools/chart-sales.ts</p>
+            <pre className="code mt-2 overflow-x-auto">
+              <code>
+                <span className="tok-key">export const</span>{" "}
+                <span className="tok-fn">chartSales</span>
+                <span className="tok-punc"> = </span>
+                <span className="tok-fn">tool</span>
+                <span className="tok-punc">({"{"}</span>
+                {"\n  "}
+                <span className="tok-key">name</span>
+                <span className="tok-punc">: </span>
+                <span className="tok-str">&quot;chart_sales&quot;</span>
+                <span className="tok-punc">,</span>
+                {"\n  "}
+                <span className="tok-key">input</span>
+                <span className="tok-punc">: z.</span>
+                <span className="tok-fn">object</span>
+                <span className="tok-punc">({"{ "}</span>
+                <span className="tok-key">period</span>
+                <span className="tok-punc">: z.</span>
+                <span className="tok-fn">string</span>
+                <span className="tok-punc">() {"}"}),</span>
+                {"\n"}
+                <span className="tok-punc">{"});"}</span>
+              </code>
+            </pre>
           </div>
         </div>
       );
 
     case "deploy":
       return (
-        <div className={panel}>
-          <div className={head}>
-            <span>deployments</span>
-            <span className="normal-case tracking-normal">auto · on push</span>
+        <div className={shell}>
+          <div className={bar}>
+            <span className="flex items-center gap-1.5 text-foreground">
+              <GitBranch className="size-3" />
+              Deployments
+            </span>
+            <span>auto · on push</span>
           </div>
           <ul>
             {[
-              ["main", "production", true],
-              ["feat/tools", "preview", false],
-              ["fix/auth", "preview", true],
-            ].map(([branch, env, ok]) => (
-              <li key={String(branch)} className={row}>
+              { b: "main", env: "Production", t: "12s", state: "live" },
+              { b: "feat/charts", env: "Preview", t: "9s", state: "building" },
+              { b: "fix/auth", env: "Preview", t: "11s", state: "live" },
+            ].map((d) => (
+              <li
+                key={d.b}
+                className="flex items-center gap-2.5 border-b border-border/60 px-3.5 py-2.5 last:border-b-0"
+              >
                 <span
-                  className={`size-1.5 shrink-0 ${ok ? "bg-pine" : "bg-signal"}`}
+                  className={cn(
+                    "size-1.5 shrink-0 rounded-full",
+                    d.state === "live" ? "bg-live" : "bg-warn",
+                  )}
                 />
-                <span className="font-mono text-[11.5px]">{branch}</span>
-                <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                  {env}
+                <span className="font-mono text-[11.5px]">{d.b}</span>
+                <span className="ml-auto rounded border border-border px-1.5 py-px text-[10px] text-muted-foreground">
+                  {d.env}
+                </span>
+                <span className="w-8 text-right font-mono text-[10.5px] tabular-nums text-subtle-foreground">
+                  {d.t}
                 </span>
               </li>
             ))}
           </ul>
-          <div className="border-t border-rule">
-            <Term
-              lines={[
-                [`$ ${site.cli}`, "sig"],
-                [`✓ live → my-server.${site.domain}/mcp`, "ok"],
-              ]}
-            />
+          <div className="border-t border-border p-3.5">
+            <div className="code rounded-lg border border-border bg-background/60 p-2.5">
+              <p>
+                <span className="text-live">➜</span>{" "}
+                <span className="text-foreground">{site.cli}</span>
+              </p>
+              <p className="text-live">
+                ✓ live → my-server.{site.domain}/mcp
+              </p>
+            </div>
           </div>
         </div>
       );
 
     case "publish":
       return (
-        <div className={panel}>
-          <div className={head}>
-            <span>publishing checks</span>
-            <span className="normal-case tracking-normal">3 / 4</span>
+        <div className={shell}>
+          <div className={bar}>
+            <span className="text-foreground">Publishing checks</span>
+            <span className="rounded-full border border-live/25 bg-live/10 px-1.5 py-px text-[10px] font-medium text-live">
+              3 / 4 passing
+            </span>
           </div>
           <ul>
             {[
@@ -145,18 +157,30 @@ export function StageVisual({ id }: { id: string }) {
               ["Security & policy", true],
               ["Domain / TLS / CSP", false],
             ].map(([label, ok]) => (
-              <li key={String(label)} className={row}>
-                <span className="text-[12px]">{label}</span>
-                <Status ok={Boolean(ok)}>{ok ? "pass" : "fix"}</Status>
+              <li
+                key={String(label)}
+                className="flex items-center gap-2.5 border-b border-border/60 px-3.5 py-2.5 last:border-b-0"
+              >
+                <span
+                  className={cn(
+                    "grid size-4 shrink-0 place-items-center rounded-full",
+                    ok ? "bg-live/15 text-live" : "bg-warn/15 text-warn",
+                  )}
+                >
+                  {ok ? (
+                    <Check className="size-2.5" />
+                  ) : (
+                    <span className="text-[9px] font-bold">!</span>
+                  )}
+                </span>
+                <span className="text-[12.5px]">{label}</span>
               </li>
             ))}
           </ul>
-          <div className="border-t border-rule">
-            <div className={head}>
-              <span>submission pack</span>
-            </div>
-            <div className="flex gap-3 p-3.5">
-              <span className="size-14 shrink-0 border border-rule bg-hatch" />
+          <div className="border-t border-border p-3.5">
+            <p className="text-[11px] text-subtle-foreground">Submission pack</p>
+            <div className="mt-2.5 flex gap-3">
+              <span className="size-14 shrink-0 rounded-lg bg-gradient-to-br from-brand/70 to-brand/20" />
               <div className="flex-1 pt-1.5">
                 <Bars w={[88, 66, 44]} />
               </div>
@@ -167,28 +191,78 @@ export function StageVisual({ id }: { id: string }) {
 
     case "iterate":
       return (
-        <div className={panel}>
-          <div className={head}>
-            <span>cloud inspector</span>
-            <span className="normal-case tracking-normal">session #4f2a</span>
+        <div className={shell}>
+          <div className={bar}>
+            <span className="text-foreground">Cloud Inspector</span>
+            <span className="flex items-center gap-1.5">
+              <Play className="size-2.5" />
+              session #4f2a
+            </span>
           </div>
-          <Term
-            lines={[
-              ["→ tools/call chart_sales", "dim"],
-              ["← result 200 · 1.4kb", "dim"],
-              ["✓ 41ms", "ok"],
-            ]}
-          />
-          <div className="grid grid-cols-3 border-t border-rule">
-            {["GPT", "Claude", "Gemini"].map((m) => (
+
+          <div className="code p-3.5">
+            <p className="text-[11px] text-subtle-foreground">
+              <span className="text-brand">→</span> tools/call
+            </p>
+            <pre className="mt-1.5 overflow-x-auto rounded-lg border border-border bg-background/60 p-2.5">
+              <code>
+                <span className="tok-punc">{"{"}</span>
+                {"\n  "}
+                <span className="tok-key">&quot;name&quot;</span>
+                <span className="tok-punc">: </span>
+                <span className="tok-str">&quot;chart_sales&quot;</span>
+                <span className="tok-punc">,</span>
+                {"\n  "}
+                <span className="tok-key">&quot;arguments&quot;</span>
+                <span className="tok-punc">: {"{ "}</span>
+                <span className="tok-key">&quot;period&quot;</span>
+                <span className="tok-punc">: </span>
+                <span className="tok-str">&quot;Q3&quot;</span>
+                <span className="tok-punc"> {"}"}</span>
+                {"\n"}
+                <span className="tok-punc">{"}"}</span>
+              </code>
+            </pre>
+
+            <p className="mt-3 flex items-center gap-1.5 text-[11px] text-subtle-foreground">
+              <span className="text-live">←</span> result
+              <span className="rounded border border-live/25 bg-live/10 px-1 py-px font-medium text-live">
+                200
+              </span>
+              <span className="ml-auto font-mono text-foreground">41ms</span>
+            </p>
+            <pre className="mt-1.5 overflow-x-auto rounded-lg border border-border bg-background/60 p-2.5">
+              <code>
+                <span className="tok-punc">{"{ "}</span>
+                <span className="tok-key">&quot;content&quot;</span>
+                <span className="tok-punc">: [{"{ "}</span>
+                <span className="tok-key">&quot;type&quot;</span>
+                <span className="tok-punc">: </span>
+                <span className="tok-str">&quot;resource&quot;</span>
+                <span className="tok-punc"> {"}"}] {"}"}</span>
+              </code>
+            </pre>
+          </div>
+
+          <div className="grid grid-cols-3 border-t border-border">
+            {[
+              ["GPT-5.2", "18/18"],
+              ["Claude", "18/18"],
+              ["Gemini", "17/18"],
+            ].map(([m, r], i) => (
               <div
                 key={m}
-                className="border-r border-rule px-3.5 py-3 last:border-r-0"
+                className={cn("px-3.5 py-3", i < 2 && "border-r border-border")}
               >
-                <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                  {m}
+                <p className="text-[11px] text-muted-foreground">{m}</p>
+                <p
+                  className={cn(
+                    "mt-1 font-mono text-[12.5px]",
+                    r === "18/18" ? "text-live" : "text-warn",
+                  )}
+                >
+                  {r}
                 </p>
-                <p className="mt-1.5 font-mono text-[12px] text-pine">pass</p>
               </div>
             ))}
           </div>
@@ -197,34 +271,37 @@ export function StageVisual({ id }: { id: string }) {
 
     case "monitor":
       return (
-        <div className={panel}>
-          <div className={head}>
-            <span>tool calls · 24h</span>
-            <span className="normal-case tracking-normal">12,481</span>
+        <div className={shell}>
+          <div className={bar}>
+            <span className="text-foreground">Tool calls · 24h</span>
+            <span className="font-mono tabular-nums">12,481</span>
           </div>
-          <div className="flex h-28 items-end gap-1 px-3.5 py-3.5">
-            {[38, 62, 45, 78, 56, 88, 70, 52, 81, 64, 92, 71].map((h, i) => (
+          <div className="flex h-32 items-end gap-1 px-3.5 py-3.5">
+            {[38, 62, 45, 78, 56, 88, 70, 52, 81, 64, 92, 71, 84, 59].map((h, i) => (
               <span
                 key={i}
-                className={`flex-1 ${i === 10 ? "bg-signal" : "bg-foreground/12"}`}
+                className={cn(
+                  "flex-1 rounded-sm",
+                  i === 10 ? "bg-brand" : "bg-foreground/12",
+                )}
                 style={{ height: `${h}%` }}
               />
             ))}
           </div>
-          <div className="grid grid-cols-3 border-t border-rule">
+          <div className="grid grid-cols-3 border-t border-border">
             {[
-              ["p50", "38ms"],
-              ["p95", "112ms"],
-              ["errors", "0.2%"],
-            ].map(([k, v]) => (
+              ["p50", "38ms", "text-foreground"],
+              ["p95", "112ms", "text-foreground"],
+              ["errors", "0.2%", "text-live"],
+            ].map(([k, v, tone], i) => (
               <div
                 key={k}
-                className="border-r border-rule px-3.5 py-3 last:border-r-0"
+                className={cn("px-3.5 py-3", i < 2 && "border-r border-border")}
               >
-                <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                  {k}
+                <p className="text-[11px] text-muted-foreground">{k}</p>
+                <p className={cn("mt-1 font-mono text-[13px] tabular-nums", tone)}>
+                  {v}
                 </p>
-                <p className="mt-1 font-mono text-[14px] tabular-nums">{v}</p>
               </div>
             ))}
           </div>
@@ -232,6 +309,6 @@ export function StageVisual({ id }: { id: string }) {
       );
 
     default:
-      return <div className={`${panel} h-64 bg-hatch`} />;
+      return <div className={cn(shell, "h-64 bg-dots")} />;
   }
 }

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const Accordion = AccordionPrimitive.Root;
@@ -12,48 +13,31 @@ function AccordionItem({
 }: React.ComponentProps<typeof AccordionPrimitive.Item>) {
   return (
     <AccordionPrimitive.Item
-      className={cn("border-b border-rule", className)}
+      className={cn("border-b border-border", className)}
       {...props}
     />
   );
 }
 
-/**
- * The trigger is a ruled row with an optional mono index in the margin. The
- * open state is marked by a signal `−`, matching the site's other affordances.
- */
 function AccordionTrigger({
   className,
   children,
-  index,
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
-  index?: string;
-}) {
+}: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          "group flex flex-1 items-start gap-4 py-5 text-left transition-colors hover:text-signal data-[state=open]:text-foreground",
+          "group flex flex-1 items-start justify-between gap-6 py-4 text-left text-[15px] font-medium transition-colors hover:text-muted-foreground",
           className,
         )}
         {...props}
       >
-        {index && (
-          <span className="mt-1 shrink-0 font-mono text-[10.5px] text-muted-foreground transition-colors group-hover:text-signal group-data-[state=open]:text-signal">
-            {index}
-          </span>
-        )}
-        <span className="flex-1 text-[16px] font-medium tracking-tight md:text-[17px]">
-          {children}
-        </span>
-        <span
+        {children}
+        <Plus
           aria-hidden
-          className="mt-0.5 shrink-0 font-mono text-[15px] leading-none text-muted-foreground transition-colors group-data-[state=open]:text-signal"
-        >
-          <span className="group-data-[state=open]:hidden">+</span>
-          <span className="hidden group-data-[state=open]:inline">−</span>
-        </span>
+          className="mt-0.5 size-4 shrink-0 text-subtle-foreground transition-transform duration-300 group-data-[state=open]:rotate-45"
+        />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );
@@ -71,7 +55,7 @@ function AccordionContent({
     >
       <div
         className={cn(
-          "pb-6 pl-0 pr-8 text-[15px] leading-relaxed text-muted-foreground sm:pl-[2.1rem]",
+          "pb-5 pr-10 text-[14px] leading-[1.65] text-muted-foreground",
           className,
         )}
       >

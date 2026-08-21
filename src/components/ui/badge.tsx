@@ -5,7 +5,7 @@ export function Badge({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 border border-rule bg-card px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.14em] text-muted-foreground",
+        "inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-1 px-2.5 py-1 text-[12.5px] text-muted-foreground",
         className,
       )}
       {...props}

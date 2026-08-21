@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Cloud, Terminal, Wrench } from "lucide-react";
 import { PageHero } from "@/components/site/page-hero";
-import { Section, Em } from "@/components/site/section";
+import { Section } from "@/components/site/section";
 import { Reveal } from "@/components/site/reveal";
 import { site } from "@/lib/site";
 
@@ -42,11 +42,10 @@ export default function DocsPage() {
   return (
     <>
       <PageHero
-        eyebrow="documentation"
-        meta="sdk · cloud · inspector"
+        eyebrow="Documentation"
         title={
           <>
-            Docs for every part of the <Em>pipeline</Em>.
+            Docs for every part of the pipeline.
           </>
         }
         subtitle={`Everything you need to build, deploy, test and publish with ${site.name}.`}

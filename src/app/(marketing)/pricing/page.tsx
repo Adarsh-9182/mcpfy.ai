@@ -3,7 +3,6 @@ import { PageHero } from "@/components/site/page-hero";
 import { PricingTables } from "@/components/site/pricing-tables";
 import { Faq } from "@/components/site/faq";
 import { site } from "@/lib/site";
-import { Em } from "@/components/site/section";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -14,12 +13,11 @@ export default function PricingPage() {
   return (
     <>
       <PageHero
-        eyebrow="pricing"
-        meta="usage-based · start free"
+        eyebrow="Pricing"
         title={
           <>
             Pricing that scales with{" "}
-            <Em>your app</Em>
+            your app
           </>
         }
         subtitle={

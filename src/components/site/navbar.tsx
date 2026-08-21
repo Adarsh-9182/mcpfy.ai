@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
 import { GithubIcon } from "./icons";
@@ -13,41 +13,25 @@ import { site } from "@/lib/site";
 import { navLinks, platformCloud } from "@/lib/content";
 import { PlatformMenu, SolutionsMenu } from "./mega-menu";
 
-/* Every nav label is a mono slug, so the bar reads as a running header rather
-   than a row of buttons. The active/open state is a signal underline. */
 const triggerClass =
-  "group inline-flex h-8 items-center gap-1.5 slug text-muted-foreground transition-colors hover:text-foreground data-[state=open]:text-signal";
+  "group inline-flex h-8 items-center gap-1 rounded-md px-2.5 text-[14px] text-muted-foreground transition-colors hover:text-foreground data-[state=open]:text-foreground";
 const linkClass =
-  "inline-flex h-8 items-center slug text-muted-foreground transition-colors hover:text-foreground";
-
-function Caret() {
-  return (
-    <span
-      aria-hidden
-      className="text-[9px] transition-transform duration-200 group-data-[state=open]:rotate-180"
-    >
-      ▼
-    </span>
-  );
-}
+  "inline-flex h-8 items-center rounded-md px-2.5 text-[14px] text-muted-foreground transition-colors hover:text-foreground";
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-rule bg-background/85 backdrop-blur-xl">
-      <div className="container-page flex h-[60px] items-center justify-between gap-6">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/70 backdrop-blur-xl">
+      <div className="container-page flex h-14 items-center gap-6">
         <Logo />
 
-        <NavigationMenu.Root
-          delayDuration={80}
-          className="relative hidden md:block"
-        >
-          <NavigationMenu.List className="flex items-center gap-7">
+        <NavigationMenu.Root delayDuration={60} className="relative hidden md:block">
+          <NavigationMenu.List className="flex items-center gap-0.5">
             <NavigationMenu.Item>
               <NavigationMenu.Trigger className={triggerClass}>
                 Platform
-                <Caret />
+                <ChevronDown className="size-3 opacity-60 transition-transform duration-200 group-data-[state=open]:rotate-180" />
               </NavigationMenu.Trigger>
               <NavigationMenu.Content className="absolute left-0 top-0 w-auto">
                 <PlatformMenu />
@@ -57,7 +41,7 @@ export function Navbar() {
             <NavigationMenu.Item>
               <NavigationMenu.Trigger className={triggerClass}>
                 Solutions
-                <Caret />
+                <ChevronDown className="size-3 opacity-60 transition-transform duration-200 group-data-[state=open]:rotate-180" />
               </NavigationMenu.Trigger>
               <NavigationMenu.Content className="absolute left-0 top-0 w-auto">
                 <SolutionsMenu />
@@ -75,61 +59,54 @@ export function Navbar() {
             ))}
           </NavigationMenu.List>
 
-          <div className="absolute left-1/2 top-full flex -translate-x-1/2 justify-center">
+          <div className="absolute left-0 top-full flex justify-start">
             <NavigationMenu.Viewport
               className={cn(
-                "relative mt-[9px] h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)]",
-                "origin-top overflow-hidden border border-rule bg-popover shadow-[var(--drop)]",
+                "relative mt-2 h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)]",
+                "origin-top-left overflow-hidden rounded-xl border border-border bg-popover shadow-panel",
                 "transition-[width,height] duration-250",
-                "data-[state=closed]:animate-[nav-out_150ms_ease] data-[state=open]:animate-[nav-in_200ms_ease]",
+                "data-[state=closed]:animate-[nav-out_140ms_ease] data-[state=open]:animate-[nav-in_180ms_ease]",
               )}
             />
           </div>
         </NavigationMenu.Root>
 
-        <div className="flex items-center gap-3">
+        <div className="ml-auto flex items-center gap-1.5">
           <Link
             href={site.github}
             target="_blank"
             rel="noreferrer"
-            className="hidden items-center gap-2 slug text-muted-foreground transition-colors hover:text-foreground lg:inline-flex"
+            className="hidden items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13.5px] text-muted-foreground transition-colors hover:text-foreground lg:inline-flex"
           >
-            <GithubIcon className="size-[15px]" />
+            <GithubIcon className="size-4" />
             {site.stars}
           </Link>
-          <span aria-hidden className="hidden h-4 w-px bg-rule lg:block" />
           <ThemeToggle className="hidden sm:inline-flex" />
           <Link
             href="/cloud"
-            className="group inline-flex h-9 items-center gap-2 bg-foreground px-4 slug text-background transition-colors hover:bg-signal"
+            className="ml-1 inline-flex h-8 items-center rounded-lg bg-foreground px-3.5 text-[13.5px] font-medium text-background transition-opacity hover:opacity-90"
           >
-            Cloud
-            <span
-              aria-hidden
-              className="transition-transform duration-300 group-hover:translate-x-0.5"
-            >
-              →
-            </span>
+            Open Cloud
           </Link>
 
           <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger asChild>
               <button
-                className="inline-flex size-9 items-center justify-center border border-rule text-muted-foreground transition-colors hover:text-foreground md:hidden"
+                className="inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface-2 md:hidden"
                 aria-label="Open menu"
               >
                 <Menu className="size-4" />
               </button>
             </Dialog.Trigger>
             <Dialog.Portal>
-              <Dialog.Overlay className="fixed inset-0 z-50 bg-foreground/25 backdrop-blur-sm md:hidden" />
-              <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-[88%] max-w-sm flex-col overflow-y-auto border-l border-rule bg-background px-6 py-5 md:hidden">
+              <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm md:hidden" />
+              <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-[86%] max-w-sm flex-col overflow-y-auto border-l border-border bg-background p-5 md:hidden">
                 <div className="flex items-center justify-between">
                   <Dialog.Title asChild>
                     <Logo />
                   </Dialog.Title>
                   <Dialog.Close
-                    className="inline-flex size-9 items-center justify-center border border-rule text-muted-foreground"
+                    className="inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground"
                     aria-label="Close menu"
                   >
                     <X className="size-4" />
@@ -139,18 +116,18 @@ export function Navbar() {
                   Site navigation
                 </Dialog.Description>
 
-                <nav className="mt-10 flex flex-col gap-9">
+                <nav className="mt-8 flex flex-col gap-7">
                   <div>
-                    <p className="slug border-b border-rule pb-2.5 text-signal">
-                      01 / platform
+                    <p className="px-2 text-[12px] font-medium text-subtle-foreground">
+                      Platform
                     </p>
-                    <ul className="mt-1">
+                    <ul className="mt-1.5">
                       {platformCloud.map((i) => (
                         <li key={i.title}>
                           <Link
                             href={i.href}
                             onClick={() => setOpen(false)}
-                            className="block border-b border-rule-soft py-3 text-[15px] transition-colors hover:text-signal"
+                            className="block rounded-lg px-2 py-2 text-[15px] transition-colors hover:bg-surface-2"
                           >
                             {i.title}
                           </Link>
@@ -159,16 +136,16 @@ export function Navbar() {
                     </ul>
                   </div>
                   <div>
-                    <p className="slug border-b border-rule pb-2.5 text-signal">
-                      02 / company
+                    <p className="px-2 text-[12px] font-medium text-subtle-foreground">
+                      Company
                     </p>
-                    <ul className="mt-1">
+                    <ul className="mt-1.5">
                       {navLinks.map((i) => (
                         <li key={i.href}>
                           <Link
                             href={i.href}
                             onClick={() => setOpen(false)}
-                            className="block border-b border-rule-soft py-3 text-[15px] transition-colors hover:text-signal"
+                            className="block rounded-lg px-2 py-2 text-[15px] transition-colors hover:bg-surface-2"
                           >
                             {i.label}
                           </Link>
@@ -178,14 +155,14 @@ export function Navbar() {
                   </div>
                 </nav>
 
-                <div className="mt-auto flex items-center gap-3 pt-10">
+                <div className="mt-auto flex items-center gap-2 pt-8">
                   <ThemeToggle />
                   <Link
                     href="/signup"
                     onClick={() => setOpen(false)}
-                    className="inline-flex h-11 flex-1 items-center justify-center gap-2 bg-foreground slug text-background"
+                    className="inline-flex h-10 flex-1 items-center justify-center rounded-lg bg-foreground text-[14.5px] font-medium text-background"
                   >
-                    Start deploying <span aria-hidden>→</span>
+                    Start deploying
                   </Link>
                 </div>
               </Dialog.Content>

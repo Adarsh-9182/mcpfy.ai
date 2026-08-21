@@ -17,12 +17,12 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label="Toggle theme"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
       className={cn(
-        "inline-flex size-9 items-center justify-center border border-rule text-muted-foreground transition-colors hover:border-signal hover:text-signal",
+        "inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground",
         className,
       )}
     >
-      <Sun className="hidden size-[15px] dark:block" />
-      <Moon className="size-[15px] dark:hidden" />
+      <Sun className="hidden size-4 dark:block" />
+      <Moon className="size-4 dark:hidden" />
     </button>
   );
 }

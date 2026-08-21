@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/site/page-hero";
-import { Section, Em } from "@/components/site/section";
+import { Section } from "@/components/site/section";
 import { ContactForm } from "@/components/site/contact-form";
 import { site } from "@/lib/site";
 
@@ -19,11 +19,10 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="contact"
-        meta="reply within one business day"
+        eyebrow="Contact"
         title={
           <>
-            Book a <Em>call</Em>
+            Book a call
           </>
         }
         subtitle="Tell us what you are building and we will get back to you within one business day."

@@ -1,52 +1,44 @@
 import Link from "next/link";
-import { Band } from "./frame";
+import { ArrowUp, Sparkles } from "lucide-react";
+import { Section, Title, ArrowLink } from "./section";
 import { Reveal } from "./reveal";
 import { GithubIcon } from "./icons";
 
-/**
- * The closer inverts the page: an ink slab with the three ways in, numbered
- * like everything else. Colours are expressed against `background` so the
- * panel flips correctly in dark mode.
- */
+const repos = ["mcpfy/chart-server", "mcpfy/postgres-mcp", "acme/internal-tools"];
+
 const routes = [
   {
-    n: "01",
     title: "From a Git repository",
-    desc: "Already have an MCP server on GitHub? Point us at the repo and every push deploys itself.",
+    desc: "Point us at a repo. Every push builds, checks and ships itself.",
     cta: { label: "Connect GitHub", href: "/docs" },
-    kind: "repos" as const,
   },
   {
-    n: "02",
     title: "From a prompt",
-    desc: "Describe what you want. Watch the server, the tools and the widgets scaffold in front of you.",
+    desc: "Describe what you want and watch the tools and widgets scaffold.",
     cta: { label: "Start vibecoding", href: "/vibe" },
-    kind: "prompt" as const,
   },
   {
-    n: "03",
     title: "From a template",
-    desc: "Start on a known-good scaffold — charts, diagrams, databases, internal tools.",
+    desc: "Start on a known-good scaffold — charts, diagrams, databases.",
     cta: { label: "Browse templates", href: "/templates" },
-    kind: "templates" as const,
   },
 ];
 
-const repos = ["mcpfy/chart-server", "mcpfy/postgres-mcp", "acme/internal-tools"];
-
-function Mock({ kind }: { kind: "repos" | "prompt" | "templates" }) {
-  if (kind === "repos") {
+function Mock({ i }: { i: number }) {
+  if (i === 0) {
     return (
-      <div className="border border-background/20">
+      <div className="rounded-lg border border-border bg-background/50">
         {repos.map((repo) => (
           <div
             key={repo}
-            className="flex items-center gap-2.5 border-b border-background/12 px-3 py-2.5 last:border-b-0"
+            className="flex items-center gap-2 border-b border-border/60 px-3 py-2 last:border-b-0"
           >
-            <GithubIcon className="size-3.5 shrink-0 opacity-60" />
-            <span className="truncate font-mono text-[11px]">{repo}</span>
-            <span className="ml-auto font-mono text-[9.5px] uppercase tracking-wider opacity-60">
-              import
+            <GithubIcon className="size-3.5 shrink-0 text-muted-foreground" />
+            <span className="truncate font-mono text-[11px] text-muted-foreground">
+              {repo}
+            </span>
+            <span className="ml-auto rounded border border-border px-1.5 py-px text-[10px] text-subtle-foreground">
+              Import
             </span>
           </div>
         ))}
@@ -54,39 +46,42 @@ function Mock({ kind }: { kind: "repos" | "prompt" | "templates" }) {
     );
   }
 
-  if (kind === "prompt") {
+  if (i === 1) {
     return (
-      <div className="border border-background/20 px-3 py-3">
-        <p className="font-mono text-[11.5px] leading-relaxed opacity-80">
-          make me an MCP server for my Postgres database
-          <span aria-hidden className="animate-caret ml-1 opacity-100">
+      <div className="relative rounded-lg border border-border bg-background/50 p-3">
+        <p className="pr-8 text-[12.5px] leading-relaxed text-muted-foreground">
+          Make me an MCP server for my Postgres database
+          <span aria-hidden className="animate-caret ml-0.5 text-brand">
             ▍
           </span>
         </p>
-        <p className="mt-4 flex items-center gap-2 font-mono text-[9.5px] uppercase tracking-wider opacity-60">
-          <span aria-hidden>⏎</span> send to build
-        </p>
+        <span className="absolute bottom-2.5 right-2.5 grid size-6 place-items-center rounded-md bg-brand text-white">
+          <ArrowUp className="size-3.5" />
+        </span>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 gap-2">
       {[
         { name: "Chart Builder", bars: [30, 52, 38, 68, 55, 80] },
         { name: "Diagram Builder", bars: [62, 40, 74, 48, 66, 35] },
       ].map((t) => (
-        <div key={t.name} className="border border-background/20">
-          <div className="flex h-16 items-end gap-1 p-2">
-            {t.bars.map((h, i) => (
+        <div
+          key={t.name}
+          className="overflow-hidden rounded-lg border border-border bg-background/50"
+        >
+          <div className="flex h-14 items-end gap-1 p-2">
+            {t.bars.map((h, bi) => (
               <span
-                key={i}
-                className="flex-1 bg-background/25"
+                key={bi}
+                className="flex-1 rounded-sm bg-brand/30"
                 style={{ height: `${h}%` }}
               />
             ))}
           </div>
-          <p className="border-t border-background/12 px-2 py-1.5 font-mono text-[9.5px] uppercase tracking-wider">
+          <p className="border-t border-border/60 px-2 py-1.5 text-[10.5px] text-muted-foreground">
             {t.name}
           </p>
         </div>
@@ -97,83 +92,65 @@ function Mock({ kind }: { kind: "repos" | "prompt" | "templates" }) {
 
 export function FinalCta() {
   return (
-    <Band index="10" label="begin">
-      <div className="bg-foreground text-background">
-        <div className="px-6 py-14 md:px-12 md:py-20">
+    <Section className="border-t border-border">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-surface-1">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-72 hero-glow opacity-80"
+        />
+
+        <div className="relative px-6 py-14 md:px-12 md:py-16">
           <Reveal>
-            <h2 className="display max-w-[16ch] text-[40px] md:text-[56px] lg:text-[64px]">
-              Three ways in. Pick the one you already{" "}
-              <em className="italic opacity-70">have</em>.
-            </h2>
+            <div className="mx-auto max-w-2xl text-center">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-1/80 px-3 py-1 text-[12.5px] text-muted-foreground backdrop-blur">
+                <Sparkles className="size-3 text-brand" />
+                Three ways in
+              </span>
+              <Title as="h2" size="lg" className="mt-5">
+                Ship your first MCP server today
+              </Title>
+              <p className="mx-auto mt-4 max-w-lg text-[16px] leading-[1.6] text-muted-foreground">
+                Start from the code you already have, a prompt, or a template.
+              </p>
+              <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Link
+                  href="/signup"
+                  className="inline-flex h-11 items-center justify-center rounded-lg bg-foreground px-5 text-[14.5px] font-medium text-background transition-opacity hover:opacity-90"
+                >
+                  Start deploying
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex h-11 items-center justify-center rounded-lg border border-border bg-surface-1 px-5 text-[14.5px] font-medium transition-colors hover:border-border-strong hover:bg-surface-2"
+                >
+                  Book a call
+                </Link>
+              </div>
+            </div>
           </Reveal>
 
-          <div className="mt-14 grid gap-px bg-background/20 md:grid-cols-3">
+          <div className="mt-14 grid gap-4 md:grid-cols-3">
             {routes.map((r, i) => (
-              <Reveal key={r.n} delay={i * 0.08}>
-                <div className="flex h-full flex-col gap-6 bg-foreground px-0 py-8 md:px-7 md:py-2">
+              <Reveal key={r.title} delay={i * 0.07}>
+                <div className="card-surface flex h-full flex-col gap-4 rounded-xl p-5">
                   <div>
-                    <span className="font-mono text-[10.5px] tracking-[0.16em] opacity-60">
-                      {r.n}
-                    </span>
-                    <p className="mt-3 text-[18px] font-medium tracking-tight">
-                      {r.title}
-                    </p>
-                    <p className="mt-2.5 text-[14px] leading-relaxed opacity-70">
+                    <p className="text-[14px] font-medium">{r.title}</p>
+                    <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
                       {r.desc}
                     </p>
                   </div>
-
                   <div className="flex-1">
-                    <Mock kind={r.kind} />
+                    <Mock i={i} />
                   </div>
-
-                  <Link
-                    href={r.cta.href}
-                    className="group inline-flex items-center gap-2 self-start font-mono text-[11px] uppercase tracking-[0.16em] transition-opacity hover:opacity-70"
-                  >
-                    <span className="border-b border-current pb-0.5">
-                      {r.cta.label}
-                    </span>
-                    <span
-                      aria-hidden
-                      className="transition-transform duration-300 group-hover:translate-x-1"
-                    >
-                      →
-                    </span>
-                  </Link>
+                  <ArrowLink href={r.cta.href} className="text-[13px]">
+                    {r.cta.label}
+                  </ArrowLink>
                 </div>
               </Reveal>
             ))}
           </div>
-
-          <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-background/20 pt-8">
-            <Link
-              href="/signup"
-              className="group inline-flex h-12 items-center gap-3 bg-background px-7 text-[14px] font-medium tracking-tight text-foreground transition-colors hover:bg-signal hover:text-signal-foreground"
-            >
-              Start deploying
-              <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              >
-                →
-              </span>
-            </Link>
-            <Link
-              href="/contact"
-              className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] opacity-70 transition-opacity hover:opacity-100"
-            >
-              <span className="border-b border-current pb-0.5">Book a call</span>
-              <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              >
-                →
-              </span>
-            </Link>
-          </div>
         </div>
       </div>
-    </Band>
+    </Section>
   );
 }

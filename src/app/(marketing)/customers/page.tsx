@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/site/page-hero";
-import { Section, Em } from "@/components/site/section";
+import { Section } from "@/components/site/section";
 import { Reveal } from "@/components/site/reveal";
 import { FinalCta } from "@/components/site/final-cta";
 import { Button } from "@/components/ui/button";
@@ -47,12 +47,11 @@ export default function CustomersPage() {
   return (
     <>
       <PageHero
-        eyebrow="customers"
-        meta="who ships on mcpfy"
+        eyebrow="Customers"
         title={
           <>
             Teams building on{" "}
-            <Em>{site.name}</Em>
+            {site.name}
           </>
         }
         subtitle="From solo developers to platform teams, these are the people shipping MCP to production."

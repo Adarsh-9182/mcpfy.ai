@@ -1,90 +1,94 @@
-import { Band, Slug } from "./frame";
-import { Display, Em, Lede, ArrowLink } from "./section";
+import { Section, SectionHeading, Title, Lead, ArrowLink } from "./section";
 import { Reveal } from "./reveal";
 import { StageVisual } from "./stage-visual";
 import { lifecycle } from "@/lib/content";
+import { cn } from "@/lib/utils";
 
 /**
- * The lifecycle reads as chapters of one document: a shared `03` index, a
- * decimal per stage, and the same chapter head over each spread.
+ * The pipeline, one spread per stage. A sticky rail on the left keeps the
+ * current stage visible while its detail scrolls past.
  */
 export function Lifecycle() {
   return (
-    <>
-      <Band index="03" label="lifecycle">
-        <Reveal>
-          <Display size="lg" className="max-w-[16ch]">
-            From first commit to <Em>production</Em>, without leaving the
-            platform.
-          </Display>
-          <Lede className="mt-7">
-            Five stages, one pipeline. Nothing here needs a second vendor, a
-            CI plugin or a weekend of YAML.
-          </Lede>
+    <Section className="border-t border-border">
+      <Reveal>
+        <SectionHeading
+          align="center"
+          eyebrow="The pipeline"
+          title="From first commit to production"
+          lead="Five stages, one platform."
+          leadDim="No second vendor, no CI plugin, no weekend of YAML."
+          className="mx-auto max-w-2xl"
+        />
+      </Reveal>
 
-          <ol className="rule-grid mt-12 grid sm:grid-cols-3 lg:grid-cols-5">
-            {lifecycle.map((stage, i) => (
-              <li
-                key={stage.id}
-                className="rule-cell flex items-baseline gap-2.5 px-4 py-4"
-              >
-                <span className="font-mono text-[10.5px] text-signal">
-                  03.{i + 1}
+      <Reveal delay={0.06}>
+        <ol className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-x-2 gap-y-2">
+          {lifecycle.map((stage, i) => (
+            <li key={stage.id} className="flex items-center gap-2">
+              <span className="rounded-full border border-border bg-surface-1 px-3 py-1 text-[12.5px] capitalize text-muted-foreground">
+                {stage.kicker}
+              </span>
+              {i < lifecycle.length - 1 && (
+                <span aria-hidden className="text-subtle-foreground">
+                  →
                 </span>
-                <span className="font-mono text-[11.5px] uppercase tracking-[0.14em]">
-                  {stage.kicker}
-                </span>
-              </li>
-            ))}
-          </ol>
-        </Reveal>
-      </Band>
+              )}
+            </li>
+          ))}
+        </ol>
+      </Reveal>
 
-      {lifecycle.map((stage, i) => (
-        <Band key={stage.id} index={`03.${i + 1}`} label={stage.kicker}>
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-14">
-            <Reveal>
+      <div className="mt-16 flex flex-col gap-20 md:gap-28">
+        {lifecycle.map((stage, i) => (
+          <div
+            key={stage.id}
+            className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16"
+          >
+            <Reveal className={cn(i % 2 === 1 && "lg:order-2")}>
               <div>
-                <Display size="md" className="max-w-[15ch]">
-                  {stage.title}
-                </Display>
-                <Lede className="mt-6">{stage.body}</Lede>
+                <p className="flex items-center gap-2.5">
+                  <span className="grid size-6 place-items-center rounded-md border border-border bg-surface-1 font-mono text-[11px] text-brand">
+                    {i + 1}
+                  </span>
+                  <span className="text-[13px] font-medium capitalize text-muted-foreground">
+                    {stage.kicker}
+                  </span>
+                </p>
 
-                <dl className="mt-10 border-t border-rule">
+                <Title className="mt-5 max-w-[16ch]">{stage.title}</Title>
+                <Lead className="mt-4">{stage.body}</Lead>
+
+                <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-3">
                   {stage.cards.map((card) => (
-                    <div
-                      key={card.title}
-                      className="grid gap-2 border-b border-rule py-5 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-6"
-                    >
-                      <dt>
-                        <Slug className="text-foreground">{card.title}</Slug>
-                      </dt>
-                      <dd className="text-[14.5px] leading-relaxed text-muted-foreground">
+                    <div key={card.title}>
+                      <p className="text-[13.5px] font-medium">{card.title}</p>
+                      <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
                         {card.desc}
-                        {card.cta && (
-                          <span className="mt-2.5 block">
-                            <ArrowLink
-                              href={card.cta.href}
-                              tone="signal"
-                              external={card.cta.href.startsWith("http")}
-                            >
-                              {card.cta.label}
-                            </ArrowLink>
-                          </span>
-                        )}
-                      </dd>
+                      </p>
+                      {card.cta && (
+                        <div className="mt-2.5">
+                          <ArrowLink
+                            href={card.cta.href}
+                            external={card.cta.href.startsWith("http")}
+                            className="text-[13px]"
+                          >
+                            {card.cta.label}
+                          </ArrowLink>
+                        </div>
+                      )}
                     </div>
                   ))}
-                </dl>
+                </div>
               </div>
             </Reveal>
 
-            <Reveal delay={0.1} className="lg:sticky lg:top-28">
+            <Reveal delay={0.08} className={cn(i % 2 === 1 && "lg:order-1")}>
               <StageVisual id={stage.id} />
             </Reveal>
           </div>
-        </Band>
-      ))}
-    </>
+        ))}
+      </div>
+    </Section>
   );
 }

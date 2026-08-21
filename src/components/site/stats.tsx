@@ -1,52 +1,49 @@
-import { Band, Slug } from "./frame";
-import { Display, Em, Lede, ArrowLink } from "./section";
+import { Section, SectionHeading, ArrowLink } from "./section";
 import { Reveal } from "./reveal";
 import { stats } from "@/lib/content";
 
-/**
- * The open-source record, set as a masthead figure block: the numbers run in
- * the display serif at headline size, with their sources underneath.
- */
 export function Stats() {
   return (
-    <Band index="05" label="in the open">
-      <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] lg:items-end lg:gap-16">
+    <Section className="border-t border-border">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-end lg:gap-20">
         <Reveal>
-          <Display size="lg" className="max-w-[14ch]">
-            Built in the <Em>open</Em>, from the first commit.
-          </Display>
+          <SectionHeading
+            eyebrow="Open source"
+            title="Built in the open, from the first commit"
+          />
         </Reveal>
         <Reveal delay={0.06}>
-          <Lede>
-            One of the most adopted open-source MCP frameworks. The SDK, the
-            Inspector and the templates are all public — read them before you
-            trust them.
-          </Lede>
+          <p className="text-[16px] leading-[1.6] text-muted-foreground md:text-[17px]">
+            <span className="text-foreground">
+              One of the most adopted open-source MCP frameworks.
+            </span>{" "}
+            The SDK, the Inspector and every template are public — read them
+            before you trust them.
+          </p>
         </Reveal>
       </div>
 
-      <dl className="rule-grid mt-16 grid md:grid-cols-3">
+      <dl className="mt-14 grid gap-4 md:grid-cols-3">
         {stats.map((s, i) => (
-          <Reveal key={s.value} delay={i * 0.08}>
-            <div className="rule-cell h-full px-5 py-9 md:px-8">
-              <dt className="sr-only">{s.label}</dt>
+          <Reveal key={s.value} delay={i * 0.07}>
+            <div className="card-surface h-full rounded-xl p-6">
+              <dt className="text-[13px] text-muted-foreground">{s.label}</dt>
               <dd>
-                <span className="display block text-[52px] tabular-nums leading-none md:text-[64px]">
+                <p className="mt-3 text-[44px] font-semibold leading-none tracking-[-0.04em] tabular-nums">
                   {s.value}
-                </span>
-                <Slug className="mt-5 block">{s.label}</Slug>
-                <span className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+                </p>
+                <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
                   {(s.tags ?? [s.cta]).filter(Boolean).map((t) => (
-                    <ArrowLink key={t} href="/docs" tone="muted">
+                    <ArrowLink key={t} href="/docs" className="text-[13px]">
                       {t}
                     </ArrowLink>
                   ))}
-                </span>
+                </div>
               </dd>
             </div>
           </Reveal>
         ))}
       </dl>
-    </Band>
+    </Section>
   );
 }

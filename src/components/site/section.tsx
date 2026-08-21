@@ -1,54 +1,34 @@
 import * as React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Slug } from "./frame";
 
 /**
- * Editorial type primitives. Headlines are set in the display serif and run
- * large; every supporting label is mono and uppercase. Nothing in between.
+ * Section primitives. Headings are one grotesk at a few tight sizes; the only
+ * decorative device is the two-tone lead, where the first sentence stays at
+ * full contrast and the rest drops to muted.
  */
 
-/** Serif display headline. `as` lets a band pick its own heading level. */
-export function Display({
-  as: Tag = "h2",
-  size = "md",
+export function Section({
   className,
   children,
   ...props
-}: React.ComponentProps<"h2"> & {
-  as?: "h1" | "h2" | "h3";
-  size?: "sm" | "md" | "lg" | "xl";
-}) {
-  const sizes = {
-    sm: "text-[26px] md:text-[32px]",
-    md: "text-[34px] md:text-[44px] lg:text-[52px]",
-    lg: "text-[40px] md:text-[56px] lg:text-[64px]",
-    xl: "text-[44px] md:text-[64px] lg:text-[80px]",
-  };
+}: React.ComponentProps<"section">) {
   return (
-    <Tag className={cn("display text-balance", sizes[size], className)} {...props}>
-      {children}
-    </Tag>
+    <section className={cn("py-20 md:py-28", className)} {...props}>
+      <div className="container-page">{children}</div>
+    </section>
   );
 }
 
-/** The italic, signal-coloured word inside a display headline. */
-export function Em({ children }: { children: React.ReactNode }) {
-  return <em className="italic text-signal">{children}</em>;
-}
-
-/** Standfirst paragraph under a display headline. */
-export function Lede({
+/** Small brand-tinted label above a heading. Sentence case, never tracked out. */
+export function Eyebrow({
   className,
   children,
   ...props
 }: React.ComponentProps<"p">) {
   return (
     <p
-      className={cn(
-        "max-w-[52ch] text-balance-pretty text-[16.5px] leading-[1.65] text-muted-foreground md:text-[18px]",
-        className,
-      )}
+      className={cn("text-[13px] font-medium text-brand", className)}
       {...props}
     >
       {children}
@@ -56,91 +36,74 @@ export function Lede({
   );
 }
 
-/** Mono link with a sliding arrow — the site's standard call to action. */
-export function ArrowLink({
-  href,
-  external = false,
-  tone = "ink",
-  className,
-  children,
-}: {
-  href: string;
-  external?: boolean;
-  tone?: "ink" | "signal" | "muted";
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-      className={cn(
-        "group inline-flex items-center gap-2 slug transition-colors",
-        tone === "signal" && "text-signal hover:text-signal-ink",
-        tone === "ink" && "text-foreground hover:text-signal",
-        tone === "muted" && "text-muted-foreground hover:text-foreground",
-        className,
-      )}
-    >
-      <span className="border-b border-current pb-0.5">{children}</span>
-      <span
-        aria-hidden
-        className="transition-transform duration-300 group-hover:translate-x-1"
-      >
-        →
-      </span>
-    </Link>
-  );
-}
-
-/** Square mono chip used for tags, categories and surface lists. */
-export function Chip({
+export function Title({
+  as: Tag = "h2",
+  size = "md",
   className,
   children,
   ...props
-}: React.ComponentProps<"span">) {
+}: React.ComponentProps<"h2"> & {
+  as?: "h1" | "h2" | "h3";
+  size?: "sm" | "md" | "lg";
+}) {
+  const sizes = {
+    sm: "text-[22px] md:text-[26px]",
+    md: "text-[30px] md:text-[40px]",
+    lg: "text-[38px] md:text-[54px]",
+  };
   return (
-    <span
+    <Tag
       className={cn(
-        "inline-flex items-center gap-1.5 border border-rule bg-card px-2.5 py-1 font-mono text-[11px] tracking-tight text-muted-foreground",
+        "font-semibold leading-[1.08] text-balance",
+        sizes[size],
         className,
       )}
       {...props}
     >
       {children}
-    </span>
+    </Tag>
   );
 }
 
 /**
- * Simple padded section for the secondary marketing pages that do not need
- * the indexed band treatment.
+ * Lead paragraph. `dim` continues the sentence at lower contrast, which reads
+ * as one thought at two weights rather than two stacked paragraphs.
  */
-export function Section({
+export function Lead({
+  dim,
   className,
   children,
   ...props
-}: React.ComponentProps<"section">) {
+}: React.ComponentProps<"p"> & { dim?: React.ReactNode }) {
   return (
-    <section
-      className={cn("border-t border-rule py-16 md:py-24", className)}
+    <p
+      className={cn(
+        "max-w-[60ch] text-[16px] leading-[1.6] text-foreground/90 text-balance-pretty md:text-[17px]",
+        className,
+      )}
       {...props}
     >
-      <div className="container-page">{children}</div>
-    </section>
+      {children}
+      {dim && <span className="text-muted-foreground"> {dim}</span>}
+    </p>
   );
 }
 
+/** Section header block: eyebrow, title, lead, optional action. */
 export function SectionHeading({
-  kicker,
+  eyebrow,
   title,
-  subtitle,
+  lead,
+  leadDim,
+  action,
   align = "left",
   className,
 }: {
-  kicker?: string;
+  eyebrow?: string;
   title: React.ReactNode;
-  subtitle?: React.ReactNode;
+  lead?: React.ReactNode;
+  leadDim?: React.ReactNode;
+  action?: React.ReactNode;
   align?: "left" | "center";
   className?: string;
 }) {
@@ -152,11 +115,83 @@ export function SectionHeading({
         className,
       )}
     >
-      {kicker && <Slug className="text-signal">{kicker}</Slug>}
-      <Display size="md" className="max-w-4xl">
-        {title}
-      </Display>
-      {subtitle && <Lede>{subtitle}</Lede>}
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+      <Title className="max-w-[20ch]">{title}</Title>
+      {lead && (
+        <Lead dim={leadDim} className={align === "center" ? "mx-auto" : undefined}>
+          {lead}
+        </Lead>
+      )}
+      {action && <div className="mt-2">{action}</div>}
     </div>
+  );
+}
+
+/** Text link with a sliding arrow. */
+export function ArrowLink({
+  href,
+  external = false,
+  tone = "brand",
+  className,
+  children,
+}: {
+  href: string;
+  external?: boolean;
+  tone?: "brand" | "plain";
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+      className={cn(
+        "group inline-flex items-center gap-1.5 text-[14px] font-medium transition-colors",
+        tone === "brand"
+          ? "text-brand hover:text-brand-hi"
+          : "text-foreground hover:text-muted-foreground",
+        className,
+      )}
+    >
+      {children}
+      <span
+        aria-hidden
+        className="transition-transform duration-300 group-hover:translate-x-0.5"
+      >
+        →
+      </span>
+    </Link>
+  );
+}
+
+/** Small bordered tag. */
+export function Tag({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"span">) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-md border border-border bg-surface-1 px-2.5 py-1 text-[13px] text-muted-foreground",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </span>
+  );
+}
+
+/** A live status dot with an expanding ring. */
+export function LiveDot({ className }: { className?: string }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "size-1.5 shrink-0 rounded-full bg-live animate-pulse-ring",
+        className,
+      )}
+    />
   );
 }

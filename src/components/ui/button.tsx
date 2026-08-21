@@ -3,29 +3,23 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-/**
- * Squared buttons. The editorial system has almost no radius, and the primary
- * action resolves to the signal colour on hover rather than fading out.
- */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-none text-[14px] font-medium tracking-tight transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-[14px] font-medium transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default:
-          "bg-foreground text-background hover:bg-signal hover:text-signal-foreground",
-        signal:
-          "bg-signal text-signal-foreground hover:bg-signal-ink",
+        default: "bg-foreground text-background hover:opacity-90",
+        brand: "bg-brand text-white hover:bg-brand-hi",
         outline:
-          "border border-rule-strong/30 bg-transparent hover:border-signal hover:text-signal",
-        subtle: "bg-secondary text-secondary-foreground hover:bg-accent",
-        ghost: "hover:bg-accent",
-        link: "text-foreground underline-offset-4 hover:text-signal hover:underline",
+          "border border-border bg-surface-1 hover:border-border-strong hover:bg-surface-2",
+        subtle: "bg-surface-2 hover:bg-surface-3",
+        ghost: "hover:bg-surface-2",
+        link: "text-brand underline-offset-4 hover:underline",
       },
       size: {
         sm: "h-8 px-3 text-[13px]",
-        default: "h-10 px-5",
-        lg: "h-12 px-7",
+        default: "h-10 px-4",
+        lg: "h-11 px-5 text-[14.5px]",
         icon: "size-9",
       },
     },

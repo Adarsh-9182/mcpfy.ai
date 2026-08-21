@@ -16,7 +16,6 @@ import {
   solutionsMenu,
   type MenuItem,
 } from "@/lib/content";
-import { cn } from "@/lib/utils";
 
 const icons: Record<string, React.ComponentType<{ className?: string }>> = {
   cloud: Cloud,
@@ -28,57 +27,28 @@ const icons: Record<string, React.ComponentType<{ className?: string }>> = {
   sparkles: Sparkles,
 };
 
-/* The menus are laid out as a printed index: numbered entries on ruled rows,
-   no thumbnails, no gradients. Hover lifts the row to the card surface and
-   turns the number and arrow signal-coloured. */
-
-function GroupLabel({
-  index,
-  children,
-  className,
-}: {
-  index: string;
-  children: React.ReactNode;
-  className?: string;
-}) {
+function GroupLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className={cn(
-        "flex items-center gap-2.5 border-b border-rule px-5 py-3",
-        className,
-      )}
-    >
-      <span className="slug text-signal">{index}</span>
-      <span className="slug text-muted-foreground">{children}</span>
-    </div>
+    <p className="px-3 pb-2 pt-1 text-[12px] font-medium text-subtle-foreground">
+      {children}
+    </p>
   );
 }
 
-function PlatformRow({ item, n }: { item: MenuItem; n: number }) {
+function Row({ item }: { item: MenuItem }) {
   const Icon = icons[item.icon] ?? Cloud;
   return (
     <NavigationMenu.Link asChild>
       <Link
         href={item.href}
-        className="group flex min-w-0 gap-3.5 border-b border-r border-rule px-5 py-4 transition-colors hover:bg-accent"
+        className="group flex min-w-0 gap-3 rounded-lg p-3 transition-colors hover:bg-surface-2"
       >
-        <span className="flex w-8 shrink-0 flex-col items-start gap-2 pt-0.5">
-          <span className="font-mono text-[10px] text-muted-foreground transition-colors group-hover:text-signal">
-            {String(n).padStart(2, "0")}
-          </span>
-          <Icon className="size-4 text-muted-foreground transition-colors group-hover:text-signal" />
+        <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg border border-border bg-surface-2 text-muted-foreground transition-colors group-hover:border-brand/30 group-hover:bg-brand/10 group-hover:text-brand">
+          <Icon className="size-3.5" />
         </span>
-        <span className="min-w-0 flex-1">
-          <span className="flex items-center gap-1.5 text-[14px] font-medium">
-            {item.title}
-            <span
-              aria-hidden
-              className="text-signal opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100"
-            >
-              →
-            </span>
-          </span>
-          <span className="mt-1 block text-[12.5px] leading-snug text-muted-foreground">
+        <span className="min-w-0">
+          <span className="block text-[13.5px] font-medium">{item.title}</span>
+          <span className="mt-0.5 block text-[12.5px] leading-snug text-muted-foreground">
             {item.desc}
           </span>
         </span>
@@ -89,39 +59,36 @@ function PlatformRow({ item, n }: { item: MenuItem; n: number }) {
 
 export function PlatformMenu() {
   return (
-    <div className="grid w-[880px] grid-cols-[1fr_300px]">
-      <GroupLabel index="01">Cloud</GroupLabel>
-      <GroupLabel index="02" className="border-l border-rule">
-        Open source
-      </GroupLabel>
-
-      <div className="grid grid-cols-2">
-        {platformCloud.map((item, i) => (
-          <PlatformRow key={item.title} item={item} n={i + 1} />
-        ))}
+    <div className="grid w-[720px] grid-cols-[1fr_260px]">
+      <div className="p-2">
+        <GroupLabel>Cloud</GroupLabel>
+        <div className="grid grid-cols-2">
+          {platformCloud.map((item) => (
+            <Row key={item.title} item={item} />
+          ))}
+        </div>
       </div>
 
-      <div className="flex flex-col border-l border-rule">
+      <div className="border-l border-border bg-surface-1/60 p-2">
+        <GroupLabel>Open source</GroupLabel>
         {platformOpenSource.map((p) => (
           <NavigationMenu.Link asChild key={p.title}>
             <Link
               href={p.href}
-              className="group flex-1 border-b border-rule px-5 py-4 transition-colors hover:bg-accent"
+              className="group block rounded-lg p-3 transition-colors hover:bg-surface-2"
             >
-              <span className="flex items-start justify-between gap-2">
-                <span className="text-[14px] font-medium">{p.title}</span>
-                <span className="flex gap-1">
-                  {p.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="border border-rule px-1.5 py-px font-mono text-[9px] uppercase tracking-wider text-muted-foreground group-hover:border-signal/40 group-hover:text-signal"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </span>
+              <span className="flex items-center gap-2">
+                <span className="text-[13.5px] font-medium">{p.title}</span>
+                {p.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded border border-border px-1 py-px font-mono text-[9.5px] text-subtle-foreground"
+                  >
+                    {t}
+                  </span>
+                ))}
               </span>
-              <span className="mt-1.5 block text-[12.5px] leading-snug text-muted-foreground">
+              <span className="mt-1 block text-[12.5px] leading-snug text-muted-foreground">
                 {p.desc}
               </span>
             </Link>
@@ -134,62 +101,40 @@ export function PlatformMenu() {
 
 export function SolutionsMenu() {
   return (
-    <div className="w-[720px]">
-      <GroupLabel index="03">By what you are building</GroupLabel>
-      <div className="grid grid-cols-3">
-        {solutionsMenu.map((s, i) => (
-          <NavigationMenu.Link asChild key={s.title}>
-            <Link
-              href={s.href}
-              className="group flex h-[150px] flex-col justify-between border-r border-rule px-5 py-4 transition-colors hover:bg-accent"
-            >
-              <span className="font-mono text-[10px] text-muted-foreground transition-colors group-hover:text-signal">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span>
-                <span className="flex items-center gap-1.5 text-[14px] font-medium">
-                  {s.title}
-                  <span
-                    aria-hidden
-                    className="text-signal opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100"
-                  >
-                    →
-                  </span>
-                </span>
-                <span className="mt-1.5 block text-[12.5px] leading-snug text-muted-foreground">
-                  {s.desc}
-                </span>
-              </span>
-            </Link>
-          </NavigationMenu.Link>
-        ))}
-
-        {/* closing cell: the catch-all route out of the menu */}
-        <NavigationMenu.Link asChild>
+    <div className="w-[440px] p-2">
+      <GroupLabel>By what you are building</GroupLabel>
+      {solutionsMenu.map((s) => (
+        <NavigationMenu.Link asChild key={s.title}>
           <Link
-            href="/templates"
-            className="group flex h-[150px] flex-col justify-between bg-hatch px-5 py-4 transition-colors hover:bg-accent hover:bg-none"
+            href={s.href}
+            className="group block rounded-lg p-3 transition-colors hover:bg-surface-2"
           >
-            <span className="slug text-muted-foreground transition-colors group-hover:text-signal">
-              start here
-            </span>
-            <span>
-              <span className="flex items-center gap-1.5 text-[14px] font-medium">
-                Browse templates
-                <span
-                  aria-hidden
-                  className="text-signal transition-transform duration-300 group-hover:translate-x-0.5"
-                >
-                  →
-                </span>
-              </span>
-              <span className="mt-1.5 block text-[12.5px] leading-snug text-muted-foreground">
-                Known-good scaffolds for the most common MCP servers.
-              </span>
+            <span className="text-[13.5px] font-medium">{s.title}</span>
+            <span className="mt-0.5 block text-[12.5px] leading-snug text-muted-foreground">
+              {s.desc}
             </span>
           </Link>
         </NavigationMenu.Link>
-      </div>
+      ))}
+      <NavigationMenu.Link asChild>
+        <Link
+          href="/templates"
+          className="group mt-1 flex items-center justify-between rounded-lg border border-border bg-surface-1 p-3 transition-colors hover:border-border-strong"
+        >
+          <span>
+            <span className="text-[13.5px] font-medium">Browse templates</span>
+            <span className="mt-0.5 block text-[12.5px] text-muted-foreground">
+              Known-good scaffolds to start from.
+            </span>
+          </span>
+          <span
+            aria-hidden
+            className="text-brand transition-transform duration-300 group-hover:translate-x-0.5"
+          >
+            →
+          </span>
+        </Link>
+      </NavigationMenu.Link>
     </div>
   );
 }

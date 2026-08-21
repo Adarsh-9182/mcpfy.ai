@@ -1,31 +1,11 @@
 "use client";
 
 import * as React from "react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Slug } from "./frame";
 
-/* Underlined fields, not boxes — the form reads like a printed slip. */
 const field =
-  "h-11 w-full border-b border-rule bg-transparent px-0 text-[15px] outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-signal";
-
-function Field({
-  id,
-  label,
-  children,
-}: {
-  id: string;
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <label htmlFor={id}>
-        <Slug>{label}</Slug>
-      </label>
-      {children}
-    </div>
-  );
-}
+  "h-10 w-full rounded-lg border border-border bg-background/50 px-3 text-[14px] outline-none transition-colors placeholder:text-subtle-foreground focus:border-brand/60";
 
 export function ContactForm() {
   const [sent, setSent] = React.useState(false);
@@ -38,87 +18,74 @@ export function ContactForm() {
 
   if (sent) {
     return (
-      <div className="border border-rule bg-card">
-        <div className="flex items-center gap-2.5 border-b border-rule px-5 py-2.5">
-          <span className="size-1.5 bg-pine" />
-          <Slug className="text-pine">received</Slug>
-        </div>
-        <div className="px-5 py-12 text-center">
-          <p className="display text-[28px]">Thanks — message received.</p>
-          <p className="mx-auto mt-3 max-w-[42ch] text-[14.5px] leading-relaxed text-muted-foreground">
-            This is a demo site, so nothing was actually sent. On a real
-            deployment this would reach the team inbox.
-          </p>
-          <Button variant="outline" className="mt-8" onClick={() => setSent(false)}>
-            Send another
-          </Button>
-        </div>
+      <div className="card-surface flex flex-col items-center rounded-xl p-10 text-center">
+        <span className="grid size-10 place-items-center rounded-full bg-live/12 text-live">
+          <Check className="size-5" />
+        </span>
+        <p className="mt-4 text-[16px] font-medium">Thanks — message received</p>
+        <p className="mt-2 max-w-sm text-[13.5px] leading-relaxed text-muted-foreground">
+          This is a demo site, so nothing was actually sent. On a real
+          deployment this would reach the team inbox.
+        </p>
+        <Button variant="outline" className="mt-6" onClick={() => setSent(false)}>
+          Send another
+        </Button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="border border-rule bg-card">
-      <div className="flex items-center justify-between border-b border-rule px-5 py-2.5">
-        <Slug className="text-signal">new enquiry</Slug>
-        <span className="font-mono text-[10.5px] text-muted-foreground">
-          4 fields
-        </span>
-      </div>
-
-      <div className="flex flex-col gap-7 px-5 py-7 sm:px-7">
-        <div className="grid gap-7 sm:grid-cols-2">
-          <Field id="name" label="01 — name">
-            <input
-              id="name"
-              name="name"
-              required
-              className={field}
-              placeholder="Ada Lovelace"
-            />
-          </Field>
-          <Field id="email" label="02 — work email">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className={field}
-              placeholder="ada@example.com"
-            />
-          </Field>
+    <form onSubmit={onSubmit} className="card-surface flex flex-col gap-5 rounded-xl p-6">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="name" className="text-[13px] font-medium">
+            Name
+          </label>
+          <input id="name" name="name" required className={field} placeholder="Ada Lovelace" />
         </div>
-
-        <Field id="company" label="03 — company">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="email" className="text-[13px] font-medium">
+            Work email
+          </label>
           <input
-            id="company"
-            name="company"
-            className={field}
-            placeholder="Acme Inc."
-          />
-        </Field>
-
-        <Field id="message" label="04 — what are you building?">
-          <textarea
-            id="message"
-            name="message"
+            id="email"
+            name="email"
+            type="email"
             required
-            rows={5}
-            className="w-full resize-y border-b border-rule bg-transparent px-0 py-2 text-[15px] leading-relaxed outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-signal"
-            placeholder="We're building an MCP server for…"
+            className={field}
+            placeholder="ada@example.com"
           />
-        </Field>
-
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-1">
-          <Button type="submit" size="lg">
-            Send message
-          </Button>
-          <Slug className="max-w-[34ch] normal-case tracking-normal">
-            Demo form — submissions are handled in the browser and never sent
-            anywhere.
-          </Slug>
         </div>
       </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="company" className="text-[13px] font-medium">
+          Company
+        </label>
+        <input id="company" name="company" className={field} placeholder="Acme Inc." />
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="message" className="text-[13px] font-medium">
+          What are you building?
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows={5}
+          className="w-full resize-y rounded-lg border border-border bg-background/50 p-3 text-[14px] leading-relaxed outline-none transition-colors placeholder:text-subtle-foreground focus:border-brand/60"
+          placeholder="We're building an MCP server for…"
+        />
+      </div>
+
+      <Button type="submit" size="lg" className="mt-1">
+        Send message
+      </Button>
+      <p className="text-[12.5px] text-subtle-foreground">
+        Demo form — submissions are handled in the browser and never sent
+        anywhere.
+      </p>
     </form>
   );
 }

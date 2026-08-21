@@ -30,7 +30,7 @@ export function Marquee({
           key={i}
           aria-hidden={i > 0}
           className={cn(
-            "flex shrink-0 items-center gap-8 pr-8 animate-marquee",
+            "flex shrink-0 items-center gap-14 pr-14 animate-marquee",
             reverse && "[animation-direction:reverse]",
             pauseOnHover && "group-hover:[animation-play-state:paused]",
           )}

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/site/page-hero";
 import { TemplateGallery } from "@/components/site/template-gallery";
-import { Em } from "@/components/site/section";
 
 export const metadata: Metadata = {
   title: "Templates",
@@ -13,11 +12,10 @@ export default function TemplatesPage() {
   return (
     <>
       <PageHero
-        eyebrow="templates"
-        meta="known-good scaffolds"
+        eyebrow="Templates"
         title={
           <>
-            Start from a known-good <Em>scaffold</Em>.
+            Start from a known-good scaffold.
           </>
         }
         subtitle="Get started quickly by cloning a template and deploying your MCP server."
