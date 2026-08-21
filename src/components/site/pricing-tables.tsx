@@ -70,6 +70,9 @@ export function PricingTables() {
               <p className="mt-2 text-[13px] text-muted-foreground">
                 {tier.credits}
               </p>
+              <p className="mt-1 text-[13px] font-medium text-foreground">
+                {tier.requests}
+              </p>
               {/* Two lines of 13px/leading-relaxed measure 42.25px; reserve 44px so
                   every tier's CTA lands on the same baseline. */}
               <p className="mt-3 min-h-11 text-[13px] leading-relaxed text-muted-foreground">
@@ -103,7 +106,7 @@ export function PricingTables() {
           <p className="mt-1.5 text-[13px] text-muted-foreground">
             Metered on top of your plan credits. Discovery traffic is never billed.
           </p>
-          <dl className="mt-6 grid gap-4 sm:grid-cols-3">
+          <dl className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {metered.map((m) => (
               <div key={m.label} className="rounded-lg border bg-background/60 p-4">
                 <dt className="text-[13px] text-muted-foreground">{m.label}</dt>

@@ -7,6 +7,8 @@ export type Tier = {
   name: string;
   monthly: number | null;
   credits: string;
+  /** Request allowance, shown under credits on the marketing pricing page. */
+  requests: string;
   blurb: string;
   cta: string;
   featured?: boolean;
@@ -20,6 +22,7 @@ export const tiers: Tier[] = [
     name: "Free",
     monthly: 0,
     credits: "$5 included monthly",
+    requests: "30k requests / month",
     blurb: "Everything you need to ship your first MCP server.",
     cta: "Start for free",
     features: [
@@ -33,6 +36,7 @@ export const tiers: Tier[] = [
     name: "Hobby",
     monthly: 25,
     credits: "$30 included, then pay-as-you-go",
+    requests: "300k requests / month",
     blurb: "For side projects heading to the marketplaces.",
     cta: "Get started",
     featured: true,
@@ -50,6 +54,7 @@ export const tiers: Tier[] = [
     name: "Startup",
     monthly: 250,
     credits: "$300 included, then pay-as-you-go",
+    requests: "3M requests / month",
     blurb: "For teams running MCP in production.",
     cta: "Get started",
     features: [
@@ -67,6 +72,7 @@ export const tiers: Tier[] = [
     name: "Enterprise",
     monthly: null,
     credits: "Unlimited volume pricing",
+    requests: "Unlimited requests",
     blurb: "Procurement, compliance and scale.",
     cta: "Contact sales",
     features: [

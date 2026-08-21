@@ -379,3 +379,129 @@ export const templates: Template[] = [
   { name: "Hono", desc: "Lightweight edge-ready MCP server on Hono.", tags: ["Edge"], category: "Frameworks" },
   { name: "Docker", desc: "Bring any language or runtime with a plain Dockerfile.", tags: ["Docker"], category: "Frameworks" },
 ];
+
+/** "Build by hand. Or with mcpfy." — the two columns of the comparison table. */
+export const comparisonRows = [
+  {
+    job: "Hosting",
+    byHand: "Pick a host, write a Dockerfile, wire up TLS and a domain.",
+    withUs: "Connect the repository. Every push ships.",
+  },
+  {
+    job: "Preview environments",
+    byHand: "Stand up a second stack, or test in production and hope.",
+    withUs: "A live MCP URL for every branch, automatically.",
+  },
+  {
+    job: "Secrets",
+    byHand: "A .env file, a secret manager, and a way to keep them in sync.",
+    withUs: "Per-environment variables injected at runtime.",
+  },
+  {
+    job: "Debugging",
+    byHand: "console.log, then redeploy, then read the logs again.",
+    withUs: "Every JSON-RPC frame captured, with session replay.",
+  },
+  {
+    job: "Testing across clients",
+    byHand: "Open ChatGPT, then Claude, then Cursor, and click through each one.",
+    withUs: "One suite, run across clients and models, judged automatically.",
+  },
+  {
+    job: "Analytics",
+    byHand: "Bolt on a generic APM that has never heard of a tool call.",
+    withUs: "MCP-native volume, latency, errors and per-tool health.",
+  },
+  {
+    job: "Getting listed",
+    byHand: "Read the directory guidelines and assemble the pack by hand.",
+    withUs: "Publish checks, then a generated submission pack.",
+  },
+];
+
+/** Why the open SDK beats the alternatives, grouped by what you are doing. */
+export const alternatives = [
+  {
+    name: "Building servers and apps",
+    points: [
+      "One package covers servers, clients and agents — not three.",
+      "TypeScript and Python are both first class, not one ported to the other.",
+      "Views bind straight to tools, so widgets ship with the schema that feeds them.",
+      "MIT licensed and self-hostable, so the cloud stays optional.",
+    ],
+  },
+  {
+    name: "Getting to production",
+    points: [
+      "Deploys are GitHub-native, with branch previews and one-click rollback.",
+      "Testing runs across real clients and models, not just a local mock.",
+      "Analytics understand tool calls and sessions, not just HTTP status codes.",
+      "Publishing to the directories is part of the same pipeline.",
+    ],
+  },
+];
+
+/** Scaffold-and-deploy commands shown in the Quick start section. */
+export const quickstart = [
+  {
+    lang: "TypeScript",
+    steps: [
+      { label: "Scaffold", cmd: "npx create-mcpfy-app@latest my-server" },
+      { label: "Run it locally", cmd: "cd my-server && npm run dev" },
+      { label: "Deploy", cmd: "npx mcpfy deploy" },
+    ],
+  },
+  {
+    lang: "Python",
+    steps: [
+      { label: "Scaffold", cmd: "uvx create-mcpfy-app my-server" },
+      { label: "Run it locally", cmd: "cd my-server && uv run dev" },
+      { label: "Deploy", cmd: "uvx mcpfy deploy" },
+    ],
+  },
+];
+
+/** The MCP servers mcpfy runs itself. */
+export const officialServers = [
+  {
+    name: "mcpfy Cloud",
+    url: "https://mcp.mcpfy.ai/mcp",
+    desc: "Manage your servers from any MCP client: create them, deploy them, read logs and check analytics without opening the dashboard.",
+  },
+  {
+    name: "mcpfy Docs",
+    url: "https://docs.mcpfy.ai/mcp",
+    desc: "Search the SDK and Cloud documentation from your coding agent, so it writes against the current API instead of guessing.",
+  },
+];
+
+/** Documentation entry points, grouped the way the docs are. */
+export const docsGroups = [
+  {
+    name: "Start here",
+    links: [
+      { label: "Quickstart", href: "/docs" },
+      { label: "Creating servers", href: "/docs" },
+      { label: "Connect an existing server", href: "/docs" },
+      { label: "Templates", href: "/templates" },
+    ],
+  },
+  {
+    name: "Cloud",
+    links: [
+      { label: "Deployments", href: "/cloud" },
+      { label: "Environment variables", href: "/cloud" },
+      { label: "Domains", href: "/cloud" },
+      { label: "Usage & traffic", href: "/cloud" },
+    ],
+  },
+  {
+    name: "Ship it",
+    links: [
+      { label: "Testing", href: "/platform/cross-client-testing" },
+      { label: "Publish checks", href: "/platform/publishing-checks" },
+      { label: "Submission pack", href: "/cloud" },
+      { label: "Connecting clients", href: "/docs" },
+    ],
+  },
+];
