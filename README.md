@@ -77,9 +77,13 @@ magic links.
    https://mcpfy.ai/auth/callback
    ```
 
-Without these variables the marketing site still builds and runs; the login
-form just reports that auth is not configured, and `/dashboard` is left
-unguarded so the UI can be previewed locally.
+The project's own URL and anon key are checked in as defaults in
+`src/lib/supabase/config.ts`, so a deploy works without configuring anything.
+Both are public by design — `NEXT_PUBLIC_*` is inlined into the client bundle,
+so every visitor's browser receives them anyway, and the anon key grants
+nothing without row level security allowing it. Setting the environment
+variables overrides the defaults, which is how a fork or a staging project
+points somewhere else.
 
 ### Routes
 
