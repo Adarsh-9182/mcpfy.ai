@@ -194,6 +194,107 @@ export function getServer(slug: string) {
   return servers.find((s) => s.slug === slug);
 }
 
+export function getDeployment(serverSlug: string, id: string) {
+  const server = getServer(serverSlug);
+  const deployment = server?.deployments.find((d) => d.id === id);
+  if (!server || !deployment) return undefined;
+  return { server, deployment };
+}
+
+/* ------------------------------ build details ----------------------------- */
+
+export type StepStatus = "done" | "running" | "failed" | "skipped";
+export type BuildStep = { name: string; status: StepStatus; duration: string };
+export type LogLine = {
+  n: number;
+  at: string;
+  level: "info" | "warn" | "error";
+  step: string;
+  msg: string;
+};
+
+const installCommand: Record<Runtime, string> = {
+  typescript: "npm ci",
+  python: "uv sync --frozen",
+  docker: "docker build -f Dockerfile .",
+};
+
+/** Build pipeline for one deployment, shaped by how far it got. */
+export function buildSteps(deployment: Deployment): BuildStep[] {
+  const names = ["Queued", "Clone", "Install", "Build", "Deploy", "Health check"];
+
+  if (deployment.status === "building") {
+    const durations = ["1s", "3s", "18s", "", "", ""];
+    return names.map((name, i) => ({
+      name,
+      status: i < 3 ? "done" : i === 3 ? "running" : "skipped",
+      duration: durations[i] || "—",
+    }));
+  }
+
+  if (deployment.status === "error") {
+    const durations = ["1s", "4s", "1m 52s", "7s", "", ""];
+    return names.map((name, i) => ({
+      name,
+      status: i < 3 ? "done" : i === 3 ? "failed" : "skipped",
+      duration: durations[i] || "—",
+    }));
+  }
+
+  const durations = ["1s", "3s", "21s", "9s", "5s", "2s"];
+  return names.map((name, i) => ({
+    name,
+    status: "done" as StepStatus,
+    duration: durations[i],
+  }));
+}
+
+/** Build log for one deployment. Realistic enough to design the viewer against. */
+export function buildLog(server: McpServer, deployment: Deployment): LogLine[] {
+  const install = installCommand[server.runtime];
+  const base: Omit<LogLine, "n">[] = [
+    { at: "12:01:02.114", level: "info", step: "Queued", msg: `Build queued for ${deployment.sha} on ${deployment.branch}` },
+    { at: "12:01:03.006", level: "info", step: "Clone", msg: `Cloning ${server.repo} (depth 1, branch ${deployment.branch})` },
+    { at: "12:01:06.482", level: "info", step: "Clone", msg: `HEAD is now at ${deployment.sha} ${deployment.message}` },
+    { at: "12:01:06.910", level: "info", step: "Install", msg: `Detected ${server.runtime} project — running ${install}` },
+    { at: "12:01:19.774", level: "warn", step: "Install", msg: "2 packages are looking for funding" },
+    { at: "12:01:27.301", level: "info", step: "Install", msg: "Dependencies installed" },
+  ];
+
+  if (deployment.status === "error") {
+    const lines: Omit<LogLine, "n">[] = [
+      ...base,
+      { at: "12:01:27.590", level: "info", step: "Build", msg: "Building MCP server bundle" },
+      { at: "12:01:33.884", level: "error", step: "Build", msg: "Error: Cannot find module '@mcpfy/runtime' imported from src/index.ts" },
+      { at: "12:01:33.902", level: "error", step: "Build", msg: "    at packageResolve (node:internal/modules/esm/resolve:892:9)" },
+      { at: "12:01:34.117", level: "error", step: "Build", msg: "Build failed with exit code 1" },
+      { at: "12:01:34.220", level: "info", step: "Build", msg: "Previous production deployment left serving traffic" },
+    ];
+    return lines.map((l, i) => ({ ...l, n: i + 1 }));
+  }
+
+  if (deployment.status === "building") {
+    const lines: Omit<LogLine, "n">[] = [
+      ...base,
+      { at: "12:01:27.590", level: "info", step: "Build", msg: "Building MCP server bundle" },
+      { at: "12:01:31.205", level: "info", step: "Build", msg: "Collecting tool schemas" },
+    ];
+    return lines.map((l, i) => ({ ...l, n: i + 1 }));
+  }
+
+  const lines: Omit<LogLine, "n">[] = [
+    ...base,
+    { at: "12:01:27.590", level: "info", step: "Build", msg: "Building MCP server bundle" },
+    { at: "12:01:33.418", level: "info", step: "Build", msg: `Registered ${server.tools.length} tools, 2 resources, 1 prompt` },
+    { at: "12:01:36.902", level: "info", step: "Deploy", msg: `Uploading build output (${server.runtime === "docker" ? "image" : "bundle"})` },
+    { at: "12:01:41.663", level: "info", step: "Deploy", msg: `Assigned ${deployment.url}` },
+    { at: "12:01:43.201", level: "info", step: "Health check", msg: "initialize handshake ok (protocol 2025-06-18)" },
+    { at: "12:01:43.884", level: "info", step: "Health check", msg: "tools/list returned in 24ms" },
+    { at: "12:01:44.010", level: "info", step: "Health check", msg: "Deployment is live" },
+  ];
+  return lines.map((l, i) => ({ ...l, n: i + 1 }));
+}
+
 /* ------------------------------- org summary ------------------------------ */
 
 export const orgStats = [

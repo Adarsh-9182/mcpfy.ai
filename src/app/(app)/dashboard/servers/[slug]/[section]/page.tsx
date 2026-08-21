@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import {
   Analytics,
-  Deployments,
   Domains,
   Environment,
   GatewayRequests,
@@ -18,7 +17,6 @@ import { getServer, servers, type McpServer } from "@/lib/dashboard";
 
 /** One route file renders every server tab, keyed off the section slug. */
 const sections: Record<string, (props: { server: McpServer }) => React.ReactNode> = {
-  deployments: Deployments,
   logs: RuntimeLogs,
   sessions: Sessions,
   gateway: GatewayRequests,
@@ -35,7 +33,8 @@ const sections: Record<string, (props: { server: McpServer }) => React.ReactNode
 export function generateStaticParams() {
   return servers.flatMap((s) =>
     serverSections
-      .filter((section) => section.slug)
+      // "deployments" has its own route with a nested detail page.
+      .filter((section) => section.slug && section.slug !== "deployments")
       .map((section) => ({ slug: s.slug, section: section.slug })),
   );
 }

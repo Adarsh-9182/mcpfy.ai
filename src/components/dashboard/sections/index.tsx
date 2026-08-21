@@ -5,7 +5,6 @@ import {
   Mono,
   Panel,
   StatCard,
-  StatusBadge,
   Table,
   Tbody,
   Td,
@@ -84,48 +83,6 @@ export function Overview({ server }: SectionProps) {
         </Table>
       </Panel>
     </>
-  );
-}
-
-/* ------------------------------- deployments ------------------------------ */
-
-export function Deployments({ server }: SectionProps) {
-  return (
-    <Panel title="Deployments" description="Newest first">
-      <Table>
-        <Thead>
-          <Th>Commit</Th>
-          <Th>Status</Th>
-          <Th>Environment</Th>
-          <Th>Branch</Th>
-          <Th>Author</Th>
-          <Th className="text-right">Duration</Th>
-          <Th>Created</Th>
-        </Thead>
-        <Tbody>
-          {server.deployments.map((d) => (
-            <tr key={d.id} className="transition-colors hover:bg-accent/40">
-              <Td>
-                <Mono>{d.sha}</Mono>
-                <span className="ml-3 text-muted-foreground">{d.message}</span>
-              </Td>
-              <Td>
-                <StatusBadge status={d.status} />
-              </Td>
-              <Td className="capitalize text-muted-foreground">{d.environment}</Td>
-              <Td className="text-muted-foreground">
-                <Mono>{d.branch}</Mono>
-              </Td>
-              <Td className="text-muted-foreground">{d.author}</Td>
-              <Td className="text-right tabular-nums text-muted-foreground">
-                {d.duration}
-              </Td>
-              <Td className="text-muted-foreground">{d.createdAt}</Td>
-            </tr>
-          ))}
-        </Tbody>
-      </Table>
-    </Panel>
   );
 }
 
