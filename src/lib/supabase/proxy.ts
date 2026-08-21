@@ -34,6 +34,8 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
+  const isAuthScreen = pathname === "/cloud" || pathname === "/signup";
+
   if (!user && pathname.startsWith("/dashboard")) {
     const url = request.nextUrl.clone();
     url.pathname = "/cloud";
@@ -41,7 +43,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (user && pathname === "/cloud") {
+  if (user && isAuthScreen) {
     const url = request.nextUrl.clone();
     url.pathname = "/dashboard";
     url.search = "";

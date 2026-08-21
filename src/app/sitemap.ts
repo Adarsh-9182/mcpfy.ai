@@ -10,7 +10,6 @@ const staticRoutes = [
   "/blog",
   "/docs",
   "/contact",
-  "/signup",
   "/sdk",
   "/inspector",
   "/vibe",
