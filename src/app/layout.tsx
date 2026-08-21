@@ -1,24 +1,25 @@
 import type { Metadata } from "next";
-import { Outfit, Source_Serif_4, Geist_Mono } from "next/font/google";
+import { Inter_Tight, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/site/theme-provider";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const interTight = Inter_Tight({
+  variable: "--font-inter-tight",
   subsets: ["latin"],
   display: "swap",
 });
 
-const sourceSerif = Source_Serif_4({
-  variable: "--font-source-serif",
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
   subsets: ["latin"],
-  display: "swap",
+  weight: "400",
   style: ["normal", "italic"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -53,10 +54,22 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${outfit.variable} ${sourceSerif.variable} ${geistMono.variable} antialiased`}
-      >
+    // The font variables must sit on <html>, not <body>: :root's font stacks
+    // var() against them, and a custom property is substituted on the element
+    // that declares it — descendants inherit only the resolved value.
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${interTight.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
+    >
+      <body className="antialiased">
+        {/* Marks the document as script-enabled before first paint, so the
+            scroll-reveal styles only hide content that JS can reveal again. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -65,7 +78,7 @@ export default function RootLayout({
         >
           <a
             href="#main"
-            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-100 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-100 focus:bg-signal focus:px-4 focus:py-2 focus:text-signal-foreground focus:slug"
           >
             Skip to content
           </a>

@@ -6,38 +6,48 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FrameSection } from "./frame";
+import { Band } from "./frame";
+import { Display, Em, Lede, ArrowLink } from "./section";
 import { Reveal } from "./reveal";
 import { faq } from "@/lib/content";
-import { site } from "@/lib/site";
 
 export function Faq() {
   return (
-    <FrameSection>
-      <div className="grid gap-12 py-16 md:py-24 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
+    <Band index="09" label="questions">
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:gap-16">
         <Reveal>
-          <div>
-            <h2 className="text-3xl font-medium tracking-tight md:text-4xl">
-              Frequently asked questions
-            </h2>
-            <p className="mt-4 max-w-sm text-base text-muted-foreground">
-              Everything you need to build, deploy, test, and publish with{" "}
-              {site.name}.
-            </p>
+          <div className="lg:sticky lg:top-28">
+            <Display size="md" className="max-w-[12ch]">
+              Answers, before you <Em>ask</Em>.
+            </Display>
+            <Lede className="mt-6 max-w-[34ch]">
+              Everything about building, deploying, testing and publishing.
+            </Lede>
+            <div className="mt-8">
+              <ArrowLink href="/contact" tone="signal">
+                Still stuck? Talk to us
+              </ArrowLink>
+            </div>
           </div>
         </Reveal>
 
         <Reveal delay={0.08}>
-          <Accordion type="single" collapsible className="w-full border-t">
-            {faq.map((item) => (
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full border-t border-rule-strong/25"
+          >
+            {faq.map((item, i) => (
               <AccordionItem key={item.q} value={item.q}>
-                <AccordionTrigger>{item.q}</AccordionTrigger>
+                <AccordionTrigger index={String(i + 1).padStart(2, "0")}>
+                  {item.q}
+                </AccordionTrigger>
                 <AccordionContent>{item.a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
         </Reveal>
       </div>
-    </FrameSection>
+    </Band>
   );
 }

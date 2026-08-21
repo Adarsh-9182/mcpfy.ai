@@ -2,97 +2,142 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { Slug } from "./frame";
 import { cn } from "@/lib/utils";
 import { metered, priceFor, tiers } from "@/lib/plans";
+
+/** Mono segmented control — the site has no pill switches. */
+function BillingToggle({
+  yearly,
+  onChange,
+}: {
+  yearly: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <div className="inline-flex items-stretch border border-rule">
+      {[
+        { label: "Monthly", value: false },
+        { label: "Yearly", value: true },
+      ].map((opt) => (
+        <button
+          key={opt.label}
+          type="button"
+          onClick={() => onChange(opt.value)}
+          aria-pressed={yearly === opt.value}
+          className={cn(
+            "slug px-4 py-2.5 transition-colors",
+            yearly === opt.value
+              ? "bg-foreground text-background"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          {opt.label}
+        </button>
+      ))}
+      <span className="flex items-center border-l border-rule px-3">
+        <Slug className="text-signal">save 17%</Slug>
+      </span>
+    </div>
+  );
+}
 
 export function PricingTables() {
   const [yearly, setYearly] = React.useState(false);
 
   return (
-    <section className="py-16 sm:py-20">
+    <section className="py-14 md:py-20">
       <div className="container-page">
-        <div className="flex items-center justify-center gap-3">
-          <span
-            className={cn(
-              "text-sm transition-colors",
-              !yearly ? "text-foreground" : "text-muted-foreground",
-            )}
-          >
-            Monthly
-          </span>
-          <Switch
-            checked={yearly}
-            onCheckedChange={setYearly}
-            aria-label="Toggle yearly billing"
-          />
-          <span
-            className={cn(
-              "text-sm transition-colors",
-              yearly ? "text-foreground" : "text-muted-foreground",
-            )}
-          >
-            Yearly
-          </span>
-          <span className="rounded-full border px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
-            Save 17%
-          </span>
+        <div className="flex flex-col gap-5 border-b border-rule pb-6 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex items-center gap-4">
+            <Slug className="text-signal">rate card</Slug>
+            <span aria-hidden className="hidden h-px w-16 bg-rule sm:block" />
+          </div>
+          <BillingToggle yearly={yearly} onChange={setYearly} />
         </div>
 
-        <div className="mt-12 grid gap-4 lg:grid-cols-4">
-          {tiers.map((tier) => (
+        {/* the plans, as columns of one ruled table */}
+        <div className="rule-grid grid lg:grid-cols-4">
+          {tiers.map((tier, i) => (
             <div
               key={tier.name}
               className={cn(
-                "flex flex-col rounded-xl border bg-card/40 p-6",
-                tier.featured && "border-foreground/25 bg-card shadow-[var(--drop)]",
+                "rule-cell flex flex-col px-5 py-7",
+                tier.featured && "bg-card",
               )}
             >
-              <div className="flex items-center justify-between">
-                <h2 className="text-base font-semibold">{tier.name}</h2>
-                {tier.featured && (
-                  <span className="rounded-full bg-primary px-2.5 py-0.5 text-[11px] font-medium text-primary-foreground">
-                    Popular
+              <div
+                aria-hidden
+                className={cn(
+                  "-mt-7 mb-6 h-0.5",
+                  tier.featured ? "bg-signal" : "bg-transparent",
+                )}
+              />
+
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="flex items-baseline gap-2.5">
+                  <span className="font-mono text-[10.5px] text-muted-foreground">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h2 className="display text-[26px]">{tier.name}</h2>
+                </span>
+                {tier.featured && <Slug className="text-signal">popular</Slug>}
+              </div>
+
+              <div className="mt-6 flex items-baseline gap-1.5">
+                <span className="display text-[44px] leading-none tabular-nums">
+                  {priceFor(tier, yearly)}
+                </span>
+                {tier.monthly !== null && (
+                  <span className="font-mono text-[11px] text-muted-foreground">
+                    /mo
                   </span>
                 )}
               </div>
 
-              <div className="mt-5 flex items-baseline gap-1">
-                <span className="text-4xl font-semibold tracking-tight tabular-nums">
-                  {priceFor(tier, yearly)}
-                </span>
-                {tier.monthly !== null && (
-                  <span className="text-sm text-muted-foreground">/mo</span>
-                )}
-              </div>
-              <p className="mt-2 text-[13px] text-muted-foreground">
+              <p className="mt-4 font-mono text-[11.5px] leading-relaxed text-muted-foreground">
                 {tier.credits}
               </p>
-              <p className="mt-1 text-[13px] font-medium text-foreground">
+              <p className="mt-1 font-mono text-[11.5px] leading-relaxed text-foreground">
                 {tier.requests}
               </p>
-              {/* Two lines of 13px/leading-relaxed measure 42.25px; reserve 44px so
-                  every tier's CTA lands on the same baseline. */}
-              <p className="mt-3 min-h-11 text-[13px] leading-relaxed text-muted-foreground">
+
+              {/* Two lines of 13.5px/relaxed measure ~44px; reserve it so every
+                  tier's CTA lands on the same baseline. */}
+              <p className="mt-4 min-h-11 text-[13.5px] leading-relaxed text-muted-foreground">
                 {tier.blurb}
               </p>
 
-              <Button
-                asChild
-                className="mt-6 w-full"
-                variant={tier.featured ? "default" : "outline"}
+              <Link
+                href={tier.monthly === null ? "/contact" : "/docs"}
+                className={cn(
+                  "group mt-6 inline-flex h-11 items-center justify-between gap-2 px-4 slug transition-colors",
+                  tier.featured
+                    ? "bg-foreground text-background hover:bg-signal hover:text-signal-foreground"
+                    : "border border-rule-strong/30 hover:border-signal hover:text-signal",
+                )}
               >
-                <Link href={tier.monthly === null ? "/contact" : "/docs"}>
-                  {tier.cta}
-                </Link>
-              </Button>
+                {tier.cta}
+                <span
+                  aria-hidden
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                >
+                  →
+                </span>
+              </Link>
 
-              <ul className="mt-7 space-y-3 border-t pt-6">
+              <ul className="mt-7 border-t border-rule">
                 {tier.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-[13px]">
-                    <Check className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
+                  <li
+                    key={f}
+                    className="grid grid-cols-[1rem_minmax(0,1fr)] gap-2 border-b border-rule-soft py-3 text-[13.5px] leading-relaxed"
+                  >
+                    <span
+                      aria-hidden
+                      className="mt-px font-mono text-[11px] text-signal"
+                    >
+                      ✓
+                    </span>
                     <span className="text-muted-foreground">{f}</span>
                   </li>
                 ))}
@@ -101,20 +146,27 @@ export function PricingTables() {
           ))}
         </div>
 
-        <div className="mt-12 rounded-xl border bg-card/40 p-6">
-          <h2 className="text-base font-semibold">Usage-based pricing</h2>
-          <p className="mt-1.5 text-[13px] text-muted-foreground">
-            Metered on top of your plan credits. Discovery traffic is never billed.
-          </p>
-          <dl className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* metered add-ons */}
+        <div className="mt-16 border border-rule">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule px-5 py-3">
+            <Slug className="text-foreground">usage-based pricing</Slug>
+            <Slug className="normal-case tracking-normal">
+              Metered on top of plan credits. Discovery traffic is never billed.
+            </Slug>
+          </div>
+          <dl className="rule-grid grid sm:grid-cols-2 lg:grid-cols-3">
             {metered.map((m) => (
-              <div key={m.label} className="rounded-lg border bg-background/60 p-4">
-                <dt className="text-[13px] text-muted-foreground">{m.label}</dt>
-                <dd className="mt-1.5 flex items-baseline gap-1.5">
-                  <span className="text-2xl font-semibold tabular-nums">
+              <div key={m.label} className="rule-cell px-5 py-6">
+                <dt>
+                  <Slug>{m.label}</Slug>
+                </dt>
+                <dd className="mt-3 flex items-baseline gap-1.5">
+                  <span className="display text-[30px] leading-none tabular-nums">
                     {m.price}
                   </span>
-                  <span className="text-[12px] text-muted-foreground">{m.unit}</span>
+                  <span className="font-mono text-[11px] text-muted-foreground">
+                    {m.unit}
+                  </span>
                 </dd>
               </div>
             ))}

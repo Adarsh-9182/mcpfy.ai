@@ -5,76 +5,105 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------
-   Design tokens — dark-first zinc scale.
-   Light values live on :root, dark values on .dark (next-themes
-   sets class on <html>).
+   Editorial Terminal — design tokens.
+
+   The palette is warm paper and ink rather than a neutral grey scale:
+   everything is mixed off #16130F (ink) and #FAF7F2 (paper), with a
+   single vermilion signal colour carrying every accent on the site and
+   a pine green reserved for "healthy / passing" states.
+
+   Light values live on :root, dark values on .dark (next-themes sets
+   the class on <html>).
    --------------------------------------------------------------- */
 :root {
-  --background: #fdfcfc;
-  --foreground: #09090b;
-  --card: #ffffff;
-  --card-foreground: #09090b;
-  --popover: #ffffff;
-  --popover-foreground: #09090b;
-  --primary: #18181b;
-  --primary-foreground: #fafafa;
-  --secondary: #f4f4f5;
-  --secondary-foreground: #18181b;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --accent: #f4f4f5;
-  --accent-foreground: #18181b;
-  --destructive: #e40014;
-  --destructive-foreground: #fafafa;
-  --border: #dbdbdd;
-  --input: #dbdbdd;
-  --ring: #6b97ff;
+  --background: #faf7f2;
+  --foreground: #16130f;
+  --card: #fffdf9;
+  --card-foreground: #16130f;
+  --popover: #fffdf9;
+  --popover-foreground: #16130f;
+  --primary: #16130f;
+  --primary-foreground: #faf7f2;
+  --secondary: #f0ebe2;
+  --secondary-foreground: #16130f;
+  --muted: #f0ebe2;
+  --muted-foreground: #6f675c;
+  --accent: #efe9df;
+  --accent-foreground: #16130f;
+  --destructive: #b3341a;
+  --destructive-foreground: #fdf7f4;
+  --border: #16130f1f;
+  --input: #16130f2e;
+  --ring: #c2451f;
 
-  --ink: #09090b;
-  --ink-muted: #71717a;
-  --ink-subtle: #a1a1aa;
+  /* the one accent colour on the site */
+  --signal: #c2451f;
+  --signal-ink: #8f2f13;
+  --signal-soft: #f6e5dd;
+  --signal-foreground: #fff8f4;
 
-  /* elevation / hairline highlights */
-  --hi-base: #00000005;
-  --hi-mid: #0000000a;
-  --hi-high: #0000000f;
-  --drop: 0 1px 2px #0000000d, 0 8px 24px -12px #00000014;
+  /* passing / healthy */
+  --pine: #2f5d4c;
+  --pine-soft: #e3ede8;
 
-  --grid-line: #0000000a;
-  --radius: 0.75rem;
+  /* rules — the editorial layout is built out of horizontal lines */
+  --rule: #16130f1f;
+  --rule-soft: #16130f12;
+  --rule-strong: #16130f;
+
+  --ink-muted: #6f675c;
+  --ink-subtle: #9a9187;
+
+  --drop: 0 1px 0 0 #16130f0f, 0 12px 28px -20px #16130f40;
+
+  /* Editorial layout is square: the radius scale is nearly flat. */
+  --radius: 0.25rem;
+
+  /* Font stacks live on :root, not in @theme: `@theme inline` values are
+     inlined into the utilities Tailwind generates and are never emitted as
+     custom properties, so hand-written rules cannot var() against them. */
+  --sans-family: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --display-family: var(--font-instrument-serif), ui-serif, Georgia, serif;
+  --mono-family: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .dark {
-  --background: #09090b;
-  --foreground: #fafafa;
-  --card: #18181b;
-  --card-foreground: #fafafa;
-  --popover: #131316;
-  --popover-foreground: #fafafa;
-  --primary: #fafafa;
-  --primary-foreground: #18181b;
-  --secondary: #27272a;
-  --secondary-foreground: #fafafa;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --accent: #27272a;
-  --accent-foreground: #fafafa;
-  --destructive: #a8000e;
-  --destructive-foreground: #fafafa;
-  --border: #ffffff1a;
-  --input: #ffffff24;
-  --ring: #6b97ff;
+  --background: #100e0c;
+  --foreground: #f4efe6;
+  --card: #191613;
+  --card-foreground: #f4efe6;
+  --popover: #191613;
+  --popover-foreground: #f4efe6;
+  --primary: #f4efe6;
+  --primary-foreground: #100e0c;
+  --secondary: #232019;
+  --secondary-foreground: #f4efe6;
+  --muted: #232019;
+  --muted-foreground: #a09789;
+  --accent: #262218;
+  --accent-foreground: #f4efe6;
+  --destructive: #e2593a;
+  --destructive-foreground: #100e0c;
+  --border: #f4efe61f;
+  --input: #f4efe62e;
+  --ring: #ff7a4d;
 
-  --ink: #fafafa;
-  --ink-muted: #a1a1aa;
-  --ink-subtle: #71717a;
+  --signal: #ff7a4d;
+  --signal-ink: #ffa484;
+  --signal-soft: #2a1a12;
+  --signal-foreground: #180d07;
 
-  --hi-base: #ffffff03;
-  --hi-mid: #ffffff08;
-  --hi-high: #ffffff0f;
-  --drop: 0 1px 2px #00000040, 0 12px 32px -12px #0000005c;
+  --pine: #7cc0a3;
+  --pine-soft: #16221d;
 
-  --grid-line: #ffffff0d;
+  --rule: #f4efe61f;
+  --rule-soft: #f4efe612;
+  --rule-strong: #f4efe6cc;
+
+  --ink-muted: #a09789;
+  --ink-subtle: #6e675e;
+
+  --drop: 0 1px 0 0 #ffffff0a, 0 16px 34px -24px #000000cc;
 }
 
 @theme inline {
@@ -98,13 +127,23 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-source-serif), ui-serif, Georgia, serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-signal: var(--signal);
+  --color-signal-ink: var(--signal-ink);
+  --color-signal-soft: var(--signal-soft);
+  --color-signal-foreground: var(--signal-foreground);
+  --color-pine: var(--pine);
+  --color-pine-soft: var(--pine-soft);
+  --color-rule: var(--rule);
+  --color-rule-soft: var(--rule-soft);
+  --color-rule-strong: var(--rule-strong);
+
+  --font-sans: var(--sans-family);
+  --font-display: var(--display-family);
+  --font-mono: var(--mono-family);
 
   --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 1px);
+  --radius-sm: calc(var(--radius) - 2px);
   --radius-xl: calc(var(--radius) + 4px);
 
   --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
@@ -134,16 +173,17 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: var(--font-sans);
+    font-family: var(--sans-family);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
   ::selection {
-    background-color: color-mix(in oklab, var(--foreground) 18%, transparent);
+    background-color: var(--signal);
+    color: var(--signal-foreground);
   }
   :focus-visible {
-    outline: 2px solid var(--ring);
+    outline: 2px solid var(--signal);
     outline-offset: 2px;
   }
 }
@@ -159,40 +199,148 @@
   }
 }
 
-/* Width is owned by PageFrame; this only supplies the horizontal rhythm,
-   matching the homepage's px-4 / md:px-6 / lg:px-12 scale. */
+/* ---------------------------------------------------------------
+   Layout utilities
+   --------------------------------------------------------------- */
+
+/* The single measure every band, the navbar and the footer align to. */
 @utility container-page {
   width: 100%;
-  padding-inline: 1rem;
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
 }
 @media (min-width: 768px) {
-  .container-page { padding-inline: 1.5rem; }
+  .container-page { padding-inline: 2.5rem; }
 }
-@media (min-width: 1024px) {
-  .container-page { padding-inline: 3rem; }
+@media (min-width: 1280px) {
+  .container-page { padding-inline: 4rem; }
 }
 
-/* Faint blueprint grid used behind hero + section dividers */
+/* The index rail: a mono slug in the left margin, content to its right.
+   Collapses to a stacked label on narrow screens. */
+@utility band-grid {
+  display: grid;
+  gap: 1.75rem;
+}
+@media (min-width: 1024px) {
+  .band-grid {
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    gap: 3rem;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Surface textures
+   --------------------------------------------------------------- */
+
+/* Woven paper tint — a barely-there warm gradient, no colour banding. */
+@utility bg-paper {
+  background-image:
+    radial-gradient(60% 50% at 12% 0%, color-mix(in oklab, var(--signal) 7%, transparent) 0%, transparent 62%),
+    radial-gradient(45% 45% at 92% 8%, color-mix(in oklab, var(--pine) 8%, transparent) 0%, transparent 58%);
+}
+
+/* Fine film grain so large flat areas don't band on wide displays. */
+@utility bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+/* Ruled-paper backdrop for terminal and mock surfaces. */
+@utility bg-ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--rule-soft) 0px,
+    var(--rule-soft) 1px,
+    transparent 1px,
+    transparent 28px
+  );
+}
+
+/* Blueprint grid, kept for mock surfaces and empty states. */
 @utility bg-grid {
   background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 64px 64px;
+    linear-gradient(to right, var(--rule-soft) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--rule-soft) 1px, transparent 1px);
+  background-size: 56px 56px;
 }
 
 @utility hairline {
-  box-shadow: inset 0 1px 0 0 var(--hi-high);
+  box-shadow: inset 0 1px 0 0 color-mix(in oklab, var(--foreground) 6%, transparent);
 }
 
-/* Edge-fade mask for marquees */
-@utility mask-fade-x {
-  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+/* Hairline grids. The container draws the outer top/left rule and every cell
+   draws its own bottom/right, so a partly-filled last row leaves clean empty
+   space instead of a floating strip of rule colour. */
+@utility rule-grid {
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+@utility rule-cell {
+  border-bottom: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+}
+
+/* Diagonal hatching, used to mark "the hard way" cells and empty slots. */
+@utility bg-hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--rule) 0px,
+    var(--rule) 1px,
+    transparent 1px,
+    transparent 7px
+  );
+}
+
+/* ---------------------------------------------------------------
+   Type utilities
+   --------------------------------------------------------------- */
+
+/* The mono slug used for every index, kicker and column head. */
+@utility slug {
+  font-family: var(--mono-family);
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Display face: Instrument Serif runs large and tight. */
+@utility display {
+  font-family: var(--display-family);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
 }
 
 @utility text-balance-pretty {
   text-wrap: pretty;
 }
+
+/* Underline that grows from the left on hover — the site's only link flourish. */
+@utility link-swipe {
+  position: relative;
+  background-image: linear-gradient(var(--signal), var(--signal));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 260ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.link-swipe:hover { background-size: 100% 1px; }
+
+/* Edge-fade masks for marquees */
+@utility mask-fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+@utility mask-fade-y {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+}
+
+/* ---------------------------------------------------------------
+   Component animations
+   --------------------------------------------------------------- */
 
 /* Radix Accordion open/close */
 @keyframes acc-down {
@@ -206,64 +354,42 @@
 
 /* Navigation menu viewport */
 @keyframes nav-in {
-  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes nav-out {
-  from { opacity: 1; transform: translateY(0) scale(1); }
-  to   { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-6px); }
 }
 
-/* ---------------------------------------------------------------
-   magic-ui style animations
-   --------------------------------------------------------------- */
-@keyframes shimmer-slide {
-  to { transform: translate(calc(100cqw - 100%), 0); }
+/* Scroll reveal. The hidden state is gated on `html.js` so the page is
+   readable without scripts; `.is-in` is added by the shared observer in
+   components/site/reveal.tsx. */
+.reveal {
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-@keyframes spin-around {
-  0%   { transform: translateZ(0) rotate(0deg); }
-  15%, 35% { transform: translateZ(0) rotate(90deg); }
-  65%, 85% { transform: translateZ(0) rotate(270deg); }
-  100% { transform: translateZ(0) rotate(360deg); }
+.js .reveal {
+  opacity: 0;
+  transform: translateY(14px);
 }
-
-@utility animate-shimmer-slide {
-  animation: shimmer-slide var(--speed, 3s) ease-in-out infinite alternate;
+.js .reveal.is-in {
+  opacity: 1;
+  transform: none;
 }
-@utility animate-spin-around {
-  animation: spin-around calc(var(--speed, 3s) * 2) infinite linear;
-}
-
-/* Hero / CTA gradient wash */
-@utility bg-hero-wash {
-  background-image:
-    linear-gradient(122deg, #e0eaff 0%, #f9ffbd 36%, #dedede 70%, #ffffff 100%),
-    radial-gradient(90% 70% at 88% 12%, #f9ffbd 0%, transparent 58%),
-    radial-gradient(70% 55% at 8% 88%, #dedede 0%, transparent 52%);
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-/* Vertical page rules + corner ticks that frame every section */
-@utility frame-x {
-  position: relative;
+/* Terminal caret on the hero prompt */
+@keyframes caret {
+  0%, 45%  { opacity: 1; }
+  55%, 100% { opacity: 0; }
 }
-
-@utility mask-fade-y {
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
-}
-
-/* Fine film grain laid over the hero wash, so the large flat gradients in the
-   app chrome don't band on wide displays. Inline SVG keeps it request-free. */
-@utility bg-grain {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
-}
-
-/* Softer, greyer relative of bg-hero-wash: the colour pools in the corners
-   instead of banding across the middle, which suits large panels like the
-   auth card where a white card sits on top of it. */
-@utility bg-panel-wash {
-  background-image:
-    radial-gradient(72% 62% at 6% 94%, #f3ffbb 0%, transparent 62%),
-    radial-gradient(58% 48% at 3% 4%, #e2ecff 0%, transparent 58%),
-    linear-gradient(135deg, #f2f2f0 0%, #e7e7e5 100%);
+@utility animate-caret {
+  animation: caret 1.1s steps(1) infinite;
 }

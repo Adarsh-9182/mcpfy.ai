@@ -1,53 +1,52 @@
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { FrameSection } from "./frame";
+import { Band, Slug } from "./frame";
+import { Display, Em, Lede, ArrowLink } from "./section";
 import { Reveal } from "./reveal";
 import { stats } from "@/lib/content";
 
+/**
+ * The open-source record, set as a masthead figure block: the numbers run in
+ * the display serif at headline size, with their sources underneath.
+ */
 export function Stats() {
   return (
-    <>
-      <FrameSection>
-        <div className="py-16 text-center md:py-24">
-          <Reveal>
-            <h2 className="mx-auto max-w-3xl text-3xl font-medium tracking-tight md:text-4xl lg:text-5xl">
-              Built in the open.
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground md:text-lg">
-              One of the most adopted open-source MCP frameworks. Open from day one.
-            </p>
-          </Reveal>
-        </div>
-      </FrameSection>
+    <Band index="05" label="in the open">
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] lg:items-end lg:gap-16">
+        <Reveal>
+          <Display size="lg" className="max-w-[14ch]">
+            Built in the <Em>open</Em>, from the first commit.
+          </Display>
+        </Reveal>
+        <Reveal delay={0.06}>
+          <Lede>
+            One of the most adopted open-source MCP frameworks. The SDK, the
+            Inspector and the templates are all public — read them before you
+            trust them.
+          </Lede>
+        </Reveal>
+      </div>
 
-      <FrameSection flush>
-        <div className="grid divide-y divide-border/60 md:grid-cols-3 md:divide-x md:divide-y-0">
-          {stats.map((s, i) => (
-            <Reveal key={s.value} delay={i * 0.08}>
-              <div className="px-6 py-12 md:px-8">
-                <p className="text-5xl font-medium tracking-tight tabular-nums md:text-6xl">
+      <dl className="rule-grid mt-16 grid md:grid-cols-3">
+        {stats.map((s, i) => (
+          <Reveal key={s.value} delay={i * 0.08}>
+            <div className="rule-cell h-full px-5 py-9 md:px-8">
+              <dt className="sr-only">{s.label}</dt>
+              <dd>
+                <span className="display block text-[52px] tabular-nums leading-none md:text-[64px]">
                   {s.value}
-                </p>
-                <p className="mt-4 text-[15px] text-muted-foreground">{s.label}</p>
-                <div className="mt-5 flex gap-5">
+                </span>
+                <Slug className="mt-5 block">{s.label}</Slug>
+                <span className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
                   {(s.tags ?? [s.cta]).filter(Boolean).map((t) => (
-                    <Link
-                      key={t}
-                      href="/docs"
-                      className="group inline-flex items-center gap-1 text-[14px]"
-                    >
-                      <span className="underline underline-offset-2 decoration-border group-hover:decoration-foreground">
-                        {t}
-                      </span>
-                      <ArrowUpRight className="size-3.5" />
-                    </Link>
+                    <ArrowLink key={t} href="/docs" tone="muted">
+                      {t}
+                    </ArrowLink>
                   ))}
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </FrameSection>
-    </>
+                </span>
+              </dd>
+            </div>
+          </Reveal>
+        ))}
+      </dl>
+    </Band>
   );
 }

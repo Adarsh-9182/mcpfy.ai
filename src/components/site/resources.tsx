@@ -1,82 +1,98 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { FrameSection } from "./frame";
+import { Band, Slug } from "./frame";
+import { Display, Em, Lede } from "./section";
 import { Reveal } from "./reveal";
 import { officialServers, docsGroups } from "@/lib/content";
 import { site } from "@/lib/site";
 
 /**
- * The servers we run ourselves, plus the documentation entry points — the
- * last thing on the page, for readers who are ready to go and read something.
+ * The servers we run ourselves, then the documentation index — the reference
+ * section at the back of the document, for readers ready to go and read.
  */
 export function Resources() {
   return (
     <>
-      <FrameSection>
-        <div className="py-16 md:py-24">
+      <Band index="08" label="endpoints">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] lg:items-end lg:gap-16">
           <Reveal>
-            <h2 className="mx-auto max-w-3xl text-center text-3xl font-medium tracking-tight md:text-4xl">
-              Official {site.name} MCP servers
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-balance text-center text-base text-muted-foreground md:text-lg">
-              We run the platform through the protocol too. Point a client at
-              either endpoint and drive {site.name} from your agent.
-            </p>
+            <Display size="lg" className="max-w-[15ch]">
+              We run {site.name} through the <Em>protocol</Em> too.
+            </Display>
           </Reveal>
+          <Reveal delay={0.06}>
+            <Lede>
+              Point any MCP client at either endpoint and drive the platform
+              from your own agent. Same auth, same rate limits, same docs.
+            </Lede>
+          </Reveal>
+        </div>
 
-          <div className="mt-12 grid gap-4 md:grid-cols-2">
-            {officialServers.map((server, i) => (
-              <Reveal key={server.url} delay={i * 0.08}>
-                <div className="h-full rounded-xl border bg-card/40 p-6">
-                  <h3 className="text-[15px] font-medium">{server.name}</h3>
-                  <pre className="mt-3 overflow-x-auto rounded-lg border bg-background/60 px-4 py-3">
-                    <code className="font-mono text-[13px]">{server.url}</code>
-                  </pre>
-                  <p className="mt-4 text-[14px] leading-relaxed text-muted-foreground">
-                    {server.desc}
+        <div className="rule-grid mt-14 grid md:grid-cols-2">
+          {officialServers.map((server, i) => (
+            <Reveal key={server.url} delay={i * 0.08}>
+              <div className="rule-cell h-full bg-card">
+                <div className="flex items-center justify-between border-b border-rule px-4 py-2.5">
+                  <Slug className="text-foreground">{server.name}</Slug>
+                  <span className="flex items-center gap-1.5">
+                    <span className="size-1.5 bg-pine" />
+                    <Slug className="text-[10px]">live</Slug>
+                  </span>
+                </div>
+                <div className="bg-ruled px-4 py-4">
+                  <p className="flex gap-2 font-mono text-[12.5px]">
+                    <span className="shrink-0 text-signal">→</span>
+                    <span className="min-w-0 break-all">{server.url}</span>
                   </p>
                 </div>
-              </Reveal>
-            ))}
-          </div>
+                <p className="border-t border-rule px-4 py-4 text-[14px] leading-relaxed text-muted-foreground">
+                  {server.desc}
+                </p>
+              </div>
+            </Reveal>
+          ))}
         </div>
-      </FrameSection>
+      </Band>
 
-      <FrameSection>
-        <div className="py-16 md:py-24">
-          <Reveal>
-            <h2 className="text-2xl font-medium tracking-tight md:text-3xl">
-              Documentation
-            </h2>
-          </Reveal>
-          <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-16">
-            {docsGroups.map((group, i) => (
-              <Reveal key={group.name} delay={i * 0.06}>
-                <div>
-                  <h3 className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-                    {group.name}
-                  </h3>
-                  <ul className="mt-5 space-y-3 border-t border-border/60 pt-5">
-                    {group.links.map((link) => (
-                      <li key={link.label}>
-                        <Link
-                          href={link.href}
-                          className="group inline-flex items-center gap-1 text-[14px]"
-                        >
-                          <span className="underline underline-offset-2 decoration-border group-hover:decoration-foreground">
-                            {link.label}
-                          </span>
-                          <ArrowUpRight className="size-3.5" />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+      <Band index="08.1" label="documentation">
+        <Reveal>
+          <Display size="md" className="max-w-[16ch]">
+            The reference, end to end.
+          </Display>
+        </Reveal>
+
+        <div className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          {docsGroups.map((group, i) => (
+            <Reveal key={group.name} delay={i * 0.06}>
+              <div>
+                <div className="flex items-center gap-4 border-b border-rule-strong/25 pb-3">
+                  <span className="font-mono text-[10.5px] text-signal">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <Slug className="text-foreground">{group.name}</Slug>
                 </div>
-              </Reveal>
-            ))}
-          </div>
+                <ul>
+                  {group.links.map((link) => (
+                    <li key={link.label} className="border-b border-rule">
+                      <Link
+                        href={link.href}
+                        className="group flex items-center justify-between gap-3 py-3 text-[14.5px] transition-colors hover:text-signal"
+                      >
+                        <span>{link.label}</span>
+                        <span
+                          aria-hidden
+                          className="text-signal opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100"
+                        >
+                          →
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
         </div>
-      </FrameSection>
+      </Band>
     </>
   );
 }

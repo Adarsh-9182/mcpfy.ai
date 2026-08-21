@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/site/page-hero";
-import { Section } from "@/components/site/section";
+import { Section, Em } from "@/components/site/section";
 import { ContactForm } from "@/components/site/contact-form";
 import { site } from "@/lib/site";
 
@@ -19,9 +19,11 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
+        eyebrow="contact"
+        meta="reply within one business day"
         title={
           <>
-            Book a <span className="font-serif italic font-normal">call</span>
+            Book a <Em>call</Em>
           </>
         }
         subtitle="Tell us what you are building and we will get back to you within one business day."
@@ -30,7 +32,7 @@ export default function ContactPage() {
       <Section className="border-t-0">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <div>
-            <h2 className="text-xl font-semibold tracking-tight">
+            <h2 className="display text-[28px]">
               What we will cover
             </h2>
             <ul className="mt-6 space-y-4">
@@ -38,7 +40,7 @@ export default function ContactPage() {
                 <li key={p} className="flex gap-3 text-[15px] leading-relaxed text-muted-foreground">
                   <span
                     aria-hidden
-                    className="mt-2 size-1.5 shrink-0 rounded-full bg-foreground/40"
+                    className="mt-2.5 size-1.5 shrink-0 bg-signal"
                   />
                   {p}
                 </li>

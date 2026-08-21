@@ -10,21 +10,21 @@ export function WelcomeHero({
   organizationName: string;
 }) {
   return (
-    <section className="relative isolate overflow-hidden rounded-2xl border bg-hero-wash">
+    <section className="relative isolate overflow-hidden border border-rule bg-foreground text-background">
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-grain mix-blend-multiply opacity-30"
+        className="pointer-events-none absolute inset-0 bg-grain opacity-[0.06] mix-blend-screen"
       />
 
-      <div className="relative flex min-h-[300px] flex-col justify-between gap-10 p-7 text-zinc-900 sm:p-9">
+      <div className="relative flex min-h-[300px] flex-col justify-between gap-10 p-7 sm:p-9">
         <div>
-          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-zinc-500">
+          <p className="slug opacity-60">
             Welcome
           </p>
-          <h1 className="mt-3 text-[34px] font-semibold leading-tight tracking-tight sm:text-[40px]">
+          <h1 className="display mt-4 text-[36px] sm:text-[46px]">
             Hi, {name}
           </h1>
-          <p className="mt-2 text-[15px] text-zinc-600">
+          <p className="mt-3 font-mono text-[12px] opacity-70">
             Organization: {organizationName}
           </p>
         </div>
@@ -32,14 +32,14 @@ export function WelcomeHero({
         <div className="flex flex-wrap items-center gap-5">
           <Link
             href="/dashboard/servers/new"
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-zinc-900 px-5 text-[15px] font-medium text-white transition-opacity hover:opacity-90"
+            className="inline-flex h-11 items-center gap-2 bg-background px-5 slug text-foreground transition-colors hover:bg-signal hover:text-signal-foreground"
           >
             <Plus className="size-4" />
             New Server
           </Link>
           <Link
             href="/docs"
-            className="inline-flex items-center gap-1 text-[15px] text-zinc-900 underline underline-offset-4"
+            className="inline-flex items-center gap-1.5 slug opacity-70 transition-opacity hover:opacity-100"
           >
             Read the docs
             <ArrowUpRight className="size-4" />

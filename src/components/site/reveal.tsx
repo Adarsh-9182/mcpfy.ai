@@ -1,9 +1,34 @@
 "use client";
 
 import * as React from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
 
-/** Fade-and-rise on first scroll into view. Respects reduced-motion. */
+/**
+ * Fade-and-rise on first scroll into view.
+ *
+ * The hidden state is applied by CSS under `html.js` only, and the reveal is a
+ * plain transition rather than a JS animation — so if scripts fail, if
+ * IntersectionObserver is missing, or if a crawler renders the page without
+ * running the observer, the content is simply visible. One shared observer
+ * serves every instance on the page.
+ */
+let observer: IntersectionObserver | null = null;
+
+function getObserver() {
+  if (typeof IntersectionObserver === "undefined") return null;
+  observer ??= new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add("is-in");
+        observer?.unobserve(entry.target);
+      }
+    },
+    { rootMargin: "0px 0px -48px 0px" },
+  );
+  return observer;
+}
+
 export function Reveal({
   children,
   delay = 0,
@@ -13,19 +38,29 @@ export function Reveal({
   delay?: number;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
+  const ref = React.useRef<HTMLDivElement>(null);
 
-  if (reduce) return <div className={className}>{children}</div>;
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const io = getObserver();
+    if (!io) {
+      el.classList.add("is-in");
+      return;
+    }
+
+    io.observe(el);
+    return () => io.unobserve(el);
+  }, []);
 
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+    <div
+      ref={ref}
+      className={cn("reveal", className)}
+      style={delay ? { transitionDelay: `${delay}s` } : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

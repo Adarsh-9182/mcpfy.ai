@@ -3,11 +3,14 @@
 import * as React from "react";
 import Link from "next/link";
 import { Check, Copy } from "lucide-react";
-import { ShimmerButton } from "@/components/ui/shimmer-button";
+import { Display, Em, Lede, ArrowLink } from "./section";
+import { Slug } from "./frame";
+import { GithubIcon } from "./icons";
 import { site } from "@/lib/site";
 
 const AGENT_PROMPT = `Build an MCP server with the ${site.name} SDK. Scaffold it with \`npx create-mcpfy-app\`, add a typed tool, then deploy with \`${site.cli}\`.`;
 
+/** The mono line under the CTAs: one click, one prompt, straight to an agent. */
 function CopyPrompt() {
   const [copied, setCopied] = React.useState(false);
   const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -34,101 +37,198 @@ function CopyPrompt() {
     <button
       type="button"
       onClick={copy}
-      className="inline-flex items-center gap-2 text-[15px] text-muted-foreground transition-colors hover:text-foreground"
+      className="group inline-flex items-center gap-2 slug text-muted-foreground transition-colors hover:text-signal"
     >
-      {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-      <span className="underline decoration-dotted underline-offset-2 hover:decoration-solid">
-        {copied ? "Copied to clipboard" : "Copy prompt for agents"}
+      {copied ? (
+        <Check className="size-3.5 text-pine" />
+      ) : (
+        <Copy className="size-3.5" />
+      )}
+      <span className="border-b border-rule pb-0.5 group-hover:border-signal">
+        {copied ? "Prompt copied" : "Copy prompt for agents"}
       </span>
     </button>
   );
 }
 
-/** Inline link that reveals a preview card on hover, as in the reference. */
-function LovedByDevelopers() {
+/**
+ * The hero's right column: the whole product compressed into the shell
+ * session it replaces. Static output with a live caret on the last line.
+ */
+function TerminalCard() {
+  const lines: { text: string; tone?: "cmd" | "ok" | "dim" | "url" }[] = [
+    { text: "npx create-mcpfy-app acme-mcp", tone: "cmd" },
+    { text: "scaffolded  tools/  widgets/  mcpfy.config.ts", tone: "dim" },
+    { text: "mcpfy dev", tone: "cmd" },
+    { text: "inspector ready on :4141 — 6 tools registered", tone: "dim" },
+    { text: "mcpfy deploy", tone: "cmd" },
+    { text: "build 2.4s · evals 18/18 · checks passed", tone: "ok" },
+    { text: "https://acme-mcp.mcpfy.app/mcp", tone: "url" },
+  ];
+
   return (
-    <span className="relative inline-block">
-      <span
-        aria-hidden
-        className="pointer-events-none absolute bottom-full left-1/2 mb-4 hidden w-[22rem] -translate-x-1/2 opacity-0 transition-opacity duration-300 group-hover/loved:opacity-100 sm:block"
-      >
-        <span className="block overflow-hidden rounded-lg border bg-card shadow-lg">
-          <span className="flex items-center gap-2 border-b px-3 py-2 text-left">
-            <span className="size-2 rounded-full bg-emerald-500" />
-            <span className="font-mono text-[11px] text-muted-foreground">
-              {site.name}/{site.name} · {site.stars} stars
-            </span>
-          </span>
-          <span className="flex items-end gap-1 px-3 py-4">
-            {[28, 41, 34, 55, 48, 67, 59, 78, 71, 90].map((h, i) => (
-              <span
-                key={i}
-                className="flex-1 rounded-sm bg-foreground/15"
-                style={{ height: `${h * 0.6}px` }}
-              />
-            ))}
-          </span>
+    <div className="border border-rule bg-card shadow-[var(--drop)]">
+      <div className="flex items-center justify-between border-b border-rule px-4 py-2.5">
+        <span className="font-mono text-[11px] text-muted-foreground">
+          ~/acme-mcp
         </span>
-      </span>
-      <Link
-        href={site.github}
-        target="_blank"
-        rel="noreferrer"
-        className="group/loved underline decoration-dotted underline-offset-2 hover:decoration-solid"
-      >
-        Loved by developers.
-      </Link>
-    </span>
+        <span className="flex items-center gap-1.5">
+          <span className="size-1.5 rounded-full bg-pine" />
+          <Slug className="text-[10px]">live</Slug>
+        </span>
+      </div>
+
+      <div className="bg-ruled px-4 py-4 font-mono text-[12.5px] leading-[2.05] md:text-[13px]">
+        {lines.map((line, i) => (
+          <p key={i} className="flex gap-2 whitespace-nowrap">
+            {line.tone === "cmd" ? (
+              <>
+                <span className="text-signal">$</span>
+                <span className="text-foreground">{line.text}</span>
+              </>
+            ) : line.tone === "ok" ? (
+              <>
+                <span className="text-pine">✓</span>
+                <span className="text-muted-foreground">{line.text}</span>
+              </>
+            ) : line.tone === "url" ? (
+              <>
+                <span className="text-muted-foreground">→</span>
+                <span className="truncate text-foreground underline decoration-signal decoration-1 underline-offset-4">
+                  {line.text}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="text-muted-foreground/50">·</span>
+                <span className="truncate text-muted-foreground">{line.text}</span>
+              </>
+            )}
+          </p>
+        ))}
+        <p className="flex gap-2">
+          <span className="text-signal">$</span>
+          <span aria-hidden className="animate-caret text-foreground">
+            ▍
+          </span>
+        </p>
+      </div>
+    </div>
   );
 }
+
+const facts = [
+  { value: site.stars, label: "GitHub stars" },
+  { value: "12k+", label: "servers deployed" },
+  { value: "38ms", label: "median tool call" },
+  { value: "2", label: "SDK languages" },
+];
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 top-px z-0 bg-hero-wash dark:opacity-60"
+        className="pointer-events-none absolute inset-0 bg-paper"
       />
-      <div className="relative z-10 px-4 py-6 md:px-6 lg:px-12">
-        {/* frosted panel floating on the gradient wash */}
-        <div className="flex flex-col items-center gap-6 rounded-2xl border bg-background/80 px-4 py-14 text-center backdrop-blur-md md:py-24">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-grain opacity-[0.035] mix-blend-multiply dark:opacity-[0.05] dark:mix-blend-screen"
+      />
+
+      <div className="container-page relative">
+        {/* running head */}
+        <div className="flex items-center gap-4 border-b border-rule py-4">
+          <Slug className="text-signal">00 / the platform</Slug>
+          <span aria-hidden className="h-px flex-1 bg-rule" />
           <Link
             href="/blog"
-            className="flex items-center gap-2 rounded-full bg-orange-100 px-3 py-1 dark:bg-orange-900/20"
+            className="slug text-muted-foreground transition-colors hover:text-foreground"
           >
-            <span className="text-xs font-medium text-orange-900 dark:text-orange-200">
-              Backed by
-            </span>
-            <span className="text-xs font-bold tracking-tight text-orange-900 dark:text-orange-200">
-              Foundry&nbsp;Labs
-            </span>
+            backed by Foundry&nbsp;Labs
           </Link>
+        </div>
 
-          <h1 className="max-w-2xl px-4 text-4xl font-medium tracking-tight md:text-5xl lg:text-6xl">
-            Build and deploy MCP Apps and Servers
-          </h1>
+        <div className="grid gap-14 py-16 md:py-24 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center lg:gap-16">
+          <div>
+            <Display as="h1" size="xl" className="max-w-[15ch]">
+              Build MCP servers that <Em>actually</Em> reach users.
+            </Display>
 
-          <p className="max-w-2xl text-balance text-base text-muted-foreground md:text-lg">
-            The {site.name} SDK is the fullstack MCP framework to develop MCP
-            Apps for ChatGPT / Claude &amp; MCP Servers for AI Agents.{" "}
-            <LovedByDevelopers />
-          </p>
+            <div className="mt-9 flex items-center gap-4">
+              <Slug className="shrink-0 text-foreground">
+                the fullstack MCP framework
+              </Slug>
+              <span aria-hidden className="h-px flex-1 bg-rule-strong/30" />
+            </div>
 
-          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <ShimmerButton asChild>
-              <Link href="/signup">Start deploying</Link>
-            </ShimmerButton>
-            <Link
-              href="/contact"
-              // The reference keeps both hero CTAs on fixed surfaces across themes.
-              className="inline-flex h-[50px] items-center justify-center rounded-full border border-black/10 bg-white px-6 text-[15px] font-medium text-zinc-900 transition-opacity hover:opacity-90"
-            >
-              Book a call
-            </Link>
+            <Lede className="mt-7">
+              One SDK for MCP Apps in ChatGPT and Claude, and MCP Servers for
+              your agents. One cloud to deploy, test, observe and publish them —
+              from first commit to the app store.
+            </Lede>
+
+            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <Link
+                href="/signup"
+                className="group inline-flex h-12 items-center gap-3 bg-foreground px-7 text-[14px] font-medium tracking-tight text-background transition-colors hover:bg-signal"
+              >
+                Start deploying
+                <span
+                  aria-hidden
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                >
+                  →
+                </span>
+              </Link>
+              <ArrowLink href="/contact" tone="muted">
+                Book a call
+              </ArrowLink>
+              <CopyPrompt />
+            </div>
           </div>
 
-          <CopyPrompt />
+          <div className="lg:pl-4">
+            <TerminalCard />
+            <Link
+              href={site.github}
+              target="_blank"
+              rel="noreferrer"
+              className="group mt-4 flex items-center gap-2.5 slug text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <GithubIcon className="size-3.5" />
+              <span>open source · {site.stars} stars</span>
+              <span
+                aria-hidden
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              >
+                →
+              </span>
+            </Link>
+          </div>
         </div>
+
+        {/* fact strip closing the hero */}
+        <dl className="grid grid-cols-2 border-t border-rule md:grid-cols-4">
+          {facts.map((f, i) => (
+            <div
+              key={f.label}
+              className={
+                "px-1 py-6 md:py-8" +
+                (i > 0 ? " md:border-l md:border-rule md:pl-6" : "") +
+                (i % 2 === 1 ? " border-l border-rule pl-6 md:pl-6" : "")
+              }
+            >
+              <dt className="sr-only">{f.label}</dt>
+              <dd>
+                <span className="display block text-[30px] tabular-nums md:text-[38px]">
+                  {f.value}
+                </span>
+                <Slug className="mt-2 block">{f.label}</Slug>
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );

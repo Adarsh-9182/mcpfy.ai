@@ -50,7 +50,7 @@ function useLastUsedProvider(): Provider | null {
 /** Small pill that straddles the top border of the provider used last time. */
 function LastUsedBadge() {
   return (
-    <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border bg-background px-2 py-0.5 text-[11px] text-muted-foreground">
+    <span className="absolute -top-2 left-1/2 -translate-x-1/2 whitespace-nowrap border border-rule bg-background px-2 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.14em] text-signal">
       Last used
     </span>
   );
@@ -118,9 +118,10 @@ export function LoginForm() {
 
   if (sent) {
     return (
-      <div className="text-center">
-        <h1 className="text-[30px] font-semibold tracking-tight">
-          Check your inbox
+      <div>
+        <p className="slug text-signal">check your inbox</p>
+        <h1 className="display mt-4 text-[34px]">
+          The link is on its way.
         </h1>
         <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
           We sent a sign-in link to{" "}
@@ -130,7 +131,7 @@ export function LoginForm() {
         <button
           type="button"
           onClick={() => setSent(false)}
-          className="mt-7 text-[14px] font-medium underline underline-offset-4"
+          className="mt-7 slug text-muted-foreground underline decoration-signal decoration-1 underline-offset-4 hover:text-signal"
         >
           Use a different email
         </button>
@@ -139,17 +140,20 @@ export function LoginForm() {
   }
 
   const providerClass =
-    "relative inline-flex h-12 items-center justify-center gap-2.5 rounded-full border bg-background text-[15px] font-medium transition-colors hover:bg-accent disabled:opacity-60";
+    "relative inline-flex h-12 items-center justify-center gap-2.5 border border-rule bg-background slug transition-colors hover:border-signal hover:text-signal disabled:opacity-60";
 
   return (
     <div>
-      <h1 className="text-center text-[34px] font-semibold tracking-tight sm:text-[38px]">
-        Log in or sign up
-      </h1>
+      <div>
+        <p className="slug text-signal">access</p>
+        <h1 className="display mt-4 text-[38px] sm:text-[44px]">
+          Log in or sign up
+        </h1>
+      </div>
 
       <form onSubmit={signInWithEmail} className="mt-9">
-        <label htmlFor="email" className="block text-[14px] font-medium">
-          Email
+        <label htmlFor="email" className="slug block">
+          email
         </label>
         <input
           id="email"
@@ -159,12 +163,12 @@ export function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
-          className="mt-2.5 h-12 w-full rounded-full border bg-background px-4.5 text-[15px] outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground/30"
+          className="mt-2.5 h-12 w-full border-b border-rule bg-transparent px-0 text-[15px] outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-signal"
         />
         <button
           type="submit"
           disabled={pending !== null}
-          className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground text-[15px] font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-60"
+          className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 bg-foreground slug text-background transition-colors hover:bg-signal hover:text-signal-foreground disabled:opacity-60"
         >
           {pending === "email" && <Loader2 className="size-4 animate-spin" />}
           Continue
@@ -172,11 +176,9 @@ export function LoginForm() {
       </form>
 
       <div className="my-7 flex items-center gap-3">
-        <span className="h-px flex-1 bg-border" />
-        <span className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
-          Or continue with
-        </span>
-        <span className="h-px flex-1 bg-border" />
+        <span className="h-px flex-1 bg-rule" />
+        <span className="slug text-muted-foreground">or continue with</span>
+        <span className="h-px flex-1 bg-rule" />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -184,7 +186,7 @@ export function LoginForm() {
           type="button"
           onClick={() => signInWithOAuth("google")}
           disabled={pending !== null}
-          className={cn(providerClass, lastUsed === "google" && "border-foreground/25")}
+          className={cn(providerClass, lastUsed === "google" && "border-signal/50")}
         >
           {lastUsed === "google" && <LastUsedBadge />}
           {pending === "google" ? (
@@ -198,7 +200,7 @@ export function LoginForm() {
           type="button"
           onClick={() => signInWithOAuth("github")}
           disabled={pending !== null}
-          className={cn(providerClass, lastUsed === "github" && "border-foreground/25")}
+          className={cn(providerClass, lastUsed === "github" && "border-signal/50")}
         >
           {lastUsed === "github" && <LastUsedBadge />}
           {pending === "github" ? (
@@ -213,19 +215,19 @@ export function LoginForm() {
       {error && (
         <p
           role="alert"
-          className="mt-5 rounded-xl border border-red-500/30 bg-red-500/5 px-3.5 py-3 text-[13px] leading-relaxed text-red-600 dark:text-red-400"
+          className="mt-5 border-l-2 border-destructive bg-destructive/5 px-3.5 py-3 text-[13px] leading-relaxed text-destructive"
         >
           {error}
         </p>
       )}
 
-      <p className="mt-7 text-center text-[13px] leading-relaxed text-muted-foreground">
+      <p className="mt-8 border-t border-rule pt-5 text-[13px] leading-relaxed text-muted-foreground">
         By continuing, you agree to our{" "}
-        <Link href="/legal/terms" className="underline underline-offset-2">
+        <Link href="/legal/terms" className="text-foreground underline decoration-signal decoration-1 underline-offset-4">
           TOS
         </Link>{" "}
         and{" "}
-        <Link href="/legal/privacy" className="underline underline-offset-2">
+        <Link href="/legal/privacy" className="text-foreground underline decoration-signal decoration-1 underline-offset-4">
           Privacy
         </Link>
       </p>

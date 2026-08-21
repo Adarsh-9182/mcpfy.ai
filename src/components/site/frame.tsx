@@ -2,52 +2,102 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Page shell: a fixed-width column with hairline rules down both edges and
- * small cross ticks at each section boundary — the blueprint frame the whole
- * site sits inside.
+ * Page shell. The editorial layout has no boxed frame: the page is a stack of
+ * full-bleed horizontal bands, each separated by a rule, all sharing the one
+ * measure set by `container-page`.
  */
 export function PageFrame({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="relative mx-auto w-full max-w-[1280px] border-x border-border/60">
-      {children}
-    </div>
-  );
+  return <div className="relative w-full">{children}</div>;
 }
 
-/** A cross tick that straddles the frame rule at a section boundary. */
-function Tick({ side }: { side: "left" | "right" }) {
+/** The mono slug that indexes a band from the left rail. */
+export function Slug({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"span">) {
   return (
-    <span
-      aria-hidden
-      className={cn(
-        "pointer-events-none absolute top-0 z-10 hidden -translate-y-1/2 md:block",
-        side === "left" ? "-left-[3px]" : "-right-[3px]",
-      )}
-    >
-      <span className="block h-px w-[7px] bg-border" />
-      <span className="absolute left-[3px] top-[-3px] block h-[7px] w-px bg-border" />
+    <span className={cn("slug text-muted-foreground", className)} {...props}>
+      {children}
     </span>
   );
 }
 
 /**
- * One page section: a top hairline with corner ticks, plus vertical padding.
- * `flush` drops the horizontal padding for full-bleed children (marquees).
+ * One band of the page: a top rule, a mono index in the left margin, and the
+ * content column beside it. The index is the running order of the page — it
+ * is what makes the layout read as a document rather than a deck of cards.
+ *
+ * `flush` drops the measure for full-bleed children (marquees, ledgers).
  */
-export function FrameSection({
-  className,
-  children,
+export function Band({
+  index,
+  label,
   flush = false,
+  rule = true,
+  className,
+  innerClassName,
+  children,
   ...props
-}: React.ComponentProps<"section"> & { flush?: boolean }) {
+}: React.ComponentProps<"section"> & {
+  index?: string;
+  label?: string;
+  flush?: boolean;
+  rule?: boolean;
+  innerClassName?: string;
+}) {
+  const rail = index || label;
+
   return (
     <section
-      className={cn("relative border-t border-border/60", className)}
+      className={cn("relative", rule && "border-t border-rule", className)}
       {...props}
     >
-      <Tick side="left" />
-      <Tick side="right" />
-      <div className={cn(flush ? "" : "px-4 md:px-6 lg:px-12")}>{children}</div>
+      <div className={cn(!flush && "container-page")}>
+        <div
+          className={cn(
+            rail ? "band-grid py-20 md:py-28" : "py-20 md:py-28",
+            innerClassName,
+          )}
+        >
+          {rail && (
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <p className="flex items-center gap-2.5 lg:flex-col lg:items-start lg:gap-3">
+                {index && (
+                  <span className="slug text-signal">{index}</span>
+                )}
+                {index && label && (
+                  <span
+                    aria-hidden
+                    className="h-px w-6 bg-rule lg:w-10"
+                  />
+                )}
+                {label && <Slug>{label}</Slug>}
+              </p>
+            </div>
+          )}
+          <div className={cn(rail && "min-w-0")}>{children}</div>
+        </div>
+      </div>
     </section>
+  );
+}
+
+/** A full-width rule with an optional mono caption sitting on it. */
+export function Rule({
+  caption,
+  className,
+}: {
+  caption?: string;
+  className?: string;
+}) {
+  if (!caption) {
+    return <span aria-hidden className={cn("block h-px bg-rule", className)} />;
+  }
+  return (
+    <span className={cn("flex items-center gap-4", className)}>
+      <Slug className="shrink-0">{caption}</Slug>
+      <span aria-hidden className="h-px flex-1 bg-rule" />
+    </span>
   );
 }

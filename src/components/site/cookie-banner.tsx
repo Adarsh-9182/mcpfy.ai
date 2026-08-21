@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { Slug } from "./frame";
 
 const STORAGE_KEY = "mcpfy.cookie-consent";
 
@@ -53,37 +54,46 @@ export function CookieBanner() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 16 }}
+          exit={{ opacity: 0, y: 12 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
           role="dialog"
           aria-label="Cookie preferences"
-          className="fixed bottom-4 left-4 z-50 w-[calc(100%-2rem)] max-w-sm rounded-xl border bg-popover p-4 shadow-xl"
+          className="fixed bottom-5 left-5 z-50 w-[calc(100%-2.5rem)] max-w-sm border border-rule bg-popover shadow-[var(--drop)]"
         >
-          <p className="text-sm font-medium">Cookie preferences</p>
-          <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
-            We use cookies to improve your experience. See our{" "}
-            <Link
-              href="/legal/privacy"
-              className="underline underline-offset-2 hover:text-foreground"
-            >
-              Privacy Policy
-            </Link>
-            .
-          </p>
-          <div className="mt-4 flex gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              className="flex-1"
-              onClick={() => decide("denied")}
-            >
-              Deny
-            </Button>
-            <Button size="sm" className="flex-1" onClick={() => decide("accepted")}>
-              Accept all
-            </Button>
+          <div className="flex items-center gap-2.5 border-b border-rule px-4 py-2.5">
+            <span className="size-1.5 bg-signal" />
+            <Slug className="text-signal">cookies</Slug>
+          </div>
+          <div className="px-4 py-4">
+            <p className="text-[14px] leading-relaxed text-muted-foreground">
+              We use cookies to improve your experience. See our{" "}
+              <Link
+                href="/legal/privacy"
+                className="text-foreground underline decoration-signal decoration-1 underline-offset-4 hover:text-signal"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </p>
+            <div className="mt-5 flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                className="flex-1"
+                onClick={() => decide("denied")}
+              >
+                Deny
+              </Button>
+              <Button
+                size="sm"
+                className="flex-1"
+                onClick={() => decide("accepted")}
+              >
+                Accept all
+              </Button>
+            </div>
           </div>
         </motion.div>
       )}

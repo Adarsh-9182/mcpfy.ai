@@ -1,72 +1,88 @@
-import { Check, Minus } from "lucide-react";
-import { FrameSection } from "./frame";
+import { Band, Slug } from "./frame";
+import { Display, Em, Lede } from "./section";
 import { Reveal } from "./reveal";
 import { comparisonRows } from "@/lib/content";
 import { site } from "@/lib/site";
 
 /**
- * The "build it by hand, or use the platform" table. Two columns of the same
- * jobs, so the cost of doing it yourself is visible row by row.
+ * The ledger: every job an MCP server needs around it, costed twice. The
+ * platform column is the one with the surface and the signal rule; the
+ * hand-rolled column is hatched, the way a struck line is on paper.
  */
 export function Comparison() {
   return (
-    <FrameSection>
-      <div className="py-16 md:py-24">
-        <Reveal>
-          <h2 className="mx-auto max-w-3xl text-center text-3xl font-medium tracking-tight md:text-4xl lg:text-5xl">
-            Build by hand. Or with{" "}
-            <span className="font-serif italic font-normal">{site.name}</span>.
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-balance text-center text-base text-muted-foreground md:text-lg">
-            Every MCP server needs the same things around it. The only question
-            is how much of it you write yourself.
-          </p>
-        </Reveal>
+    <Band index="02" label="the ledger">
+      <Reveal>
+        <Display size="lg" className="max-w-[18ch]">
+          Every MCP server needs the same scaffolding. The question is who{" "}
+          <Em>writes</Em> it.
+        </Display>
+        <Lede className="mt-7">
+          Seven jobs stand between a working tool and a product people can
+          actually install. Here is the bill for each one.
+        </Lede>
+      </Reveal>
 
-        <Reveal delay={0.08}>
-          <div className="mt-12 overflow-x-auto">
-            <table className="w-full min-w-[46rem] border-collapse text-left">
-              <thead>
-                <tr className="border-b border-border/60">
-                  <th className="w-[18%] py-4 pr-6 font-mono text-[11px] font-normal uppercase tracking-[0.14em] text-muted-foreground">
-                    The job
+      <Reveal delay={0.08}>
+        <div className="mt-14 overflow-x-auto">
+          <table className="w-full min-w-[48rem] border-collapse text-left">
+            <thead>
+              <tr>
+                <th className="w-[22%] border-b border-rule-strong/25 pb-3 pr-6">
+                  <Slug>the job</Slug>
+                </th>
+                <th className="w-[39%] border-b border-rule-strong/25 px-6 pb-3">
+                  <Slug>by hand</Slug>
+                </th>
+                <th className="w-[39%] border-b-2 border-signal px-6 pb-3">
+                  <Slug className="text-signal">with {site.name}</Slug>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparisonRows.map((row, i) => (
+                <tr key={row.job} className="group align-top">
+                  <th
+                    scope="row"
+                    className="border-b border-rule py-6 pr-6 text-left"
+                  >
+                    <span className="flex items-baseline gap-3">
+                      <span className="font-mono text-[10.5px] text-muted-foreground">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="display text-[21px] md:text-[24px]">
+                        {row.job}
+                      </span>
+                    </span>
                   </th>
-                  <th className="w-[41%] px-6 py-4 font-mono text-[11px] font-normal uppercase tracking-[0.14em] text-muted-foreground">
-                    Without {site.name}
-                  </th>
-                  <th className="w-[41%] py-4 pl-6 font-mono text-[11px] font-normal uppercase tracking-[0.14em] text-foreground">
-                    With {site.name}
-                  </th>
+
+                  <td className="border-b border-rule px-6 py-6">
+                    <span className="flex gap-3 text-[14.5px] leading-relaxed text-muted-foreground">
+                      <span
+                        aria-hidden
+                        className="mt-[3px] h-3 w-3 shrink-0 bg-hatch"
+                      />
+                      {row.byHand}
+                    </span>
+                  </td>
+
+                  <td className="border-b border-rule bg-signal-soft/40 px-6 py-6 transition-colors group-hover:bg-signal-soft">
+                    <span className="flex gap-3 text-[14.5px] leading-relaxed">
+                      <span
+                        aria-hidden
+                        className="mt-px shrink-0 font-mono text-[13px] text-signal"
+                      >
+                        ✓
+                      </span>
+                      {row.withUs}
+                    </span>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {comparisonRows.map((row) => (
-                  <tr key={row.job} className="border-b border-border/60">
-                    <th
-                      scope="row"
-                      className="py-5 pr-6 align-top text-[15px] font-medium"
-                    >
-                      {row.job}
-                    </th>
-                    <td className="px-6 py-5 align-top">
-                      <span className="flex gap-2.5 text-[14px] leading-relaxed text-muted-foreground">
-                        <Minus className="mt-1 size-3.5 shrink-0" />
-                        {row.byHand}
-                      </span>
-                    </td>
-                    <td className="py-5 pl-6 align-top">
-                      <span className="flex gap-2.5 text-[14px] leading-relaxed">
-                        <Check className="mt-1 size-3.5 shrink-0" />
-                        {row.withUs}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Reveal>
-      </div>
-    </FrameSection>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Reveal>
+    </Band>
   );
 }

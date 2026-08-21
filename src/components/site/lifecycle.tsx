@@ -1,85 +1,89 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { FrameSection } from "./frame";
+import { Band, Slug } from "./frame";
+import { Display, Em, Lede, ArrowLink } from "./section";
 import { Reveal } from "./reveal";
 import { StageVisual } from "./stage-visual";
 import { lifecycle } from "@/lib/content";
-import { cn } from "@/lib/utils";
 
-function Kicker({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="inline-flex items-center rounded-full border px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-      {children}
-    </span>
-  );
-}
-
+/**
+ * The lifecycle reads as chapters of one document: a shared `03` index, a
+ * decimal per stage, and the same chapter head over each spread.
+ */
 export function Lifecycle() {
   return (
     <>
-      <FrameSection>
-        <div className="py-16 text-center md:py-24">
-          <Reveal>
-            <h2 className="mx-auto max-w-3xl text-3xl font-medium tracking-tight md:text-4xl lg:text-5xl">
-              From first commit to production.
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground md:text-lg">
-              Every step of the MCP lifecycle. No extra tools.
-            </p>
-          </Reveal>
-        </div>
-      </FrameSection>
+      <Band index="03" label="lifecycle">
+        <Reveal>
+          <Display size="lg" className="max-w-[16ch]">
+            From first commit to <Em>production</Em>, without leaving the
+            platform.
+          </Display>
+          <Lede className="mt-7">
+            Five stages, one pipeline. Nothing here needs a second vendor, a
+            CI plugin or a weekend of YAML.
+          </Lede>
+
+          <ol className="rule-grid mt-12 grid sm:grid-cols-3 lg:grid-cols-5">
+            {lifecycle.map((stage, i) => (
+              <li
+                key={stage.id}
+                className="rule-cell flex items-baseline gap-2.5 px-4 py-4"
+              >
+                <span className="font-mono text-[10.5px] text-signal">
+                  03.{i + 1}
+                </span>
+                <span className="font-mono text-[11.5px] uppercase tracking-[0.14em]">
+                  {stage.kicker}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </Reveal>
+      </Band>
 
       {lifecycle.map((stage, i) => (
-        <FrameSection key={stage.id}>
-          <div
-            className={cn(
-              "grid items-center gap-12 py-16 md:py-24 lg:grid-cols-2 lg:gap-16",
-            )}
-          >
-            {/* copy column — alternates side on large screens */}
-            <Reveal className={cn(i % 2 === 1 && "lg:order-2")}>
+        <Band key={stage.id} index={`03.${i + 1}`} label={stage.kicker}>
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-14">
+            <Reveal>
               <div>
-                <Kicker>{stage.kicker}</Kicker>
-                <h3 className="mt-5 max-w-md text-3xl font-medium tracking-tight md:text-4xl">
+                <Display size="md" className="max-w-[15ch]">
                   {stage.title}
-                </h3>
-                <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">
-                  {stage.body}
-                </p>
+                </Display>
+                <Lede className="mt-6">{stage.body}</Lede>
 
-                <div className="mt-10 grid gap-8 sm:grid-cols-3">
+                <dl className="mt-10 border-t border-rule">
                   {stage.cards.map((card) => (
-                    <div key={card.title}>
-                      <p className="text-[15px] font-medium">{card.title}</p>
-                      <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">
+                    <div
+                      key={card.title}
+                      className="grid gap-2 border-b border-rule py-5 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-6"
+                    >
+                      <dt>
+                        <Slug className="text-foreground">{card.title}</Slug>
+                      </dt>
+                      <dd className="text-[14.5px] leading-relaxed text-muted-foreground">
                         {card.desc}
-                      </p>
-                      {card.cta && (
-                        <Link
-                          href={card.cta.href}
-                          className="group mt-3 inline-flex items-center gap-1.5 text-[14px]"
-                        >
-                          <span className="underline underline-offset-2 decoration-border group-hover:decoration-foreground">
-                            {card.cta.label}
+                        {card.cta && (
+                          <span className="mt-2.5 block">
+                            <ArrowLink
+                              href={card.cta.href}
+                              tone="signal"
+                              external={card.cta.href.startsWith("http")}
+                            >
+                              {card.cta.label}
+                            </ArrowLink>
                           </span>
-                          <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                        </Link>
-                      )}
+                        )}
+                      </dd>
                     </div>
                   ))}
-                </div>
+                </dl>
               </div>
             </Reveal>
 
-            <Reveal
-              delay={0.1}
-              className={cn(i % 2 === 1 && "lg:order-1")}
-            >
+            <Reveal delay={0.1} className="lg:sticky lg:top-28">
               <StageVisual id={stage.id} />
             </Reveal>
           </div>
-        </FrameSection>
+        </Band>
       ))}
     </>
   );

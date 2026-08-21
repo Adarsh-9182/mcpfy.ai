@@ -57,18 +57,18 @@ export default function NewServerPage() {
             Build Something New
           </h2>
 
-          <div className="relative isolate mt-5 flex min-h-[300px] flex-col justify-between overflow-hidden rounded-xl border bg-panel-wash p-7">
+          <div className="relative isolate mt-5 flex min-h-[300px] flex-col justify-between overflow-hidden border border-rule bg-foreground p-7 text-background">
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-0 bg-grain mix-blend-multiply opacity-30"
+              className="pointer-events-none absolute inset-0 bg-grain opacity-[0.06] mix-blend-screen"
             />
-            <p className="relative font-serif text-[30px] font-medium leading-tight tracking-tight text-zinc-900">
+            <p className="display relative max-w-[12ch] text-[32px]">
               Vibecode your MCP App
             </p>
             <div className="relative flex justify-end">
               <Link
                 href="/vibe"
-                className="inline-flex h-10 items-center gap-1.5 rounded-full bg-zinc-900 px-4 text-[14px] font-medium text-white transition-opacity hover:opacity-90"
+                className="inline-flex h-10 items-center gap-1.5 bg-background px-4 slug text-foreground transition-colors hover:bg-signal hover:text-signal-foreground"
               >
                 Try now
                 <ArrowUpRight className="size-4" />

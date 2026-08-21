@@ -1,25 +1,31 @@
 import * as React from "react";
 import { site } from "@/lib/site";
 
-/* Height follows content — a fixed aspect left dead space under short mocks. */
-const panel =
-  "relative w-full overflow-hidden rounded-xl border bg-muted/40 p-4";
-const win = "overflow-hidden rounded-lg border bg-card shadow-sm";
-const winBar =
-  "flex items-center gap-2 border-b px-3 py-2 font-mono text-[10px] text-muted-foreground";
+/**
+ * The mock surfaces that sit beside each lifecycle stage. They are drawn in
+ * the same language as the rest of the site: square corners, hairline rules,
+ * mono type, one signal accent and pine for anything passing.
+ */
 
-function Term({ lines }: { lines: [string, string?][] }) {
+const panel = "border border-rule bg-card";
+const head =
+  "flex items-center justify-between border-b border-rule px-3.5 py-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-muted-foreground";
+const row = "flex items-center gap-2.5 border-b border-rule-soft px-3.5 py-2.5 last:border-b-0";
+
+function Term({ lines }: { lines: [string, ("ok" | "dim" | "sig")?][] }) {
   return (
-    <div className="overflow-hidden rounded-lg bg-zinc-900 p-3 font-mono text-[11px] leading-relaxed">
+    <div className="bg-ruled px-3.5 py-3 font-mono text-[11.5px] leading-[1.9]">
       {lines.map(([text, tone], i) => (
         <p
           key={i}
           className={
             tone === "ok"
-              ? "text-emerald-400"
+              ? "text-pine"
               : tone === "dim"
-                ? "text-zinc-500"
-                : "text-zinc-200"
+                ? "text-muted-foreground"
+                : tone === "sig"
+                  ? "text-signal"
+                  : "text-foreground"
           }
         >
           {text}
@@ -29,17 +35,30 @@ function Term({ lines }: { lines: [string, string?][] }) {
   );
 }
 
-function Bars({ n = 4, w = [90, 70, 80, 55] }: { n?: number; w?: number[] }) {
+function Bars({ w = [92, 74, 58] }: { w?: number[] }) {
   return (
     <div className="flex flex-col gap-1.5">
-      {Array.from({ length: n }).map((_, i) => (
+      {w.map((width, i) => (
         <span
           key={i}
-          className="h-1.5 rounded-full bg-foreground/10"
-          style={{ width: `${w[i % w.length]}%` }}
+          className="h-1.5 bg-foreground/10"
+          style={{ width: `${width}%` }}
         />
       ))}
     </div>
+  );
+}
+
+function Status({ ok, children }: { ok: boolean; children: React.ReactNode }) {
+  return (
+    <span
+      className={
+        "shrink-0 border px-1.5 py-px font-mono text-[9.5px] uppercase tracking-wider " +
+        (ok ? "border-pine/40 text-pine" : "border-signal/40 text-signal")
+      }
+    >
+      {children}
+    </span>
   );
 }
 
@@ -48,23 +67,29 @@ export function StageVisual({ id }: { id: string }) {
     case "build":
       return (
         <div className={panel}>
+          <div className={head}>
+            <span>scaffold</span>
+            <span className="normal-case tracking-normal">create-mcpfy-app</span>
+          </div>
           <Term
             lines={[
-              ["$ npx create-mcpfy-app"],
-              ["● installing the skill…", "ok"],
+              ["$ npx create-mcpfy-app", "sig"],
+              ["  ├ tools/chart-sales.ts", "dim"],
+              ["  ├ widgets/Chart.tsx", "dim"],
+              ["  └ mcpfy.config.ts", "dim"],
+              ["✓ skill installed into your agent", "ok"],
             ]}
           />
-          <div className={`${win} mt-3`}>
-            <div className={winBar}>
-              <span className="size-2 rounded-full bg-foreground/20" />
-              Assistant
+          <div className="border-t border-rule">
+            <div className={head}>
+              <span>assistant</span>
             </div>
-            <div className="space-y-2 p-3">
-              <div className="ml-auto w-[62%] rounded-lg rounded-br-sm bg-accent px-2.5 py-1.5 text-[10px]">
+            <div className="space-y-2.5 p-3.5">
+              <p className="ml-auto w-[70%] border border-rule bg-accent px-3 py-2 text-[11.5px]">
                 add a tool that charts monthly sales
-              </div>
-              <div className="w-[78%] rounded-lg rounded-bl-sm border px-2.5 py-1.5">
-                <Bars n={3} w={[92, 74, 58]} />
+              </p>
+              <div className="w-[80%] border border-rule px-3 py-2.5">
+                <Bars />
               </div>
             </div>
           </div>
@@ -74,31 +99,32 @@ export function StageVisual({ id }: { id: string }) {
     case "deploy":
       return (
         <div className={panel}>
-          <div className={win}>
-            <div className={winBar}>Deployments</div>
-            <ul className="divide-y">
-              {[
-                ["main", "Production", "ok"],
-                ["feat/tools", "Preview", "build"],
-                ["fix/auth", "Preview", "ok"],
-              ].map(([branch, env, st]) => (
-                <li key={branch} className="flex items-center gap-2 px-3 py-2">
-                  <span
-                    className={`size-1.5 rounded-full ${st === "ok" ? "bg-emerald-500" : "bg-amber-500"}`}
-                  />
-                  <span className="font-mono text-[10px]">{branch}</span>
-                  <span className="ml-auto rounded border px-1.5 py-px text-[9px] text-muted-foreground">
-                    {env}
-                  </span>
-                </li>
-              ))}
-            </ul>
+          <div className={head}>
+            <span>deployments</span>
+            <span className="normal-case tracking-normal">auto · on push</span>
           </div>
-          <div className="mt-3">
+          <ul>
+            {[
+              ["main", "production", true],
+              ["feat/tools", "preview", false],
+              ["fix/auth", "preview", true],
+            ].map(([branch, env, ok]) => (
+              <li key={String(branch)} className={row}>
+                <span
+                  className={`size-1.5 shrink-0 ${ok ? "bg-pine" : "bg-signal"}`}
+                />
+                <span className="font-mono text-[11.5px]">{branch}</span>
+                <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {env}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="border-t border-rule">
             <Term
               lines={[
-                [`$ ${site.cli}`],
-                [`✔ live → my-server.${site.domain}/mcp`, "ok"],
+                [`$ ${site.cli}`, "sig"],
+                [`✓ live → my-server.${site.domain}/mcp`, "ok"],
               ]}
             />
           </div>
@@ -108,36 +134,31 @@ export function StageVisual({ id }: { id: string }) {
     case "publish":
       return (
         <div className={panel}>
-          <div className={win}>
-            <div className={winBar}>Publishing checks</div>
-            <ul className="divide-y">
-              {[
-                ["Protocol & discovery", true],
-                ["Tool conformance", true],
-                ["Security & policy", true],
-                ["Domain / TLS / CSP", false],
-              ].map(([label, ok]) => (
-                <li key={String(label)} className="flex items-center gap-2 px-3 py-2">
-                  <span
-                    className={`grid size-3.5 place-items-center rounded-full text-[8px] ${
-                      ok
-                        ? "bg-emerald-500/15 text-emerald-600"
-                        : "bg-amber-500/15 text-amber-600"
-                    }`}
-                  >
-                    {ok ? "✓" : "!"}
-                  </span>
-                  <span className="text-[10px]">{label}</span>
-                </li>
-              ))}
-            </ul>
+          <div className={head}>
+            <span>publishing checks</span>
+            <span className="normal-case tracking-normal">3 / 4</span>
           </div>
-          <div className={`${win} mt-3`}>
-            <div className={winBar}>Submission pack</div>
-            <div className="flex gap-2 p-3">
-              <span className="size-12 shrink-0 rounded-md border bg-background" />
-              <div className="flex-1 pt-1">
-                <Bars n={3} w={[88, 66, 44]} />
+          <ul>
+            {[
+              ["Protocol & discovery", true],
+              ["Tool conformance", true],
+              ["Security & policy", true],
+              ["Domain / TLS / CSP", false],
+            ].map(([label, ok]) => (
+              <li key={String(label)} className={row}>
+                <span className="text-[12px]">{label}</span>
+                <Status ok={Boolean(ok)}>{ok ? "pass" : "fix"}</Status>
+              </li>
+            ))}
+          </ul>
+          <div className="border-t border-rule">
+            <div className={head}>
+              <span>submission pack</span>
+            </div>
+            <div className="flex gap-3 p-3.5">
+              <span className="size-14 shrink-0 border border-rule bg-hatch" />
+              <div className="flex-1 pt-1.5">
+                <Bars w={[88, 66, 44]} />
               </div>
             </div>
           </div>
@@ -147,21 +168,27 @@ export function StageVisual({ id }: { id: string }) {
     case "iterate":
       return (
         <div className={panel}>
-          <div className={win}>
-            <div className={winBar}>Cloud Inspector</div>
-            <div className="p-3 font-mono text-[10px] leading-relaxed">
-              <p className="text-muted-foreground">→ tools/call chart_sales</p>
-              <p className="text-muted-foreground">← result 200</p>
-              <p className="text-emerald-600">✔ 41ms</p>
-            </div>
+          <div className={head}>
+            <span>cloud inspector</span>
+            <span className="normal-case tracking-normal">session #4f2a</span>
           </div>
-          <div className="mt-3 grid grid-cols-3 gap-2">
+          <Term
+            lines={[
+              ["→ tools/call chart_sales", "dim"],
+              ["← result 200 · 1.4kb", "dim"],
+              ["✓ 41ms", "ok"],
+            ]}
+          />
+          <div className="grid grid-cols-3 border-t border-rule">
             {["GPT", "Claude", "Gemini"].map((m) => (
-              <div key={m} className={`${win} p-2`}>
-                <p className="font-mono text-[9px] text-muted-foreground">{m}</p>
-                <p className="mt-1 text-[11px] font-medium text-emerald-600">
-                  pass
+              <div
+                key={m}
+                className="border-r border-rule px-3.5 py-3 last:border-r-0"
+              >
+                <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {m}
                 </p>
+                <p className="mt-1.5 font-mono text-[12px] text-pine">pass</p>
               </div>
             ))}
           </div>
@@ -171,27 +198,33 @@ export function StageVisual({ id }: { id: string }) {
     case "monitor":
       return (
         <div className={panel}>
-          <div className={win}>
-            <div className={winBar}>Tool calls · last 24h</div>
-            <div className="flex h-24 items-end gap-1 p-3">
-              {[38, 62, 45, 78, 56, 88, 70, 52, 81, 64, 92, 71].map((h, i) => (
-                <span
-                  key={i}
-                  className="flex-1 rounded-sm bg-foreground/15"
-                  style={{ height: `${h}%` }}
-                />
-              ))}
-            </div>
+          <div className={head}>
+            <span>tool calls · 24h</span>
+            <span className="normal-case tracking-normal">12,481</span>
           </div>
-          <div className="mt-3 grid grid-cols-3 gap-2">
+          <div className="flex h-28 items-end gap-1 px-3.5 py-3.5">
+            {[38, 62, 45, 78, 56, 88, 70, 52, 81, 64, 92, 71].map((h, i) => (
+              <span
+                key={i}
+                className={`flex-1 ${i === 10 ? "bg-signal" : "bg-foreground/12"}`}
+                style={{ height: `${h}%` }}
+              />
+            ))}
+          </div>
+          <div className="grid grid-cols-3 border-t border-rule">
             {[
               ["p50", "38ms"],
               ["p95", "112ms"],
               ["errors", "0.2%"],
             ].map(([k, v]) => (
-              <div key={k} className={`${win} p-2`}>
-                <p className="font-mono text-[9px] text-muted-foreground">{k}</p>
-                <p className="mt-0.5 text-[13px] font-medium tabular-nums">{v}</p>
+              <div
+                key={k}
+                className="border-r border-rule px-3.5 py-3 last:border-r-0"
+              >
+                <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {k}
+                </p>
+                <p className="mt-1 font-mono text-[14px] tabular-nums">{v}</p>
               </div>
             ))}
           </div>
@@ -199,6 +232,6 @@ export function StageVisual({ id }: { id: string }) {
       );
 
     default:
-      return <div className={panel} />;
+      return <div className={`${panel} h-64 bg-hatch`} />;
   }
 }

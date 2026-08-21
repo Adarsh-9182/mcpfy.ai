@@ -1,13 +1,13 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { ArrowRight, CircleCheck } from "lucide-react";
 import { Logo } from "@/components/site/logo";
+import { Slug } from "@/components/site/frame";
 import { site } from "@/lib/site";
 import { LoginForm } from "./login-form";
 
 /**
- * The signed-out screen. Both /cloud and /signup render it, the way the
- * reference serves the same card from either entry point.
+ * The signed-out screen. Both /cloud and /signup render it: an ink column
+ * stating what the platform is, and a paper column holding the form.
  */
 const platformFeatures = [
   "Hosting",
@@ -21,67 +21,83 @@ const platformFeatures = [
 
 export function AuthScreen() {
   return (
-    <div className="relative flex min-h-dvh flex-col bg-background">
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-grid opacity-70"
-      />
-
-      <header className="relative flex items-center justify-between px-5 py-5 lg:px-10">
+    <div className="flex min-h-dvh flex-col lg:h-dvh lg:overflow-hidden">
+      <header className="flex shrink-0 items-center justify-between border-b border-rule px-5 py-4 lg:px-8">
         <Logo />
         <Link
           href="/contact"
-          className="inline-flex h-11 items-center gap-2 rounded-full border bg-background px-5 text-[15px] font-medium transition-colors hover:bg-accent"
+          className="group inline-flex items-center gap-2 slug text-muted-foreground transition-colors hover:text-signal"
         >
-          Book a call
-          <ArrowRight className="size-4" />
+          <span className="border-b border-current pb-0.5">Book a call</span>
+          <span
+            aria-hidden
+            className="transition-transform duration-300 group-hover:translate-x-1"
+          >
+            →
+          </span>
         </Link>
       </header>
 
-      <main className="relative flex flex-1 items-center justify-center px-4 pb-14 pt-4 lg:px-10">
-        {/* One grainy wash card holds both halves; the form floats inside it. */}
-        <div className="relative isolate w-full max-w-5xl overflow-hidden rounded-[28px] border bg-panel-wash p-2.5 sm:p-3.5">
+      <main className="grid flex-1 lg:grid-cols-2 lg:overflow-hidden">
+        {/* the pitch, set on ink */}
+        <section className="relative isolate hidden flex-col justify-between overflow-hidden border-r border-rule bg-foreground px-10 py-12 text-background lg:flex xl:px-14">
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-grain opacity-35 mix-blend-multiply"
+            className="pointer-events-none absolute inset-0 bg-grain opacity-[0.06] mix-blend-screen"
           />
 
-          <div className="relative grid gap-3.5 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)]">
-            <div className="rounded-[22px] border border-white/70 bg-background px-6 py-12 shadow-[var(--drop)] sm:px-10 sm:py-14">
-              <div className="mx-auto w-full max-w-sm">
-                <Suspense fallback={<div className="h-[430px]" />}>
-                  <LoginForm />
-                </Suspense>
-              </div>
-            </div>
-
-            <div className="hidden flex-col justify-center px-8 py-12 text-zinc-900 lg:flex xl:px-10">
-              <h2 className="max-w-sm text-[40px] font-semibold leading-[1.12] tracking-tight">
-                All-in-one MCP platform
-              </h2>
-              <p className="mt-6 max-w-sm text-[17px] leading-relaxed text-zinc-600">
-                {site.name} is the complete platform to build, deploy and
-                distribute MCP servers, Claude connectors and ChatGPT apps.
-              </p>
-
-              <ul className="mt-9 space-y-4">
-                {platformFeatures.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-center gap-3.5 text-[18px]"
-                  >
-                    <CircleCheck
-                      className="size-[19px] shrink-0 text-zinc-500"
-                      strokeWidth={1.5}
-                    />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="relative flex items-center gap-4">
+            <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] opacity-60">
+              the platform
+            </span>
+            <span aria-hidden className="h-px flex-1 bg-background/20" />
           </div>
-        </div>
+
+          <div className="relative">
+            <h2 className="display max-w-[13ch] text-[46px] xl:text-[56px]">
+              All of MCP, on one pipeline.
+            </h2>
+            <p className="mt-7 max-w-[44ch] text-[16px] leading-relaxed opacity-70">
+              {site.name} is the complete platform to build, deploy and
+              distribute MCP servers, Claude connectors and ChatGPT apps.
+            </p>
+          </div>
+
+          <ul className="relative grid grid-cols-2 gap-px bg-background/20">
+            {platformFeatures.map((feature, i) => (
+              <li
+                key={feature}
+                className="flex items-baseline gap-2.5 bg-foreground px-4 py-3.5"
+              >
+                <span className="font-mono text-[10px] opacity-50">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="text-[14.5px]">{feature}</span>
+              </li>
+            ))}
+            <li aria-hidden className="bg-foreground bg-hatch px-4 py-3.5" />
+          </ul>
+        </section>
+
+        {/* the form, set on paper */}
+        <section className="relative isolate flex items-center justify-center overflow-y-auto px-5 py-14 sm:px-10">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-paper"
+          />
+          <div className="relative w-full max-w-sm">
+            <Suspense fallback={<div className="h-[460px]" />}>
+              <LoginForm />
+            </Suspense>
+          </div>
+        </section>
       </main>
+
+      <footer className="hidden shrink-0 items-center gap-4 border-t border-rule px-8 py-3 lg:flex">
+        <Slug>{site.domain}</Slug>
+        <span aria-hidden className="h-px flex-1 bg-rule" />
+        <Slug>demo project · not a real service</Slug>
+      </footer>
     </div>
   );
 }

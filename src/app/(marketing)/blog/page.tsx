@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/site/page-hero";
-import { Section } from "@/components/site/section";
+import { Section, Em } from "@/components/site/section";
 import { Reveal } from "@/components/site/reveal";
 import { site } from "@/lib/site";
 
@@ -72,43 +72,50 @@ export default function BlogPage() {
   return (
     <>
       <PageHero
+        eyebrow="writing"
+        meta="product notes & guides"
         title={
           <>
-            The <span className="font-serif italic font-normal">blog</span>
+            Notes from the <Em>build</Em>.
           </>
         }
         subtitle="Product updates, engineering notes, and guides for building on MCP."
       />
 
       <Section className="border-t-0">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <ol className="border-t border-rule-strong/25">
           {posts.map((p, i) => (
-            <Reveal key={p.title} delay={(i % 3) * 0.08}>
-              <Link
-                href="/blog"
-                className="group flex h-full flex-col rounded-xl border bg-card/40 p-6 transition-colors hover:bg-card"
-              >
-                <div className="mb-5 h-32 rounded-lg border bg-background/60 bg-grid" />
-                <div className="flex items-center gap-2 text-[12px] text-muted-foreground">
-                  <span className="rounded-md border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider">
-                    {p.tag}
+            <Reveal key={p.title} delay={(i % 4) * 0.05}>
+              <li className="border-b border-rule">
+                <Link
+                  href="/blog"
+                  className="group grid gap-3 py-8 md:grid-cols-[4rem_minmax(0,1fr)_10rem] md:gap-8"
+                >
+                  <span className="font-mono text-[10.5px] text-muted-foreground transition-colors group-hover:text-signal">
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                  <time dateTime={p.date}>
-                    {formatter.format(new Date(`${p.date}T00:00:00Z`))}
-                  </time>
-                  <span aria-hidden>·</span>
-                  <span>{p.read}</span>
-                </div>
-                <h2 className="mt-3 text-base font-medium leading-snug transition-opacity group-hover:opacity-80">
-                  {p.title}
-                </h2>
-                <p className="mt-2 flex-1 text-[13px] leading-relaxed text-muted-foreground">
-                  {p.excerpt}
-                </p>
-              </Link>
+
+                  <span className="min-w-0">
+                    <span className="display block text-[26px] leading-tight transition-colors group-hover:text-signal md:text-[30px]">
+                      {p.title}
+                    </span>
+                    <span className="mt-3 block max-w-[68ch] text-[14.5px] leading-relaxed text-muted-foreground">
+                      {p.excerpt}
+                    </span>
+                  </span>
+
+                  <span className="flex flex-wrap items-start gap-x-3 gap-y-1.5 md:flex-col md:items-end md:text-right">
+                    <span className="slug text-signal">{p.tag}</span>
+                    <time dateTime={p.date} className="slug">
+                      {formatter.format(new Date(`${p.date}T00:00:00Z`))}
+                    </time>
+                    <span className="slug">{p.read}</span>
+                  </span>
+                </Link>
+              </li>
             </Reveal>
           ))}
-        </div>
+        </ol>
       </Section>
     </>
   );
