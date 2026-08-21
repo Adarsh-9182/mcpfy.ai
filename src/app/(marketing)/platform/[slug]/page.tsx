@@ -27,14 +27,24 @@ export default async function PlatformFeaturePage({
   const page = getPlatformPage(slug);
   if (!page) notFound();
 
-  const related = platformPages
-    .filter((p) => p.slug !== page.slug)
-    .map((p) => ({
-      slug: p.slug,
-      navTitle: p.navTitle,
-      subtitle: p.subtitle,
-      href: `/platform/${p.slug}`,
-    }));
+  // Five sibling features plus a docs card, matching the reference layout.
+  const related = [
+    ...platformPages
+      .filter((p) => p.slug !== page.slug)
+      .slice(0, 5)
+      .map((p) => ({
+        slug: p.slug,
+        navTitle: p.navTitle,
+        subtitle: p.subtitle,
+        href: `/platform/${p.slug}`,
+      })),
+    {
+      slug: "docs",
+      navTitle: "Documentation",
+      subtitle: "Guides, API references and deployment how-tos.",
+      href: "/docs",
+    },
+  ];
 
   return <ProductPage page={page} related={related} />;
 }
