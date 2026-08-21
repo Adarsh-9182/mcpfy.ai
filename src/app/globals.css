@@ -202,6 +202,64 @@
   --shadow-panel: var(--shadow-3);
   --shadow-card: var(--shadow-2);
 
+
+  /* ---------------------------------------------------------------
+     PART 2 — the type scale.
+
+     Tracking is a function of size, not a constant. Large type is set
+     tight because the counters have room; small type is set open
+     because it does not. A single letter-spacing across the whole page
+     is the fastest way to make a design look untouched.
+
+     Display sizes are fluid so they scale between breakpoints instead
+     of stepping.
+     --------------------------------------------------------------- */
+  --text-display: clamp(2.6rem, 1.55rem + 4.1vw, 4.25rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.042em;
+  --text-display--font-weight: 600;
+
+  --text-h1: clamp(2.1rem, 1.5rem + 2.4vw, 3.15rem);
+  --text-h1--line-height: 1.06;
+  --text-h1--letter-spacing: -0.034em;
+  --text-h1--font-weight: 600;
+
+  --text-h2: clamp(1.65rem, 1.3rem + 1.5vw, 2.35rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.028em;
+  --text-h2--font-weight: 600;
+
+  --text-h3: 1.3rem;
+  --text-h3--line-height: 1.22;
+  --text-h3--letter-spacing: -0.022em;
+  --text-h3--font-weight: 600;
+
+  --text-h4: 1.0625rem;
+  --text-h4--line-height: 1.35;
+  --text-h4--letter-spacing: -0.014em;
+  --text-h4--font-weight: 500;
+
+  --text-lead: 1.0625rem;
+  --text-lead--line-height: 1.6;
+  --text-lead--letter-spacing: -0.008em;
+
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.65;
+  --text-body--letter-spacing: -0.003em;
+
+  --text-sm: 0.84375rem;
+  --text-sm--line-height: 1.55;
+  --text-sm--letter-spacing: 0;
+
+  --text-xs: 0.78125rem;
+  --text-xs--line-height: 1.5;
+  --text-xs--letter-spacing: 0.004em;
+
+  /* Below ~12px the eye needs the extra air. */
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1.45;
+  --text-micro--letter-spacing: 0.012em;
+
   --ease-out-expo: var(--e-out);
 
   --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
@@ -241,9 +299,6 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-  h1, h2, h3 {
-    letter-spacing: -0.028em;
   }
   ::selection {
     background-color: color-mix(in oklab, var(--sig-solid) 30%, transparent);
@@ -415,6 +470,30 @@
   border-bottom: 1px solid var(--line);
   border-right: 1px solid var(--line);
 }
+
+
+/* ---------------------------------------------------------------
+   Numerals and measure
+
+   Figures that sit in a column, or that tick, are tabular so nothing
+   shifts sideways. Figures inside a sentence stay proportional, which
+   is what reads well in prose.
+   --------------------------------------------------------------- */
+@utility nums-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "cv02", "cv03", "cv04", "cv11";
+}
+@utility nums-prose {
+  font-variant-numeric: proportional-nums;
+}
+
+/* Line length caps, by role. */
+@utility measure-tight { max-width: 44ch; }
+@utility measure-lead { max-width: 56ch; }
+@utility measure-body { max-width: 68ch; }
+
+/* Optical trim for headings that sit directly on a rule or an edge. */
+@utility trim-top { margin-block-start: -0.14em; }
 
 /* ---------------------------------------------------------------
    Code

@@ -36,7 +36,7 @@ function CopyPrompt() {
     <button
       type="button"
       onClick={copy}
-      className="inline-flex items-center gap-2 text-[13.5px] text-muted-foreground transition-colors hover:text-foreground"
+      className="inline-flex items-center gap-2 text-sm text-t-mid transition-colors hover:text-t-hi"
     >
       {copied ? (
         <Check className="size-3.5 text-live" />
@@ -65,9 +65,9 @@ export function Hero() {
         <div className="mx-auto max-w-3xl text-center">
           <Link
             href="/blog"
-            className="group glass edge-lit inline-flex items-center gap-2 rounded-full py-1 pl-1 pr-3 text-[13px] transition-colors duration-[var(--d-2)] hover:border-line-strong"
+            className="group glass edge-lit inline-flex items-center gap-2 rounded-full py-1 pl-1 pr-3 text-sm transition-colors duration-[var(--d-2)] hover:border-line-strong"
           >
-            <span className="rounded-full bg-n3 px-2 py-0.5 text-[11.5px] font-medium text-t-hi">
+            <span className="rounded-full bg-n3 px-2 py-0.5 text-micro font-medium text-t-hi">
               New
             </span>
             <span className="text-muted-foreground">
@@ -81,13 +81,13 @@ export function Hero() {
             </span>
           </Link>
 
-          <h1 className="mt-7 text-[40px] font-semibold leading-[1.04] tracking-[-0.035em] sm:text-[54px] md:text-[64px]">
+          <h1 className="mt-7 text-display text-balance">
             Build and deploy MCP
             <br className="hidden sm:block" /> servers and apps
           </h1>
 
-          <p className="mx-auto mt-6 max-w-xl text-[17px] leading-[1.6] text-muted-foreground">
-            <span className="text-foreground">
+          <p className="measure-lead mx-auto mt-6 text-lead text-t-mid text-balance-pretty">
+            <span className="text-t-hi">
               One SDK, one cloud, every client.
             </span>{" "}
             Ship to ChatGPT and Claude, run for your own agents, and see every
@@ -97,13 +97,13 @@ export function Hero() {
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/signup"
-              className="inline-flex h-11 items-center justify-center rounded-[var(--r-1)] bg-t-hi px-5 text-[14.5px] font-medium text-canvas transition-opacity duration-[var(--d-2)] hover:opacity-90"
+              className="inline-flex h-11 items-center justify-center rounded-[var(--r-1)] bg-t-hi px-5 text-sm font-medium text-canvas transition-opacity duration-[var(--d-2)] hover:opacity-90"
             >
               Start deploying
             </Link>
             <Link
               href="/contact"
-              className="surface edge-lit inline-flex h-11 items-center justify-center rounded-[var(--r-1)] px-5 text-[14.5px] font-medium transition-colors duration-[var(--d-2)] hover:border-line-strong hover:bg-n2"
+              className="surface edge-lit inline-flex h-11 items-center justify-center rounded-[var(--r-1)] px-5 text-sm font-medium transition-colors duration-[var(--d-2)] hover:border-line-strong hover:bg-n2"
             >
               Book a call
             </Link>
@@ -116,7 +116,7 @@ export function Hero() {
               href={site.github}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-[13.5px] text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-2 text-sm text-t-mid transition-colors hover:text-t-hi"
             >
               <GithubIcon className="size-3.5" />
               {site.stars} stars

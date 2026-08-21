@@ -13,7 +13,7 @@ export function Stats() {
           />
         </Reveal>
         <Reveal delay={0.06}>
-          <p className="text-[16px] leading-[1.6] text-muted-foreground md:text-[17px]">
+          <p className="measure-lead text-lead text-t-mid">
             <span className="text-foreground">
               One of the most adopted open-source MCP frameworks.
             </span>{" "}
@@ -27,9 +27,9 @@ export function Stats() {
         {stats.map((s, i) => (
           <Reveal key={s.value} delay={i * 0.07}>
             <div className="card-surface h-full rounded-xl p-6">
-              <dt className="text-[13px] text-muted-foreground">{s.label}</dt>
+              <dt className="text-sm text-t-mid">{s.label}</dt>
               <dd>
-                <p className="mt-3 text-[44px] font-semibold leading-none tracking-[-0.04em] tabular-nums">
+                <p className="nums-tabular mt-3 text-h1">
                   {s.value}
                 </p>
                 <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2">

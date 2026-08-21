@@ -40,8 +40,8 @@ function RoutingDiagram() {
       <div aria-hidden className="absolute inset-0 bloom opacity-70" />
 
       <div className="relative flex items-center justify-between border-b border-line px-4 py-2.5">
-        <span className="text-[12.5px] font-medium">Live routing</span>
-        <span className="font-mono text-[11px] text-t-lo">
+        <span className="text-xs font-medium">Live routing</span>
+        <span className="nums-tabular font-mono text-micro text-t-lo">
           1 build → {targets.length} surfaces
         </span>
       </div>
@@ -201,7 +201,7 @@ export function Distribution() {
             <div className="mt-10 flex flex-col gap-6">
               {surfaceGroups.map((group) => (
                 <div key={group.label}>
-                  <p className="text-[12.5px] font-medium text-t-lo">
+                  <p className="text-xs font-medium text-t-lo">
                     {group.label}
                   </p>
                   <div className="mt-2.5 flex flex-wrap gap-2">

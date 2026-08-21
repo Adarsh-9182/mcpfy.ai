@@ -69,7 +69,7 @@ export function ChangePlan({ currentPlan }: { currentPlan: string }) {
               </div>
 
               <p className="mt-4 flex items-baseline gap-1">
-                <span className="text-[30px] font-semibold leading-none tracking-tight tabular-nums">
+                <span className="text-[30px] font-semibold leading-none tracking-tight nums-tabular">
                   {priceFor(tier, yearly)}
                 </span>
                 {tier.monthly !== null && (

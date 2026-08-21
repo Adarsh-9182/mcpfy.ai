@@ -69,7 +69,7 @@ export function BuildLog({ lines }: { lines: LogLine[] }) {
               )}
             >
               {f}
-              <span className="ml-1.5 tabular-nums opacity-60">{counts[f]}</span>
+              <span className="ml-1.5 nums-tabular opacity-60">{counts[f]}</span>
             </button>
           ))}
         </div>
@@ -100,7 +100,7 @@ export function BuildLog({ lines }: { lines: LogLine[] }) {
               id={`L${l.n}`}
               className="group flex gap-4 px-5 py-1.5 target:bg-amber-500/10"
             >
-              <span className="w-6 shrink-0 select-none text-right text-muted-foreground/60 tabular-nums">
+              <span className="w-6 shrink-0 select-none text-right text-muted-foreground/60 nums-tabular">
                 {l.n}
               </span>
               <span className="shrink-0 text-muted-foreground">{l.at}</span>

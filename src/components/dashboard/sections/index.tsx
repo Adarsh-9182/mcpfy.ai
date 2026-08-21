@@ -68,11 +68,11 @@ export function Overview({ server }: SectionProps) {
                 <Td>
                   <Mono>{t.name}</Mono>
                 </Td>
-                <Td className="text-right tabular-nums">{t.calls.toLocaleString()}</Td>
-                <Td className="text-right tabular-nums">{t.p95}ms</Td>
+                <Td className="text-right nums-tabular">{t.calls.toLocaleString()}</Td>
+                <Td className="text-right nums-tabular">{t.p95}ms</Td>
                 <Td
                   className={cn(
-                    "text-right tabular-nums",
+                    "text-right nums-tabular",
                     t.errorRate > 5 && "text-red-600 dark:text-red-400",
                   )}
                 >
@@ -136,8 +136,8 @@ export function Sessions() {
               </Td>
               <Td>{s.client}</Td>
               <Td className="text-muted-foreground">{s.country}</Td>
-              <Td className="text-right tabular-nums">{s.calls}</Td>
-              <Td className="text-right tabular-nums text-muted-foreground">
+              <Td className="text-right nums-tabular">{s.calls}</Td>
+              <Td className="text-right nums-tabular text-muted-foreground">
                 {s.duration}
               </Td>
               <Td className="text-muted-foreground">{s.started}</Td>
@@ -186,13 +186,13 @@ export function GatewayRequests() {
               <Td>{r.client}</Td>
               <Td
                 className={cn(
-                  "text-right tabular-nums",
+                  "text-right nums-tabular",
                   r.status >= 400 && "text-red-600 dark:text-red-400",
                 )}
               >
                 {r.status}
               </Td>
-              <Td className="text-right tabular-nums text-muted-foreground">
+              <Td className="text-right nums-tabular text-muted-foreground">
                 {r.ms}ms
               </Td>
             </tr>
@@ -232,10 +232,10 @@ export function Analytics({ server }: SectionProps) {
                   style={{ width: `${c.share}%` }}
                 />
               </span>
-              <span className="w-12 shrink-0 text-right text-[13px] tabular-nums text-muted-foreground">
+              <span className="w-12 shrink-0 text-right text-[13px] nums-tabular text-muted-foreground">
                 {c.share}%
               </span>
-              <span className="w-20 shrink-0 text-right text-[13px] tabular-nums">
+              <span className="w-20 shrink-0 text-right text-[13px] nums-tabular">
                 {c.calls}
               </span>
             </li>
@@ -354,7 +354,7 @@ export function PublishChecks() {
                   <XCircle className="size-4 shrink-0 text-red-500" />
                 )}
                 <span className="flex-1 text-[14px]">{c.category}</span>
-                <span className="text-[13px] tabular-nums text-muted-foreground">
+                <span className="text-[13px] nums-tabular text-muted-foreground">
                   {c.passed}/{c.total}
                 </span>
                 {!ok && (

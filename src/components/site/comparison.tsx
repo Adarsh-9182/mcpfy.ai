@@ -30,10 +30,10 @@ export function Comparison() {
           {/* One grid so the job label and both answers always share a row. */}
           <div className="grid min-w-[44rem] grid-cols-[minmax(0,0.85fr)_minmax(0,1.1fr)_minmax(0,1.1fr)]">
             <span />
-            <p className="px-5 pb-3 text-[13px] font-medium text-muted-foreground">
+            <p className="px-5 pb-3 text-sm font-medium text-t-mid">
               By hand
             </p>
-            <p className="px-5 pb-3 text-[13px] font-medium text-t-hi">
+            <p className="px-5 pb-3 text-sm font-medium text-t-hi">
               With {site.name}
             </p>
 
@@ -42,7 +42,7 @@ export function Comparison() {
               const last = i === comparisonRows.length - 1;
               return (
                 <React.Fragment key={row.job}>
-                  <div className="flex items-center py-5 pr-6 text-[14.5px] font-medium">
+                  <div className="flex items-center py-5 pr-6 text-h4">
                     {row.job}
                   </div>
 
@@ -55,7 +55,7 @@ export function Comparison() {
                     )}
                   >
                     <X className="size-3.5 shrink-0 text-subtle-foreground" />
-                    <span className="text-[13.5px] leading-relaxed text-muted-foreground">
+                    <span className="text-sm text-t-mid">
                       {row.byHand}
                     </span>
                   </div>
@@ -69,7 +69,7 @@ export function Comparison() {
                     )}
                   >
                     <Check className="size-3.5 shrink-0 text-t-hi" />
-                    <span className="text-[13.5px] leading-relaxed text-foreground/90">
+                    <span className="text-sm text-t-hi/90">
                       {row.withUs}
                     </span>
                   </div>

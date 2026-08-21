@@ -34,13 +34,13 @@ export function UsageBreakdown({
             {rows.map((r) => (
               <tr key={r.item}>
                 <td className="px-5 py-3">{r.item}</td>
-                <td className="px-5 py-3 text-right tabular-nums text-muted-foreground">
+                <td className="px-5 py-3 text-right nums-tabular text-muted-foreground">
                   {r.qty}
                 </td>
                 <td className="px-5 py-3 text-right text-muted-foreground">
                   {r.rate}
                 </td>
-                <td className="px-5 py-3 text-right tabular-nums">{r.amount}</td>
+                <td className="px-5 py-3 text-right nums-tabular">{r.amount}</td>
               </tr>
             ))}
           </tbody>

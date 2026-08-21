@@ -63,7 +63,7 @@ export function PricingTables() {
               )}
             >
               <div className="flex items-center justify-between gap-2">
-                <h2 className="text-[15px] font-semibold">{tier.name}</h2>
+                <h2 className="text-h4">{tier.name}</h2>
                 {tier.featured && (
                   <span className="rounded-full bg-n3 px-2.5 py-0.5 text-[11.5px] font-medium text-t-hi">
                     Popular
@@ -72,22 +72,22 @@ export function PricingTables() {
               </div>
 
               <div className="mt-5 flex items-baseline gap-1">
-                <span className="text-[38px] font-semibold leading-none tracking-[-0.04em] tabular-nums">
+                <span className="nums-tabular text-h2">
                   {priceFor(tier, yearly)}
                 </span>
                 {tier.monthly !== null && (
-                  <span className="text-[13px] text-muted-foreground">/mo</span>
+                  <span className="text-sm text-t-mid">/mo</span>
                 )}
               </div>
 
-              <p className="mt-4 text-[13px] text-muted-foreground">
+              <p className="mt-4 text-sm text-t-mid">
                 {tier.credits}
               </p>
-              <p className="mt-1 text-[13px] font-medium">{tier.requests}</p>
+              <p className="mt-1 text-sm font-medium">{tier.requests}</p>
 
               {/* Two lines of 13px/relaxed measure ~42px; reserve it so every
                   tier's CTA lands on the same baseline. */}
-              <p className="mt-3 min-h-11 text-[13px] leading-relaxed text-muted-foreground">
+              <p className="mt-3 min-h-11 text-sm text-t-mid">
                 {tier.blurb}
               </p>
 
@@ -105,7 +105,7 @@ export function PricingTables() {
 
               <ul className="mt-7 flex flex-col gap-3 border-t border-border pt-6">
                 {tier.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-[13px]">
+                  <li key={f} className="flex items-start gap-2.5 text-sm">
                     <Check className="mt-0.5 size-3.5 shrink-0 text-t-mid" />
                     <span className="text-muted-foreground">{f}</span>
                   </li>
@@ -117,7 +117,7 @@ export function PricingTables() {
 
         <div className="mt-14 rounded-xl border border-border bg-surface-1 p-6">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h2 className="text-[15px] font-semibold">Usage-based pricing</h2>
+            <h2 className="text-h4">Usage-based pricing</h2>
             <p className="text-[13px] text-muted-foreground">
               Metered on top of plan credits. Discovery traffic is never billed.
             </p>
@@ -130,7 +130,7 @@ export function PricingTables() {
               >
                 <dt className="text-[13px] text-muted-foreground">{m.label}</dt>
                 <dd className="mt-2 flex items-baseline gap-1.5">
-                  <span className="text-[24px] font-semibold tabular-nums tracking-[-0.03em]">
+                  <span className="nums-tabular text-h3">
                     {m.price}
                   </span>
                   <span className="text-[12px] text-muted-foreground">

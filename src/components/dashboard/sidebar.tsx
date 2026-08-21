@@ -84,7 +84,7 @@ export function Sidebar({
                       <Icon className="size-4 shrink-0" />
                       <span className="flex-1">{item.label}</span>
                       {item.count && (
-                        <span className="rounded-full bg-muted px-1.5 py-0.5 text-[11px] tabular-nums text-muted-foreground">
+                        <span className="rounded-full bg-muted px-1.5 py-0.5 text-[11px] nums-tabular text-muted-foreground">
                           {serverCount}
                         </span>
                       )}

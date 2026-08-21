@@ -40,17 +40,17 @@ function Card({ t, i }: { t: Testimonial; i: number }) {
             {initials(t.name)}
           </span>
           <span className="min-w-0">
-            <span className="block truncate text-[13.5px] font-medium">
+            <span className="block truncate text-sm font-medium">
               {t.name}
             </span>
-            <span className="block truncate text-[12.5px] text-subtle-foreground">
+            <span className="block truncate text-xs text-t-lo">
               {t.handle}
             </span>
           </span>
         </figcaption>
         <XMark className="size-3.5 shrink-0 text-subtle-foreground" />
       </div>
-      <blockquote className="mt-4 text-[13.5px] leading-[1.6] text-muted-foreground">
+      <blockquote className="mt-4 text-sm text-t-mid">
         {t.body}
       </blockquote>
     </figure>

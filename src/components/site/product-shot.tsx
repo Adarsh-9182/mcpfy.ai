@@ -218,7 +218,7 @@ export function ProductShot({ className }: { className?: string }) {
         {/* main */}
         <div className="min-w-0 bg-background/40">
           <div className="flex items-center gap-3 px-4 pt-3.5">
-            <h3 className="whitespace-nowrap text-[15px] font-semibold tracking-[-0.01em]">
+            <h3 className="whitespace-nowrap text-h4">
               chart-server
             </h3>
             <span className="flex items-center gap-1.5 rounded-full border border-live/25 bg-live/10 px-2 py-0.5 text-[10px] font-medium text-live">
@@ -252,9 +252,9 @@ export function ProductShot({ className }: { className?: string }) {
                 key={s.label}
                 className="rounded-lg border border-border bg-surface-1 p-2.5"
               >
-                <p className="text-[10px] text-muted-foreground">{s.label}</p>
+                <p className="text-micro text-t-mid">{s.label}</p>
                 <p className="mt-0.5 flex items-baseline gap-1.5">
-                  <span className="text-[15px] font-semibold tabular-nums tracking-[-0.01em]">
+                  <span className="nums-tabular text-h4">
                     {s.value}
                   </span>
                   <span className={cn("text-[9.5px] font-medium", s.tone)}>
@@ -288,12 +288,12 @@ export function ProductShot({ className }: { className?: string }) {
                       {t.schema}
                     </span>
                   </span>
-                  <span className="text-right font-mono text-[10.5px] tabular-nums text-muted-foreground">
+                  <span className="text-right font-mono text-[10.5px] nums-tabular text-muted-foreground">
                     {t.calls}
                   </span>
                   <span
                     className={cn(
-                      "text-right font-mono text-[10.5px] tabular-nums",
+                      "text-right font-mono text-[10.5px] nums-tabular",
                       t.ok ? "text-muted-foreground" : "text-warn",
                     )}
                   >

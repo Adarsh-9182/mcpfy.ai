@@ -121,7 +121,7 @@ export function StageVisual({ id }: { id: string }) {
                 <span className="ml-auto rounded border border-border px-1.5 py-px text-[10px] text-muted-foreground">
                   {d.env}
                 </span>
-                <span className="w-8 text-right font-mono text-[10.5px] tabular-nums text-subtle-foreground">
+                <span className="w-8 text-right font-mono text-[10.5px] nums-tabular text-subtle-foreground">
                   {d.t}
                 </span>
               </li>
@@ -274,7 +274,7 @@ export function StageVisual({ id }: { id: string }) {
         <div className={shell}>
           <div className={bar}>
             <span className="text-foreground">Tool calls · 24h</span>
-            <span className="font-mono tabular-nums">12,481</span>
+            <span className="font-mono nums-tabular">12,481</span>
           </div>
           <div className="flex h-32 items-end gap-1 px-3.5 py-3.5">
             {[38, 62, 45, 78, 56, 88, 70, 52, 81, 64, 92, 71, 84, 59].map((h, i) => (
@@ -299,7 +299,7 @@ export function StageVisual({ id }: { id: string }) {
                 className={cn("px-3.5 py-3", i < 2 && "border-r border-border")}
               >
                 <p className="text-[11px] text-muted-foreground">{k}</p>
-                <p className={cn("mt-1 font-mono text-[13px] tabular-nums", tone)}>
+                <p className={cn("mt-1 font-mono text-[13px] nums-tabular", tone)}>
                   {v}
                 </p>
               </div>

@@ -27,7 +27,7 @@ export function Lifecycle() {
         <ol className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-x-2 gap-y-2">
           {lifecycle.map((stage, i) => (
             <li key={stage.id} className="flex items-center gap-2">
-              <span className="rounded-full border border-border bg-surface-1 px-3 py-1 text-[12.5px] capitalize text-muted-foreground">
+              <span className="rounded-full border border-line bg-n1 px-3 py-1 text-xs capitalize text-t-mid">
                 {stage.kicker}
               </span>
               {i < lifecycle.length - 1 && (
@@ -52,7 +52,7 @@ export function Lifecycle() {
                   <span className="grid size-6 place-items-center rounded-md border border-line bg-n2 font-mono text-[11px] text-t-hi">
                     {i + 1}
                   </span>
-                  <span className="text-[13px] font-medium capitalize text-muted-foreground">
+                  <span className="text-sm font-medium capitalize text-t-mid">
                     {stage.kicker}
                   </span>
                 </p>
@@ -63,8 +63,8 @@ export function Lifecycle() {
                 <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-3">
                   {stage.cards.map((card) => (
                     <div key={card.title}>
-                      <p className="text-[13.5px] font-medium">{card.title}</p>
-                      <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+                      <p className="text-sm font-medium">{card.title}</p>
+                      <p className="mt-1.5 text-sm text-t-mid">
                         {card.desc}
                       </p>
                       {card.cta && (

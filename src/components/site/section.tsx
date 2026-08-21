@@ -27,10 +27,7 @@ export function Eyebrow({
   ...props
 }: React.ComponentProps<"p">) {
   return (
-    <p
-      className={cn("text-[13px] font-medium text-t-mid", className)}
-      {...props}
-    >
+    <p className={cn("text-xs font-medium text-t-mid", className)} {...props}>
       {children}
     </p>
   );
@@ -44,22 +41,17 @@ export function Title({
   ...props
 }: React.ComponentProps<"h2"> & {
   as?: "h1" | "h2" | "h3";
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
 }) {
+  // Size, line-height and tracking all arrive together from the scale.
   const sizes = {
-    sm: "text-[22px] md:text-[26px]",
-    md: "text-[30px] md:text-[40px]",
-    lg: "text-[38px] md:text-[54px]",
+    sm: "text-h3",
+    md: "text-h2",
+    lg: "text-h1",
+    xl: "text-display",
   };
   return (
-    <Tag
-      className={cn(
-        "font-semibold leading-[1.08] text-balance",
-        sizes[size],
-        className,
-      )}
-      {...props}
-    >
+    <Tag className={cn("text-balance", sizes[size], className)} {...props}>
       {children}
     </Tag>
   );
@@ -78,7 +70,7 @@ export function Lead({
   return (
     <p
       className={cn(
-        "max-w-[60ch] text-[16px] leading-[1.6] text-foreground/90 text-balance-pretty md:text-[17px]",
+        "measure-lead text-lead text-t-hi/90 text-balance-pretty",
         className,
       )}
       {...props}
@@ -173,7 +165,7 @@ export function Tag({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-md border border-border bg-surface-1 px-2.5 py-1 text-[13px] text-muted-foreground",
+        "inline-flex items-center gap-1.5 rounded-[var(--r-1)] border border-line bg-n1 px-2.5 py-1 text-sm text-t-mid",
         className,
       )}
       {...props}

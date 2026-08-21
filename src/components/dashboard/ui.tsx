@@ -72,12 +72,12 @@ export function StatCard({
   return (
     <div className="rounded-xl border bg-card/40 p-5">
       <p className="text-[13px] text-muted-foreground">{label}</p>
-      <p className="mt-2 text-2xl font-medium tracking-tight tabular-nums">{value}</p>
+      <p className="mt-2 text-2xl font-medium tracking-tight nums-tabular">{value}</p>
       <p className="mt-1.5 flex items-center gap-2 text-[12px] text-muted-foreground">
         {delta && (
           <span
             className={cn(
-              "font-medium tabular-nums",
+              "font-medium nums-tabular",
               negative ? "text-red-600 dark:text-red-400" : "text-emerald-600 dark:text-emerald-400",
             )}
           >
@@ -232,7 +232,7 @@ export function CounterCard({
   return (
     <div className={cn("border-border/70 p-6", className)}>
       <Icon className="size-[18px] text-muted-foreground" />
-      <p className="mt-5 text-[34px] font-semibold leading-none tracking-tight tabular-nums">
+      <p className="mt-5 text-[34px] font-semibold leading-none tracking-tight nums-tabular">
         {value}
       </p>
       <p className="mt-2.5 text-[14px] text-muted-foreground">{label}</p>

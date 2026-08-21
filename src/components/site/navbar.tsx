@@ -14,9 +14,9 @@ import { navLinks, platformCloud } from "@/lib/content";
 import { PlatformMenu, SolutionsMenu } from "./mega-menu";
 
 const triggerClass =
-  "group inline-flex h-8 items-center gap-1 rounded-md px-2.5 text-[14px] text-muted-foreground transition-colors hover:text-foreground data-[state=open]:text-foreground";
+  "group inline-flex h-8 items-center gap-1 rounded-[var(--r-1)] px-2.5 text-sm text-t-mid transition-colors hover:text-t-hi data-[state=open]:text-t-hi";
 const linkClass =
-  "inline-flex h-8 items-center rounded-md px-2.5 text-[14px] text-muted-foreground transition-colors hover:text-foreground";
+  "inline-flex h-8 items-center rounded-[var(--r-1)] px-2.5 text-sm text-t-mid transition-colors hover:text-t-hi";
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
@@ -84,7 +84,7 @@ export function Navbar() {
           <ThemeToggle className="hidden sm:inline-flex" />
           <Link
             href="/cloud"
-            className="ml-1 inline-flex h-8 items-center rounded-lg bg-foreground px-3.5 text-[13.5px] font-medium text-background transition-opacity hover:opacity-90"
+            className="ml-1 inline-flex h-8 items-center rounded-[var(--r-1)] bg-t-hi px-3.5 text-sm font-medium text-canvas transition-opacity hover:opacity-90"
           >
             Open Cloud
           </Link>

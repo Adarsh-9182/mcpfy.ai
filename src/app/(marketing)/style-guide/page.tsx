@@ -22,9 +22,9 @@ function Row({
   return (
     <div className="grid gap-5 border-t border-line py-10 lg:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] lg:gap-12">
       <div>
-        <h2 className="text-[15px] font-medium">{label}</h2>
+        <h2 className="text-h4">{label}</h2>
         {note && (
-          <p className="mt-2 max-w-[34ch] text-[13px] leading-relaxed text-t-mid">
+          <p className="measure-tight mt-2 text-sm text-t-mid">
             {note}
           </p>
         )}
@@ -48,8 +48,8 @@ function Swatch({
       <div
         className={`h-16 rounded-[var(--r-1)] border border-line ${className}`}
       />
-      <p className="mt-2 text-[12px] font-medium">{name}</p>
-      <p className="font-mono text-[11px] text-t-lo">{value}</p>
+      <p className="mt-2 text-xs font-medium">{name}</p>
+      <p className="font-mono text-micro text-t-lo">{value}</p>
     </div>
   );
 }
@@ -68,11 +68,9 @@ export default function StyleGuidePage() {
   return (
     <div className="container-page py-16">
       <header className="max-w-2xl">
-        <p className="font-mono text-[12px] text-t-lo">Part 1 / 20</p>
-        <h1 className="mt-4 text-[40px] font-semibold leading-[1.05] tracking-[-0.035em]">
-          Signal
-        </h1>
-        <p className="mt-5 text-[16px] leading-[1.6] text-t-mid">
+        <p className="font-mono text-micro text-t-lo">Parts 1–2 / 20</p>
+        <h1 className="mt-4 text-h1">Signal</h1>
+        <p className="measure-lead mt-5 text-lead text-t-mid">
           <span className="text-t-hi">
             MCP is the wire between a model and the world.
           </span>{" "}
@@ -214,6 +212,74 @@ export default function StyleGuidePage() {
             <button className="h-10 rounded-[var(--r-1)] px-4 text-[14px] font-medium text-t-mid transition-colors duration-[var(--d-2)] hover:bg-n2 hover:text-t-hi">
               Ghost
             </button>
+          </div>
+        </Row>
+
+        <Row
+          label="Type scale"
+          note="Tracking is a function of size: display is set at -0.042em, body at -0.003em, and anything under 12px opens back up to +0.012em. Display steps are fluid, so they scale between breakpoints instead of stepping."
+        >
+          <div className="flex flex-col gap-6">
+            {[
+              ["text-display", "display", "Build and deploy"],
+              ["text-h1", "h1", "From first commit to production"],
+              ["text-h2", "h2", "Every MCP server needs the same scaffolding"],
+              ["text-h3", "h3", "Preview it before a user sees it"],
+              ["text-h4", "h4", "Cross-client testing"],
+              ["text-lead", "lead", "One SDK, one cloud, every client."],
+              ["text-body", "body", "The same codebase becomes a ChatGPT app, a Claude connector and a plain MCP endpoint."],
+              ["text-sm", "sm", "Deploy from a GitHub organization"],
+              ["text-xs", "xs", "Metadata and supporting labels"],
+              ["text-micro", "micro", "186k / 300k calls"],
+            ].map(([cls, name, sample]) => (
+              <div
+                key={name}
+                className="grid gap-2 border-b border-line pb-5 last:border-b-0 sm:grid-cols-[6rem_minmax(0,1fr)] sm:gap-6"
+              >
+                <p className="pt-1 font-mono text-micro text-t-lo">{name}</p>
+                <p className={cls}>{sample}</p>
+              </div>
+            ))}
+          </div>
+        </Row>
+
+        <Row
+          label="Numerals"
+          note="Figures in a column or on a ticking value are tabular so nothing shifts sideways. Figures inside a sentence stay proportional, which reads better in prose."
+        >
+          <div className="grid gap-6 sm:grid-cols-2">
+            <div className="surface rounded-[var(--r-2)] p-4">
+              <p className="text-micro text-t-lo">nums-tabular</p>
+              <div className="nums-tabular mt-2 flex flex-col text-h4">
+                <span>12,481</span>
+                <span>111,190</span>
+                <span>38ms</span>
+              </div>
+            </div>
+            <div className="surface rounded-[var(--r-2)] p-4">
+              <p className="text-micro text-t-lo">nums-prose</p>
+              <p className="nums-prose mt-2 text-body text-t-mid">
+                Over 12,481 tool calls in the last 24 hours, at a median of
+                38ms.
+              </p>
+            </div>
+          </div>
+        </Row>
+
+        <Row
+          label="Measure"
+          note="Line length is capped by role, not by the grid: 44ch for a tight column, 56ch for a lead, 68ch for running body copy."
+        >
+          <div className="flex flex-col gap-4">
+            <p className="measure-lead text-lead">
+              A lead is capped at 56 characters so the eye returns to the same
+              place on every line.
+            </p>
+            <p className="measure-body text-body text-t-mid">
+              Running body copy is allowed 68 characters, which is about as
+              wide as a reader will follow without losing the line. Anything
+              wider needs a column, not a bigger container.
+            </p>
           </div>
         </Row>
 

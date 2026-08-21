@@ -262,7 +262,7 @@ export function ProductPage({
               <Reveal key={s.label} delay={i * 0.05}>
                 <div className="card-surface h-full rounded-xl p-5">
                   <dt className="text-[13px] text-muted-foreground">{s.label}</dt>
-                  <dd className="mt-2.5 text-[32px] font-semibold leading-none tracking-[-0.04em] tabular-nums">
+                  <dd className="mt-2.5 text-[32px] font-semibold leading-none tracking-[-0.04em] nums-tabular">
                     {s.value}
                   </dd>
                 </div>
