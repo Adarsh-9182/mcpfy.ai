@@ -64,9 +64,9 @@ export function Hero() {
         <div className="mx-auto max-w-3xl text-center">
           <Link
             href="/blog"
-            className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface-1/80 py-1 pl-1 pr-3 text-[13px] backdrop-blur transition-colors hover:border-border-strong"
+            className="group glass edge-lit inline-flex items-center gap-2 rounded-full py-1 pl-1 pr-3 text-[13px] transition-colors duration-[var(--d-2)] hover:border-line-strong"
           >
-            <span className="rounded-full bg-brand/15 px-2 py-0.5 text-[11.5px] font-medium text-brand">
+            <span className="rounded-full bg-n3 px-2 py-0.5 text-[11.5px] font-medium text-t-hi">
               New
             </span>
             <span className="text-muted-foreground">
@@ -96,13 +96,13 @@ export function Hero() {
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/signup"
-              className="inline-flex h-11 items-center justify-center rounded-lg bg-foreground px-5 text-[14.5px] font-medium text-background transition-opacity hover:opacity-90"
+              className="inline-flex h-11 items-center justify-center rounded-[var(--r-1)] bg-t-hi px-5 text-[14.5px] font-medium text-canvas transition-opacity duration-[var(--d-2)] hover:opacity-90"
             >
               Start deploying
             </Link>
             <Link
               href="/contact"
-              className="inline-flex h-11 items-center justify-center rounded-lg border border-border bg-surface-1 px-5 text-[14.5px] font-medium transition-colors hover:border-border-strong hover:bg-surface-2"
+              className="surface edge-lit inline-flex h-11 items-center justify-center rounded-[var(--r-1)] px-5 text-[14.5px] font-medium transition-colors duration-[var(--d-2)] hover:border-line-strong hover:bg-n2"
             >
               Book a call
             </Link>

@@ -130,7 +130,7 @@ export function LoginForm() {
         <button
           type="button"
           onClick={() => setSent(false)}
-          className="mt-6 text-[13.5px] font-medium text-brand hover:text-brand-hi"
+          className="mt-6 text-[13.5px] font-medium text-t-hi hover:text-t-mid"
         >
           Use a different email
         </button>
@@ -164,12 +164,12 @@ export function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
-          className="mt-2 h-10 w-full rounded-lg border border-border bg-surface-1 px-3 text-[14px] outline-none transition-colors placeholder:text-subtle-foreground focus:border-brand/60"
+          className="mt-2 h-10 w-full rounded-lg border border-border bg-surface-1 px-3 text-[14px] outline-none transition-colors placeholder:text-subtle-foreground focus:border-line-strong"
         />
         <button
           type="submit"
           disabled={pending !== null}
-          className="mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-brand text-[14px] font-medium text-white transition-colors hover:bg-brand-hi disabled:opacity-60"
+          className="mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-[var(--r-1)] bg-t-hi text-[14px] font-medium text-canvas transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {pending === "email" && <Loader2 className="size-4 animate-spin" />}
           Continue
@@ -187,7 +187,7 @@ export function LoginForm() {
           type="button"
           onClick={() => signInWithOAuth("google")}
           disabled={pending !== null}
-          className={cn(providerClass, lastUsed === "google" && "border-brand/50")}
+          className={cn(providerClass, lastUsed === "google" && "border-line-strong")}
         >
           {lastUsed === "google" && <LastUsedBadge />}
           {pending === "google" ? (
@@ -201,7 +201,7 @@ export function LoginForm() {
           type="button"
           onClick={() => signInWithOAuth("github")}
           disabled={pending !== null}
-          className={cn(providerClass, lastUsed === "github" && "border-brand/50")}
+          className={cn(providerClass, lastUsed === "github" && "border-line-strong")}
         >
           {lastUsed === "github" && <LastUsedBadge />}
           {pending === "github" ? (

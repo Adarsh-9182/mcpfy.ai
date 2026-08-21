@@ -67,7 +67,7 @@ export function CookieBanner() {
               We use cookies to improve your experience. See our{" "}
               <Link
                 href="/legal/privacy"
-                className="text-foreground underline underline-offset-4 hover:text-brand"
+                className="text-foreground underline underline-offset-4 hover:text-t-hi"
               >
                 Privacy Policy
               </Link>

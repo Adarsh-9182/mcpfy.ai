@@ -43,7 +43,7 @@ function Row({ item }: { item: MenuItem }) {
         href={item.href}
         className="group flex min-w-0 gap-3 rounded-lg p-3 transition-colors hover:bg-surface-2"
       >
-        <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg border border-border bg-surface-2 text-muted-foreground transition-colors group-hover:border-brand/30 group-hover:bg-brand/10 group-hover:text-brand">
+        <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-[var(--r-1)] border border-line bg-n2 text-t-mid transition-colors duration-[var(--d-2)] group-hover:border-line-strong group-hover:bg-n3 group-hover:text-t-hi">
           <Icon className="size-3.5" />
         </span>
         <span className="min-w-0">
@@ -129,7 +129,7 @@ export function SolutionsMenu() {
           </span>
           <span
             aria-hidden
-            className="text-brand transition-transform duration-300 group-hover:translate-x-0.5"
+            className="text-t-mid transition-transform duration-[var(--d-3)] group-hover:translate-x-0.5"
           >
             →
           </span>

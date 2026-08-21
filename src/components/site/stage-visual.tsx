@@ -180,7 +180,7 @@ export function StageVisual({ id }: { id: string }) {
           <div className="border-t border-border p-3.5">
             <p className="text-[11px] text-subtle-foreground">Submission pack</p>
             <div className="mt-2.5 flex gap-3">
-              <span className="size-14 shrink-0 rounded-lg bg-gradient-to-br from-brand/70 to-brand/20" />
+              <span className="size-14 shrink-0 rounded-[var(--r-1)] bg-n3" />
               <div className="flex-1 pt-1.5">
                 <Bars w={[88, 66, 44]} />
               </div>
@@ -202,7 +202,7 @@ export function StageVisual({ id }: { id: string }) {
 
           <div className="code p-3.5">
             <p className="text-[11px] text-subtle-foreground">
-              <span className="text-brand">→</span> tools/call
+              <span className="text-t-mid">→</span> tools/call
             </p>
             <pre className="mt-1.5 overflow-x-auto rounded-lg border border-border bg-background/60 p-2.5">
               <code>
@@ -282,7 +282,7 @@ export function StageVisual({ id }: { id: string }) {
                 key={i}
                 className={cn(
                   "flex-1 rounded-sm",
-                  i === 10 ? "bg-brand" : "bg-foreground/12",
+                  i === 10 ? "signal-line" : "bg-t-hi/12",
                 )}
                 style={{ height: `${h}%` }}
               />

@@ -27,7 +27,7 @@ function Preview({ seed }: { seed: string }) {
           key={i}
           className={cn(
             "relative flex-1 rounded-sm",
-            i === bars.length - 2 ? "bg-brand/70" : "bg-foreground/12",
+            i === bars.length - 2 ? "bg-t-hi/45" : "bg-t-hi/12",
           )}
           style={{ height: `${h}%` }}
         />
@@ -85,7 +85,7 @@ export function TemplateGallery() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search templates"
               aria-label="Search templates"
-              className="h-9 w-full rounded-lg border border-border bg-surface-1 pl-9 pr-3 text-[13.5px] outline-none transition-colors placeholder:text-subtle-foreground focus:border-brand/60"
+              className="h-9 w-full rounded-lg border border-border bg-surface-1 pl-9 pr-3 text-[13.5px] outline-none transition-colors placeholder:text-subtle-foreground focus:border-line-strong"
             />
           </div>
         </div>
@@ -137,7 +137,7 @@ export function TemplateGallery() {
                   </Link>
                   <Link
                     href="/docs"
-                    className="ml-auto inline-flex items-center gap-1 text-[13px] font-medium text-brand transition-colors hover:text-brand-hi"
+                    className="ml-auto inline-flex items-center gap-1 text-[13px] font-medium text-t-hi transition-colors hover:text-t-mid"
                   >
                     Try now <ArrowUpRight className="size-3.5" />
                   </Link>

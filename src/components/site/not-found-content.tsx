@@ -9,7 +9,7 @@ export function NotFoundContent() {
         className="pointer-events-none absolute inset-x-0 top-0 h-[520px] hero-glow opacity-70"
       />
       <div className="container-page relative flex min-h-[68vh] flex-col items-center justify-center text-center">
-        <p className="font-mono text-[12.5px] text-brand">404</p>
+        <p className="font-mono text-[12.5px] text-t-lo">404</p>
         <Title as="h1" size="lg" className="mt-4 max-w-[16ch]">
           This endpoint doesn&apos;t exist
         </Title>

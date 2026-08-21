@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
 
 /**
  * Build-it-yourself against the platform, row by row. The platform column is
- * a raised card with a brand hairline so the eye lands on it first.
+ * lifted onto a raised, edge-lit surface so it wins the eye on material
+ * rather than on colour.
  */
 export function Comparison() {
   return (
@@ -32,7 +33,7 @@ export function Comparison() {
             <p className="px-5 pb-3 text-[13px] font-medium text-muted-foreground">
               By hand
             </p>
-            <p className="px-5 pb-3 text-[13px] font-medium text-brand">
+            <p className="px-5 pb-3 text-[13px] font-medium text-t-hi">
               With {site.name}
             </p>
 
@@ -61,13 +62,13 @@ export function Comparison() {
 
                   <div
                     className={cn(
-                      "flex items-center gap-3 border-x border-brand/30 bg-brand-soft px-5 py-5",
+                      "surface-2 edge-lit flex items-center gap-3 border-x px-5 py-5",
                       first && "rounded-t-xl border-t",
                       last && "rounded-b-xl border-b",
                       !last && "border-b border-b-border/60",
                     )}
                   >
-                    <Check className="size-3.5 shrink-0 text-brand" />
+                    <Check className="size-3.5 shrink-0 text-t-hi" />
                     <span className="text-[13.5px] leading-relaxed text-foreground/90">
                       {row.withUs}
                     </span>

@@ -48,7 +48,7 @@ export function Lifecycle() {
             <Reveal className={cn(i % 2 === 1 && "lg:order-2")}>
               <div>
                 <p className="flex items-center gap-2.5">
-                  <span className="grid size-6 place-items-center rounded-md border border-border bg-surface-1 font-mono text-[11px] text-brand">
+                  <span className="grid size-6 place-items-center rounded-md border border-line bg-n2 font-mono text-[11px] text-t-hi">
                     {i + 1}
                   </span>
                   <span className="text-[13px] font-medium capitalize text-muted-foreground">

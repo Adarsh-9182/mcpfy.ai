@@ -5,7 +5,7 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const field =
-  "h-10 w-full rounded-lg border border-border bg-background/50 px-3 text-[14px] outline-none transition-colors placeholder:text-subtle-foreground focus:border-brand/60";
+  "h-10 w-full rounded-lg border border-border bg-background/50 px-3 text-[14px] outline-none transition-colors placeholder:text-subtle-foreground focus:border-line-strong";
 
 export function ContactForm() {
   const [sent, setSent] = React.useState(false);
@@ -74,7 +74,7 @@ export function ContactForm() {
           name="message"
           required
           rows={5}
-          className="w-full resize-y rounded-lg border border-border bg-background/50 p-3 text-[14px] leading-relaxed outline-none transition-colors placeholder:text-subtle-foreground focus:border-brand/60"
+          className="w-full resize-y rounded-lg border border-border bg-background/50 p-3 text-[14px] leading-relaxed outline-none transition-colors placeholder:text-subtle-foreground focus:border-line-strong"
           placeholder="We're building an MCP server for…"
         />
       </div>

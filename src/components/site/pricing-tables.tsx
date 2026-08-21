@@ -59,14 +59,13 @@ export function PricingTables() {
               key={tier.name}
               className={cn(
                 "relative flex flex-col rounded-xl border border-border bg-surface-1 p-6",
-                tier.featured &&
-                  "border-brand/40 bg-brand-soft shadow-panel",
+                tier.featured && "surface-3 edge-lit",
               )}
             >
               <div className="flex items-center justify-between gap-2">
                 <h2 className="text-[15px] font-semibold">{tier.name}</h2>
                 {tier.featured && (
-                  <span className="rounded-full bg-brand px-2.5 py-0.5 text-[11.5px] font-medium text-white">
+                  <span className="rounded-full bg-n3 px-2.5 py-0.5 text-[11.5px] font-medium text-t-hi">
                     Popular
                   </span>
                 )}
@@ -97,8 +96,8 @@ export function PricingTables() {
                 className={cn(
                   "mt-6 inline-flex h-10 items-center justify-center rounded-lg text-[14px] font-medium transition-colors",
                   tier.featured
-                    ? "bg-brand text-white hover:bg-brand-hi"
-                    : "border border-border bg-surface-1 hover:border-border-strong hover:bg-surface-2",
+                    ? "bg-t-hi text-canvas hover:opacity-90"
+                    : "border border-line bg-n1 hover:border-line-strong hover:bg-n2",
                 )}
               >
                 {tier.cta}
@@ -107,7 +106,7 @@ export function PricingTables() {
               <ul className="mt-7 flex flex-col gap-3 border-t border-border pt-6">
                 {tier.features.map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-[13px]">
-                    <Check className="mt-0.5 size-3.5 shrink-0 text-brand" />
+                    <Check className="mt-0.5 size-3.5 shrink-0 text-t-mid" />
                     <span className="text-muted-foreground">{f}</span>
                   </li>
                 ))}

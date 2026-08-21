@@ -20,7 +20,7 @@ export function Section({
   );
 }
 
-/** Small brand-tinted label above a heading. Sentence case, never tracked out. */
+/** Small label above a heading. Sentence case, never tracked out. */
 export function Eyebrow({
   className,
   children,
@@ -28,7 +28,7 @@ export function Eyebrow({
 }: React.ComponentProps<"p">) {
   return (
     <p
-      className={cn("text-[13px] font-medium text-brand", className)}
+      className={cn("text-[13px] font-medium text-t-mid", className)}
       {...props}
     >
       {children}
@@ -131,13 +131,13 @@ export function SectionHeading({
 export function ArrowLink({
   href,
   external = false,
-  tone = "brand",
+  tone = "strong",
   className,
   children,
 }: {
   href: string;
   external?: boolean;
-  tone?: "brand" | "plain";
+  tone?: "strong" | "plain";
   className?: string;
   children: React.ReactNode;
 }) {
@@ -147,9 +147,9 @@ export function ArrowLink({
       {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
       className={cn(
         "group inline-flex items-center gap-1.5 text-[14px] font-medium transition-colors",
-        tone === "brand"
-          ? "text-brand hover:text-brand-hi"
-          : "text-foreground hover:text-muted-foreground",
+        tone === "strong"
+          ? "text-t-hi hover:text-t-mid"
+          : "text-t-mid hover:text-t-hi",
         className,
       )}
     >

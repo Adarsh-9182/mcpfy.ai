@@ -8,13 +8,13 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-foreground text-background hover:opacity-90",
-        brand: "bg-brand text-white hover:bg-brand-hi",
+        default: "bg-t-hi text-canvas hover:opacity-90",
+        brand: "bg-t-hi text-canvas hover:opacity-90",
         outline:
           "border border-border bg-surface-1 hover:border-border-strong hover:bg-surface-2",
         subtle: "bg-surface-2 hover:bg-surface-3",
         ghost: "hover:bg-surface-2",
-        link: "text-brand underline-offset-4 hover:underline",
+        link: "text-t-hi underline-offset-4 hover:underline",
       },
       size: {
         sm: "h-8 px-3 text-[13px]",

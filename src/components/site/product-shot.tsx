@@ -19,7 +19,8 @@ import { cn } from "@/lib/utils";
  * diagram: sidebar, tabs, live metrics, a tool table and an Inspector trace
  * with syntax highlighting. Everything saturated on the page comes from in
  * here — status dots, member avatars, code tokens — which is what keeps the
- * surrounding chrome monochrome.
+ * surrounding chrome monochrome. The signal spectrum appears only on live
+ * data: the call-volume sparkline, the usage meter, the protocol arrow.
  */
 
 const nav = [
@@ -90,7 +91,7 @@ const stats = [
     label: "Tool calls",
     value: "12,481",
     delta: "+18%",
-    tone: "text-brand",
+    tone: "text-sig",
     points: [12, 18, 14, 22, 19, 28, 24, 33, 30, 41, 38, 47],
   },
   {
@@ -206,7 +207,7 @@ export function ProductShot({ className }: { className?: string }) {
           <div className="mt-auto rounded-md border border-border bg-surface-2 p-2.5">
             <p className="text-[10px] text-muted-foreground">Usage</p>
             <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-surface-3">
-              <span className="block h-full w-[62%] rounded-full bg-brand" />
+              <span className="block h-full w-[62%] rounded-full signal-line" />
             </div>
             <p className="mt-1.5 font-mono text-[9.5px] text-subtle-foreground">
               186k / 300k calls
@@ -308,7 +309,7 @@ export function ProductShot({ className }: { className?: string }) {
         <div className="hidden flex-col border-l border-border bg-surface-1 lg:flex">
           <div className="flex items-center justify-between border-b border-border px-3 py-2.5">
             <span className="flex items-center gap-1.5 text-[11.5px] font-medium">
-              <TerminalSquare className="size-3.5 text-brand" />
+              <TerminalSquare className="size-3.5 text-t-mid" />
               Inspector
             </span>
             <span className="flex items-center gap-1 rounded border border-border px-1.5 py-0.5 text-[9.5px] text-muted-foreground">
@@ -319,7 +320,7 @@ export function ProductShot({ className }: { className?: string }) {
 
           <div className="code p-3">
             <p className="flex items-center gap-1.5 text-[10px] text-subtle-foreground">
-              <span className="text-brand">→</span> tools/call
+              <span className="text-sig">→</span> tools/call
             </p>
             <pre className="mt-1.5 overflow-x-auto rounded-md border border-border bg-background/60 p-2.5">
               <code>

@@ -51,11 +51,11 @@ function Mock({ i }: { i: number }) {
       <div className="relative rounded-lg border border-border bg-background/50 p-3">
         <p className="pr-8 text-[12.5px] leading-relaxed text-muted-foreground">
           Make me an MCP server for my Postgres database
-          <span aria-hidden className="animate-caret ml-0.5 text-brand">
+          <span aria-hidden className="animate-caret ml-0.5 text-t-hi">
             ▍
           </span>
         </p>
-        <span className="absolute bottom-2.5 right-2.5 grid size-6 place-items-center rounded-md bg-brand text-white">
+        <span className="absolute bottom-2.5 right-2.5 grid size-6 place-items-center rounded-md bg-t-hi text-canvas">
           <ArrowUp className="size-3.5" />
         </span>
       </div>
@@ -76,7 +76,7 @@ function Mock({ i }: { i: number }) {
             {t.bars.map((h, bi) => (
               <span
                 key={bi}
-                className="flex-1 rounded-sm bg-brand/30"
+                className="flex-1 rounded-sm bg-t-hi/20"
                 style={{ height: `${h}%` }}
               />
             ))}
@@ -103,7 +103,7 @@ export function FinalCta() {
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-1/80 px-3 py-1 text-[12.5px] text-muted-foreground backdrop-blur">
-                <Sparkles className="size-3 text-brand" />
+                <Sparkles className="size-3 text-t-mid" />
                 Three ways in
               </span>
               <Title as="h2" size="lg" className="mt-5">

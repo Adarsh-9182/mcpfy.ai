@@ -92,7 +92,7 @@ export function ProductPage({
           {page.steps.map((s, i) => (
             <Reveal key={s.title} delay={i * 0.06}>
               <li className="card-surface h-full rounded-xl p-5">
-                <span className="grid size-6 place-items-center rounded-md border border-border bg-surface-2 font-mono text-[11px] text-brand">
+                <span className="grid size-6 place-items-center rounded-md border border-line bg-n2 font-mono text-[11px] text-t-hi">
                   {i + 1}
                 </span>
                 <h3 className="mt-4 text-[15px] font-medium">{s.title}</h3>
@@ -121,7 +121,7 @@ export function ProductPage({
                     <ul className="mt-6 flex flex-col gap-3">
                       {f.bullets.map((b) => (
                         <li key={b} className="flex gap-2.5">
-                          <Check className="mt-0.5 size-4 shrink-0 text-brand" />
+                          <Check className="mt-0.5 size-4 shrink-0 text-t-mid" />
                           <span className="text-[14.5px] leading-relaxed text-muted-foreground">
                             {b}
                           </span>
@@ -233,11 +233,11 @@ export function ProductPage({
               <Reveal key={g.title} delay={i * 0.05}>
                 <div className="card-surface h-full rounded-xl p-5">
                   {Icon ? (
-                    <span className="grid size-8 place-items-center rounded-lg border border-border bg-surface-2 text-brand">
+                    <span className="grid size-8 place-items-center rounded-[var(--r-1)] border border-line bg-n2 text-t-hi">
                       <Icon className="size-4" />
                     </span>
                   ) : (
-                    <span className="grid size-8 place-items-center rounded-lg border border-border bg-surface-2 font-mono text-[11px] text-brand">
+                    <span className="grid size-8 place-items-center rounded-[var(--r-1)] border border-line bg-n2 font-mono text-[11px] text-t-hi">
                       {i + 1}
                     </span>
                   )}
@@ -316,7 +316,7 @@ export function ProductPage({
                 <p className="mt-2 flex-1 text-[13.5px] leading-relaxed text-muted-foreground">
                   {o.subtitle.split(".")[0]}.
                 </p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-medium text-brand">
+                <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-medium text-t-hi">
                   Learn more
                   <span
                     aria-hidden

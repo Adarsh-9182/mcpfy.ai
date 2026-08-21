@@ -147,7 +147,7 @@ export function Alternatives() {
               <ul className="mt-5 flex flex-col gap-3.5">
                 {group.points.map((point) => (
                   <li key={point} className="flex gap-2.5">
-                    <Check className="mt-0.5 size-4 shrink-0 text-brand" />
+                    <Check className="mt-0.5 size-4 shrink-0 text-t-mid" />
                     <span className="text-[14px] leading-relaxed text-muted-foreground">
                       {point}
                     </span>

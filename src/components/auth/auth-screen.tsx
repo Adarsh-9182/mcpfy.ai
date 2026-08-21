@@ -51,7 +51,7 @@ export function AuthScreen() {
                 key={feature}
                 className="flex items-start gap-2 text-[13.5px] text-muted-foreground"
               >
-                <Check className="mt-0.5 size-3.5 shrink-0 text-brand" />
+                <Check className="mt-0.5 size-3.5 shrink-0 text-t-mid" />
                 {feature}
               </li>
             ))}

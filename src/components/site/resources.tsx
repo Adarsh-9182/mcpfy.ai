@@ -74,7 +74,7 @@ export function Resources() {
                         {link.label}
                         <span
                           aria-hidden
-                          className="text-brand opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100"
+                          className="text-t-mid opacity-0 transition-all duration-[var(--d-3)] group-hover:translate-x-0.5 group-hover:opacity-100"
                         >
                           →
                         </span>
