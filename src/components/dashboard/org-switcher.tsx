@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Check, ChevronsUpDown, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { organization, organizations } from "@/lib/dashboard";
+import type { Organization } from "@/lib/dashboard";
 import { Menu, MenuLabel, menuItemClass } from "./menu";
 
 /** Deterministic pastel per org, so the avatar is stable without an upload. */
@@ -30,7 +30,13 @@ export function OrgAvatar({
   );
 }
 
-export function OrgSwitcher() {
+export function OrgSwitcher({
+  organization,
+  organizations,
+}: {
+  organization: Organization;
+  organizations: Organization[];
+}) {
   return (
     <Menu
       trigger={({ open }) => (

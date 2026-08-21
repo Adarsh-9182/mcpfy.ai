@@ -1,10 +1,13 @@
 import { Trash2 } from "lucide-react";
 import { OrgSettingsForm } from "@/components/dashboard/org-settings-form";
-import { organization } from "@/lib/dashboard";
+import { getCurrentOrganization } from "@/lib/db/queries";
 
 export const metadata = { title: "Organization" };
 
-export default function OrgSettingsPage() {
+export default async function OrgSettingsPage() {
+  const organization = await getCurrentOrganization();
+  if (!organization) return null;
+
   return (
     <div className="mx-auto w-full max-w-3xl space-y-7">
       <div>

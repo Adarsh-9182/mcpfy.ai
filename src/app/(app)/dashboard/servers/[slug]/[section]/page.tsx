@@ -13,7 +13,8 @@ import {
   TestSuites,
 } from "@/components/dashboard/sections";
 import { serverSections } from "@/components/dashboard/nav";
-import { getServer, servers, type McpServer } from "@/lib/dashboard";
+import type { McpServer } from "@/lib/dashboard";
+import { getServerBySlug } from "@/lib/db/queries";
 
 /** One route file renders every server tab, keyed off the section slug. */
 const sections: Record<string, (props: { server: McpServer }) => React.ReactNode> = {
@@ -30,15 +31,6 @@ const sections: Record<string, (props: { server: McpServer }) => React.ReactNode
   testing: TestSuites,
 };
 
-export function generateStaticParams() {
-  return servers.flatMap((s) =>
-    serverSections
-      // "deployments" has its own route with a nested detail page.
-      .filter((section) => section.slug && section.slug !== "deployments")
-      .map((section) => ({ slug: s.slug, section: section.slug })),
-  );
-}
-
 export async function generateMetadata({
   params,
 }: {
@@ -46,7 +38,7 @@ export async function generateMetadata({
 }) {
   const { slug, section } = await params;
   const label = serverSections.find((s) => s.slug === section)?.label;
-  const name = getServer(slug)?.name;
+  const name = (await getServerBySlug(slug))?.name;
   return { title: label && name ? `${label} · ${name}` : "Server" };
 }
 
@@ -56,7 +48,7 @@ export default async function ServerSectionPage({
   params: Promise<{ slug: string; section: string }>;
 }) {
   const { slug, section } = await params;
-  const server = getServer(slug);
+  const server = await getServerBySlug(slug);
   const Section = sections[section];
   if (!server || !Section) notFound();
 

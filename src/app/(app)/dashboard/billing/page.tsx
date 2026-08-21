@@ -2,11 +2,15 @@ import { ExternalLink } from "lucide-react";
 import { ChangePlan } from "@/components/dashboard/change-plan";
 import { UsageBreakdown } from "@/components/dashboard/usage-breakdown";
 import { Pill } from "@/components/dashboard/ui";
-import { organization, usageBreakdown } from "@/lib/dashboard";
+import { usageBreakdown } from "@/lib/dashboard";
+import { getCurrentOrganization } from "@/lib/db/queries";
 
 export const metadata = { title: "Billing" };
 
-export default function BillingPage() {
+export default async function BillingPage() {
+  const organization = await getCurrentOrganization();
+  if (!organization) return null;
+
   const { creditsUsed, creditsIncluded, plan } = organization;
   const remaining = Math.max(creditsIncluded - creditsUsed, 0);
   const pct = Math.min((creditsUsed / creditsIncluded) * 100, 100);
