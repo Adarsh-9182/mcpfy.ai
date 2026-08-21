@@ -1,4 +1,5 @@
 import { CheckCircle2, Copy, XCircle } from "lucide-react";
+import { DeleteServerButton } from "@/components/dashboard/delete-server-button";
 import {
   BarChart,
   EmptyState,
@@ -505,12 +506,7 @@ export function Settings({ server }: SectionProps) {
               be undone.
             </p>
           </div>
-          <button
-            type="button"
-            className="inline-flex h-9 items-center rounded-lg border border-red-500/40 px-3.5 text-[14px] font-medium text-red-600 transition-colors hover:bg-red-500/10 dark:text-red-400"
-          >
-            Delete server
-          </button>
+          <DeleteServerButton slug={server.slug} name={server.name} />
         </div>
       </Panel>
     </>
