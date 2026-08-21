@@ -23,6 +23,9 @@ function friendlyError(raw: string | null) {
   if (raw.includes("code verifier")) {
     return "That sign-in link was opened on a different device or browser. Start again on this one.";
   }
+  if (raw === "no_session") {
+    return "Sign-in did not complete. Try again — if it keeps happening, allow cookies for this site.";
+  }
   return raw;
 }
 
