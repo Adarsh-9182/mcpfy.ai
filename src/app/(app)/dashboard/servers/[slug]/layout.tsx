@@ -2,11 +2,7 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
 import { ServerTabs } from "@/components/dashboard/server-tabs";
 import { Mono, StatusBadge } from "@/components/dashboard/ui";
-import { getServer, servers } from "@/lib/dashboard";
-
-export function generateStaticParams() {
-  return servers.map((s) => ({ slug: s.slug }));
-}
+import { getServerBySlug } from "@/lib/db/queries";
 
 export async function generateMetadata({
   params,
@@ -14,7 +10,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return { title: getServer(slug)?.name ?? "Server" };
+  return { title: (await getServerBySlug(slug))?.name ?? "Server" };
 }
 
 export default async function ServerLayout({
@@ -25,7 +21,7 @@ export default async function ServerLayout({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const server = getServer(slug);
+  const server = await getServerBySlug(slug);
   if (!server) notFound();
 
   return (

@@ -15,7 +15,6 @@ import {
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { servers } from "@/lib/dashboard";
 import { sidebarGroups } from "./nav";
 import { UpgradeCard } from "./upgrade-card";
 
@@ -31,7 +30,13 @@ const icons: Record<string, React.ComponentType<{ className?: string }>> = {
   settings: Settings,
 };
 
-export function Sidebar({ className }: { className?: string }) {
+export function Sidebar({
+  className,
+  serverCount = 0,
+}: {
+  className?: string;
+  serverCount?: number;
+}) {
   const pathname = usePathname();
 
   return (
@@ -80,7 +85,7 @@ export function Sidebar({ className }: { className?: string }) {
                       <span className="flex-1">{item.label}</span>
                       {item.count && (
                         <span className="rounded-full bg-muted px-1.5 py-0.5 text-[11px] tabular-nums text-muted-foreground">
-                          {servers.length}
+                          {serverCount}
                         </span>
                       )}
                     </Link>

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Overview } from "@/components/dashboard/sections";
-import { getServer } from "@/lib/dashboard";
+import { getServerBySlug } from "@/lib/db/queries";
 
 export default async function ServerOverviewPage({
   params,
@@ -8,7 +8,7 @@ export default async function ServerOverviewPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const server = getServer(slug);
+  const server = await getServerBySlug(slug);
   if (!server) notFound();
 
   return <Overview server={server} />;

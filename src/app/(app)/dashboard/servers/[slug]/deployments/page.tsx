@@ -1,11 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Mono, Panel, StatusBadge, Table, Tbody, Td, Th, Thead } from "@/components/dashboard/ui";
-import { getServer, servers } from "@/lib/dashboard";
-
-export function generateStaticParams() {
-  return servers.map((s) => ({ slug: s.slug }));
-}
+import { getServerBySlug } from "@/lib/db/queries";
 
 export default async function DeploymentsPage({
   params,
@@ -13,7 +9,7 @@ export default async function DeploymentsPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const server = getServer(slug);
+  const server = await getServerBySlug(slug);
   if (!server) notFound();
 
   const production = server.deployments.find(

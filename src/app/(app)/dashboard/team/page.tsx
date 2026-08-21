@@ -1,9 +1,12 @@
 import { TeamTabs } from "@/components/dashboard/team-tabs";
-import { roles, team } from "@/lib/dashboard";
+import { roles } from "@/lib/dashboard";
+import { getTeam } from "@/lib/db/queries";
 
 export const metadata = { title: "Team" };
 
-export default function TeamPage() {
+export default async function TeamPage() {
+  const team = await getTeam();
+
   return (
     <>
       <div>

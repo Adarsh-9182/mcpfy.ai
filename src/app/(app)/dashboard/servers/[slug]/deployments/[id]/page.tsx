@@ -14,17 +14,10 @@ import { Mono, Panel, StatusBadge } from "@/components/dashboard/ui";
 import {
   buildLog,
   buildSteps,
-  getDeployment,
-  servers,
   type StepStatus,
 } from "@/lib/dashboard";
+import { getDeploymentById } from "@/lib/db/queries";
 import { cn } from "@/lib/utils";
-
-export function generateStaticParams() {
-  return servers.flatMap((s) =>
-    s.deployments.map((d) => ({ slug: s.slug, id: d.id })),
-  );
-}
 
 export async function generateMetadata({
   params,
@@ -32,7 +25,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string; id: string }>;
 }) {
   const { slug, id } = await params;
-  const found = getDeployment(slug, id);
+  const found = await getDeploymentById(slug, id);
   return { title: found ? `${found.deployment.sha} · ${found.server.name}` : "Deployment" };
 }
 
@@ -56,7 +49,7 @@ export default async function DeploymentDetailPage({
   params: Promise<{ slug: string; id: string }>;
 }) {
   const { slug, id } = await params;
-  const found = getDeployment(slug, id);
+  const found = await getDeploymentById(slug, id);
   if (!found) notFound();
 
   const { server, deployment } = found;

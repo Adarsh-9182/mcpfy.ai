@@ -9,12 +9,8 @@ import {
 } from "lucide-react";
 import { CounterCard, CounterRow, Panel } from "@/components/dashboard/ui";
 import { WelcomeHero } from "@/components/dashboard/welcome-hero";
-import {
-  changelog,
-  homeStats,
-  needsAttention,
-  organization,
-} from "@/lib/dashboard";
+import { changelog } from "@/lib/dashboard";
+import { getCurrentOrganization, getServers } from "@/lib/db/queries";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseConfigured } from "@/lib/supabase/config";
 import { cn } from "@/lib/utils";
@@ -33,6 +29,29 @@ function greetingName(email: string, fullName?: string | null) {
 }
 
 export default async function DashboardHomePage() {
+  const [organization, servers] = await Promise.all([
+    getCurrentOrganization(),
+    getServers(),
+  ]);
+
+  const homeStats = [
+    { label: "Servers", value: servers.length.toLocaleString(), icon: "server" as const },
+    { label: "Tool Calls", value: "0", icon: "tool" as const },
+    { label: "Sessions", value: "0", icon: "chat" as const },
+  ];
+
+  // Real alerts only: a server that failed to build is something to act on.
+  // Everything else waits for a telemetry pipeline that does not exist yet.
+  const needsAttention = servers
+    .filter((s) => s.status === "error")
+    .map((s) => ({
+      title: `${s.name} failed to build`,
+      detail: "The most recent deployment did not finish. Check its build log.",
+      severity: "error" as const,
+      href: `/dashboard/servers/${s.slug}/deployments`,
+      action: "View logs",
+    }));
+
   let email = "you@example.com";
   let fullName: string | null = null;
 
@@ -52,7 +71,7 @@ export default async function DashboardHomePage() {
     <>
       <WelcomeHero
         name={greetingName(email, fullName)}
-        organizationName={organization.name}
+        organizationName={organization?.name ?? "your workspace"}
       />
 
       <CounterRow>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, GitBranch } from "lucide-react";
-import { Mono, PageHeader, StatusBadge } from "@/components/dashboard/ui";
-import { servers } from "@/lib/dashboard";
+import { EmptyState, Mono, PageHeader, StatusBadge } from "@/components/dashboard/ui";
+import { getServers } from "@/lib/db/queries";
 
 const runtimeLabel = {
   typescript: "TypeScript",
@@ -11,7 +11,9 @@ const runtimeLabel = {
 
 export const metadata = { title: "Servers" };
 
-export default function ServersPage() {
+export default async function ServersPage() {
+  const servers = await getServers();
+
   return (
     <>
       <PageHeader
@@ -27,6 +29,13 @@ export default function ServersPage() {
         }
       />
 
+      {servers.length === 0 ? (
+        <EmptyState
+          title="No servers yet"
+          description="Deploy from a GitHub repository, start from a template, or connect a server you already host somewhere else."
+          action={{ label: "New server", href: "/dashboard/servers/new" }}
+        />
+      ) : (
       <div className="grid gap-4 md:grid-cols-2">
         {servers.map((s) => (
           <Link
@@ -75,6 +84,7 @@ export default function ServersPage() {
           </Link>
         ))}
       </div>
+      )}
     </>
   );
 }

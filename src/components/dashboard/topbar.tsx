@@ -4,6 +4,7 @@ import { DiscordIcon, GithubIcon } from "@/components/site/icons";
 import { ThemeToggle } from "@/components/site/theme-toggle";
 import { site } from "@/lib/site";
 import { DocsMenu } from "./docs-menu";
+import type { Organization } from "@/lib/dashboard";
 import { OrgSwitcher } from "./org-switcher";
 import { SectionSwitcher } from "./section-switcher";
 import { UserMenu } from "./user-menu";
@@ -19,9 +20,13 @@ function Divider() {
 export function Topbar({
   email,
   avatarUrl,
+  organization,
+  organizations,
 }: {
   email: string;
   avatarUrl?: string | null;
+  organization: Organization;
+  organizations: Organization[];
 }) {
   return (
     <header className="sticky top-0 z-40 flex h-14 items-center justify-between gap-2 bg-background px-4 lg:px-5">
@@ -29,7 +34,7 @@ export function Topbar({
         <Logo className="mr-1" />
         <span className="hidden items-center sm:flex">
           <Divider />
-          <OrgSwitcher />
+          <OrgSwitcher organization={organization} organizations={organizations} />
         </span>
         <Divider />
         <SectionSwitcher />
