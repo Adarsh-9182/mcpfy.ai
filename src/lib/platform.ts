@@ -10,9 +10,26 @@ export type PlatformPage = {
   wash: string;
   stepsTitle: string;
   steps: { title: string; desc: string }[];
-  features: { title: string; desc: string; visual: string }[];
-  gridTitle: string;
-  grid: { title: string; desc: string }[];
+  features: {
+    title: string;
+    desc: string;
+    visual: string;
+    /** Supporting points listed under the description. */
+    bullets?: string[];
+  }[];
+  /** Optional — omit to render the capability grid without a heading. */
+  gridTitle?: string;
+  grid: { title: string; desc: string; icon?: string }[];
+  /** Framework support grid, rendered above the capability grid. */
+  frameworks?: {
+    title: string;
+    desc: string;
+    items: string[];
+    note?: string;
+    link?: { label: string; href: string };
+  };
+  /** Headline numbers pinned under the capability grid. */
+  stats?: { value: string; label: string }[];
   /**
    * Optional grouped capability matrix, rendered between the feature sections
    * and the capability grid. Used by pages that need to show the full surface
@@ -53,24 +70,74 @@ export const platformPages: PlatformPage[] = [
         title: "Branch previews",
         desc: "Every pull request gets its own live MCP URL, so a reviewer can point a real client at the change before it merges.",
         visual: "deploy",
+        bullets: [
+          "A unique preview URL per branch, with nothing to configure",
+          "The same routing, TLS and transport semantics as production",
+          "Close the pull request and the preview tears itself down",
+        ],
       },
       {
         title: "Logs",
-        desc: "Structured request and tool-call logs streamed live, searchable by client, tool and status.",
+        desc: "Watch a build line by line, filter it down to the failure, and share a permalink to the exact frame that broke.",
         visual: "monitor",
+        bullets: [
+          "Structured JSON logs with full timestamps",
+          "Filter by info, warning, error, or build step",
+          "Retained for 90 days with full-text search",
+        ],
       },
       {
         title: "Environments & secrets",
-        desc: "Per-environment configuration with encrypted secrets, injected at runtime and never written to the build.",
+        desc: "Set production and preview values from the dashboard and keep tokens out of the repository while still deploying from Git.",
         visual: "publish",
+        bullets: [
+          "Separate values for production and each preview environment",
+          "Encrypted at rest — secrets never land in your repository",
+          "Edit in the UI; the next deploy picks the new values up",
+        ],
       },
     ],
-    gridTitle: "Deploy the stack you already use",
+    frameworks: {
+      title: "Deploy the stack you already use",
+      desc: "mcpfy detects your MCP framework from the repository and applies the right build and start presets.",
+      items: [
+        "mcpfy SDK",
+        "MCP TypeScript SDK",
+        "MCP Python SDK",
+        "FastMCP",
+        "tmcp",
+        "xmcp",
+        "Skybridge",
+      ],
+      note: "Custom stacks with a Dockerfile are supported too.",
+      link: { label: "Browse framework reference templates", href: "/templates" },
+    },
     grid: [
-      { title: "Managed runtime", desc: "TypeScript, Python, or any Dockerfile." },
-      { title: "Branch previews", desc: "A unique MCP endpoint per pull request." },
-      { title: "Domains & TLS", desc: "Custom domains with certificates handled." },
-      { title: "Environments & secrets", desc: "Scoped config for every stage." },
+      {
+        title: "Managed runtime",
+        desc: "We run your MCP server so you can focus on tools, resources and widgets instead of patching images.",
+        icon: "server",
+      },
+      {
+        title: "Branch previews",
+        desc: "Every pull request gets a live MCP URL on the same transport path as production, so regressions surface early.",
+        icon: "git",
+      },
+      {
+        title: "Domains & TLS",
+        desc: "Bring your hostname with a CNAME. Certificates renew themselves, so clients always speak HTTPS.",
+        icon: "lock",
+      },
+      {
+        title: "Environments & secrets",
+        desc: "Set production and preview variables from the dashboard and keep tokens out of the repository.",
+        icon: "key",
+      },
+    ],
+    stats: [
+      { value: "<1 min", label: "Typical deploy, from push to a live preview or production" },
+      { value: "TLS", label: "Managed certificates, auto-renewed on every mcpfy endpoint" },
+      { value: "∞", label: "Preview environments — one per branch, zero configuration" },
     ],
     ctaTitle: "Ready to host your MCP on mcpfy Cloud?",
   },

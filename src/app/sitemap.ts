@@ -11,7 +11,6 @@ const staticRoutes = [
   "/docs",
   "/contact",
   "/signup",
-  "/cloud",
   "/sdk",
   "/inspector",
   "/vibe",

@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  GitBranch,
+  KeyRound,
+  Lock,
+  Server,
+} from "lucide-react";
 import { FrameSection } from "./frame";
 import { Reveal } from "./reveal";
 import { StageVisual } from "./stage-visual";
@@ -8,6 +15,13 @@ import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { type PlatformPage } from "@/lib/platform";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
+
+const gridIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  server: Server,
+  git: GitBranch,
+  lock: Lock,
+  key: KeyRound,
+};
 
 /** Shared marketing template used by every platform and product page. */
 export function ProductPage({
@@ -96,6 +110,16 @@ export function ProductPage({
                 <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">
                   {f.desc}
                 </p>
+                {f.bullets && (
+                  <ul className="mt-6 max-w-lg space-y-2.5">
+                    {f.bullets.map((b) => (
+                      <li key={b} className="flex gap-2.5 text-[15px] leading-relaxed">
+                        <Check className="mt-1 size-4 shrink-0 text-muted-foreground" />
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </Reveal>
             <Reveal delay={0.1} className={cn(i % 2 === 1 && "lg:order-1")}>
@@ -146,26 +170,86 @@ export function ProductPage({
         </FrameSection>
       )}
 
+      {/* framework support */}
+      {page.frameworks && (
+        <FrameSection>
+          <div className="py-16 md:py-24">
+            <Reveal>
+              <h2 className="mx-auto max-w-3xl text-center text-3xl font-medium tracking-tight md:text-4xl">
+                {page.frameworks.title}
+              </h2>
+              <p className="mx-auto mt-5 max-w-2xl text-center text-base leading-relaxed text-muted-foreground">
+                {page.frameworks.desc}
+              </p>
+            </Reveal>
+            <div className="mt-12 grid grid-cols-2 overflow-hidden rounded-xl border sm:grid-cols-3 lg:grid-cols-4">
+              {page.frameworks.items.map((name, i) => (
+                <Reveal key={name} delay={(i % 4) * 0.05}>
+                  <div className="flex h-full items-center justify-center border-b border-r px-4 py-8 text-center text-[15px] font-medium">
+                    {name}
+                  </div>
+                </Reveal>
+              ))}
+              <div className="flex h-full items-center justify-center border-b border-r px-4 py-8 text-center text-[14px] text-muted-foreground">
+                {page.frameworks.note}
+              </div>
+            </div>
+            {page.frameworks.link && (
+              <Reveal>
+                <Link
+                  href={page.frameworks.link.href}
+                  className="group mt-8 inline-flex items-center gap-1.5 text-[15px] font-medium"
+                >
+                  {page.frameworks.link.label}
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              </Reveal>
+            )}
+          </div>
+        </FrameSection>
+      )}
+
       {/* capability grid */}
       <FrameSection>
         <div className="py-16 md:py-24">
-          <Reveal>
-            <h2 className="mx-auto max-w-3xl text-center text-3xl font-medium tracking-tight md:text-4xl">
-              {page.gridTitle}
-            </h2>
-          </Reveal>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {page.grid.map((g, i) => (
-              <Reveal key={g.title} delay={i * 0.06}>
-                <div className="h-full rounded-xl border bg-card/40 p-6">
-                  <h3 className="text-[15px] font-medium">{g.title}</h3>
-                  <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
-                    {g.desc}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
+          {page.gridTitle && (
+            <Reveal>
+              <h2 className="mx-auto mb-12 max-w-3xl text-center text-3xl font-medium tracking-tight md:text-4xl">
+                {page.gridTitle}
+              </h2>
+            </Reveal>
+          )}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {page.grid.map((g, i) => {
+              const Icon = g.icon ? gridIcons[g.icon] : undefined;
+              return (
+                <Reveal key={g.title} delay={i * 0.06}>
+                  <div className="h-full rounded-xl border bg-card/40 p-6">
+                    {Icon && <Icon className="mb-4 size-5 text-muted-foreground" />}
+                    <h3 className="text-[15px] font-medium">{g.title}</h3>
+                    <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
+                      {g.desc}
+                    </p>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
+
+          {page.stats && (
+            <div className="mt-4 grid gap-4 sm:grid-cols-3">
+              {page.stats.map((s, i) => (
+                <Reveal key={s.label} delay={i * 0.06}>
+                  <div className="h-full rounded-xl border bg-card/40 p-6">
+                    <p className="text-3xl font-medium tracking-tight">{s.value}</p>
+                    <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
+                      {s.label}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          )}
         </div>
       </FrameSection>
 

@@ -251,3 +251,19 @@
   -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
   mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
 }
+
+/* Fine film grain laid over the hero wash, so the large flat gradients in the
+   app chrome don't band on wide displays. Inline SVG keeps it request-free. */
+@utility bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+/* Softer, greyer relative of bg-hero-wash: the colour pools in the corners
+   instead of banding across the middle, which suits large panels like the
+   auth card where a white card sits on top of it. */
+@utility bg-panel-wash {
+  background-image:
+    radial-gradient(72% 62% at 6% 94%, #f3ffbb 0%, transparent 62%),
+    radial-gradient(58% 48% at 3% 4%, #e2ecff 0%, transparent 58%),
+    linear-gradient(135deg, #f2f2f0 0%, #e7e7e5 100%);
+}

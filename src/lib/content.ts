@@ -1,3 +1,4 @@
+import { site } from "./site";
 /**
  * All marketing copy lives here so pages stay layout-only.
  * Testimonials are illustrative personas, not real endorsements.
@@ -133,7 +134,7 @@ export type LifecycleStage = {
   kicker: string;
   title: string;
   body: string;
-  cards: { title: string; desc: string; cta?: string }[];
+  cards: { title: string; desc: string; cta?: { label: string; href: string } }[];
 };
 
 export const lifecycle: LifecycleStage[] = [
@@ -143,9 +144,9 @@ export const lifecycle: LifecycleStage[] = [
     title: "Start from an SDK, a skill, or a vibe.",
     body: "Scaffold with the mcpfy SDK. Install a skill into your coding agent. Or describe your app and watch it scaffold. Already writing MCP servers? Drop your existing code in unchanged.",
     cards: [
-      { title: "SDK", desc: "Scaffold in one command.", cta: "Read the docs" },
-      { title: "Skill", desc: "Install the skill for your coding agent.", cta: "Get the skill" },
-      { title: "Vibe", desc: "Vibe code your MCP App.", cta: "Try Vibe" },
+      { title: "SDK", desc: "Scaffold in one command.", cta: { label: "Read the docs", href: "/docs" } },
+      { title: "Skill", desc: "Install the skill for your coding agent.", cta: { label: "Get the skill", href: site.github } },
+      { title: "Vibe", desc: "Vibe code your MCP App.", cta: { label: "Try Vibe", href: "/vibe" } },
     ],
   },
   {
@@ -154,7 +155,7 @@ export const lifecycle: LifecycleStage[] = [
     title: "One push. Live in seconds.",
     body: "Connect your repo once. Every push auto-deploys to mcpfy Cloud. No YAML. No Dockerfile archaeology.",
     cards: [
-      { title: "GitHub App", desc: "Connect once. Every push auto-deploys to mcpfy Cloud.", cta: "Connect" },
+      { title: "GitHub App", desc: "Connect once. Every push auto-deploys to mcpfy Cloud.", cta: { label: "Connect", href: "/cloud?source=github" } },
       { title: "Preview per branch", desc: "A live, unique URL for every pull request." },
       { title: "Custom domains", desc: "Ship your app under your own domain. SSL handled." },
     ],
@@ -176,9 +177,9 @@ export const lifecycle: LifecycleStage[] = [
     title: "Preview it before a user sees it.",
     body: "Cloud Inspector runs your MCP server against real clients. Fire tool calls, inspect JSON-RPC, swap models — no local setup.",
     cards: [
-      { title: "Cloud Inspector", desc: "Debug from any browser.", cta: "Open Inspector" },
+      { title: "Cloud Inspector", desc: "Debug from any browser.", cta: { label: "Open Inspector", href: "/inspector" } },
       { title: "Model swap", desc: "Test the same call against GPT, Claude, Gemini." },
-      { title: "Automatic evals", desc: "Across every model and client.", cta: "Try Evals" },
+      { title: "Automatic evals", desc: "Across every model and client.", cta: { label: "Try Evals", href: "/platform/cross-client-testing" } },
     ],
   },
   {

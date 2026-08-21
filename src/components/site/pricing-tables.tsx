@@ -6,127 +6,10 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-
-type Tier = {
-  name: string;
-  monthly: number | null;
-  credits: string;
-  requests: string;
-  blurb: string;
-  cta: string;
-  featured?: boolean;
-  features: string[];
-};
-
-const YEARLY_DISCOUNT = 0.17;
-
-const tiers: Tier[] = [
-  {
-    name: "Free",
-    monthly: 0,
-    credits: "$5 included monthly",
-    requests: "30k requests / month",
-    blurb: "Everything you need to ship your first MCP server.",
-    cta: "Start for free",
-    features: [
-      "2 projects",
-      "7 days analytics retention",
-      "1 team member",
-      "Deploy from GitHub organization",
-      "Publishing checklist",
-      "Community support",
-    ],
-  },
-  {
-    name: "Hobby",
-    monthly: 25,
-    credits: "$30 included, then pay-as-you-go",
-    requests: "300k requests / month",
-    blurb: "For side projects heading to the marketplaces.",
-    cta: "Get started",
-    featured: true,
-    features: [
-      "5 projects",
-      "30 days analytics retention",
-      "3 team members",
-      "Preview deployments",
-      "Deploy from GitHub organization",
-      "Cold-start prevention",
-      "End-to-end checks",
-      "Test suites",
-      "Public chat",
-      "Submission pack",
-      "Email support",
-    ],
-  },
-  {
-    name: "Startup",
-    monthly: 250,
-    credits: "$300 included, then pay-as-you-go",
-    requests: "3M requests / month",
-    blurb: "For teams running MCP in production.",
-    cta: "Get started",
-    features: [
-      "Unlimited projects",
-      "1 year analytics retention",
-      "10 team members",
-      "Preview deployments",
-      "Deploy from GitHub organization",
-      "Cold-start prevention",
-      "Auto + US, EU and APAC regions",
-      "End-to-end checks",
-      "Test suites",
-      "Public chat",
-      "Submission pack",
-      "Dedicated Slack channel",
-    ],
-  },
-  {
-    name: "Enterprise",
-    monthly: null,
-    credits: "From $1,000/month",
-    requests: "Unlimited requests",
-    blurb: "Procurement, compliance and scale.",
-    cta: "Contact sales",
-    features: [
-      "Unlimited projects",
-      "Unlimited analytics retention",
-      "Unlimited team members",
-      "Preview deployments",
-      "Deploy from GitHub organization",
-      "Cold-start prevention",
-      "All regions",
-      "End-to-end checks",
-      "Test suites",
-      "Public chat",
-      "Submission pack",
-      "Priority support",
-    ],
-  },
-];
-
-const metered = [
-  { label: "Tool-call requests", price: "$0.10", unit: "per 1,000" },
-  { label: "Eval runs", price: "$1.00", unit: "per run" },
-  { label: "Publishing checklist", price: "$0.10", unit: "per run" },
-  { label: "End-to-end checks", price: "$2.00", unit: "per check" },
-  { label: "Submission pack", price: "$5.00", unit: "per generation" },
-  { label: "Build minutes", price: "$0.07", unit: "per minute" },
-  { label: "Bandwidth", price: "$0.15", unit: "per GB egress" },
-  { label: "LLM tokens", price: "$5.00", unit: "per 1M output" },
-];
+import { metered, priceFor, tiers } from "@/lib/plans";
 
 export function PricingTables() {
   const [yearly, setYearly] = React.useState(false);
-
-  const priceFor = (tier: Tier) => {
-    if (tier.monthly === null) return "Custom";
-    if (tier.monthly === 0) return "$0";
-    const value = yearly
-      ? Math.round(tier.monthly * (1 - YEARLY_DISCOUNT))
-      : tier.monthly;
-    return `$${value}`;
-  };
 
   return (
     <section className="py-16 sm:py-20">
@@ -178,7 +61,7 @@ export function PricingTables() {
 
               <div className="mt-5 flex items-baseline gap-1">
                 <span className="text-4xl font-semibold tracking-tight tabular-nums">
-                  {priceFor(tier)}
+                  {priceFor(tier, yearly)}
                 </span>
                 {tier.monthly !== null && (
                   <span className="text-sm text-muted-foreground">/mo</span>

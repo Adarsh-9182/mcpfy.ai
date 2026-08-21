@@ -57,11 +57,11 @@ export function Lifecycle() {
                       </p>
                       {card.cta && (
                         <Link
-                          href="/docs"
+                          href={card.cta.href}
                           className="group mt-3 inline-flex items-center gap-1.5 text-[14px]"
                         >
                           <span className="underline underline-offset-2 decoration-border group-hover:decoration-foreground">
-                            {card.cta}
+                            {card.cta.label}
                           </span>
                           <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
                         </Link>
