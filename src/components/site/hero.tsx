@@ -116,7 +116,7 @@ export function Hero() {
 
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
             <ShimmerButton asChild>
-              <Link href="/docs">Start deploying</Link>
+              <Link href="/signup">Start deploying</Link>
             </ShimmerButton>
             <Link
               href="/contact"

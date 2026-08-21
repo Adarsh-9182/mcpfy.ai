@@ -160,7 +160,7 @@ export function Navbar() {
                 <div className="mt-auto flex items-center gap-2 pt-8">
                   <ThemeToggle className="rounded-full" />
                   <Link
-                    href="/docs"
+                    href="/signup"
                     onClick={() => setOpen(false)}
                     className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-foreground text-[15px] font-medium text-background"
                   >
