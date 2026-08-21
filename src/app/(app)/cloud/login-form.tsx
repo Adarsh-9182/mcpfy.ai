@@ -10,13 +10,28 @@ import { GoogleIcon } from "@/components/site/icons";
 
 type Pending = "google" | "github" | "email" | null;
 
+/** Callback errors arrive as raw provider strings; keep them readable. */
+function friendlyError(raw: string | null) {
+  if (!raw) return null;
+  if (raw === "missing_code") {
+    return "That sign-in link is incomplete. Try signing in again.";
+  }
+  if (raw.includes("code verifier")) {
+    return "That sign-in link was opened on a different device or browser. Start again on this one.";
+  }
+  return raw;
+}
+
 export function LoginForm() {
   const params = useSearchParams();
   const next = params.get("next") ?? "/dashboard";
 
   const [email, setEmail] = useState("");
   const [pending, setPending] = useState<Pending>(null);
-  const [error, setError] = useState<string | null>(null);
+  // The auth callback bounces failures back here as ?error=, so seed from it.
+  const [error, setError] = useState<string | null>(() =>
+    friendlyError(params.get("error")),
+  );
   const [sent, setSent] = useState(false);
 
   function guard() {
