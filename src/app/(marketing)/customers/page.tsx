@@ -11,6 +11,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Customers",
   description: `Teams shipping MCP apps and servers on ${site.name}.`,
+  alternates: { canonical: "/customers" },
 };
 
 const stories = [

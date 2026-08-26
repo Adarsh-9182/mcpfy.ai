@@ -42,6 +42,15 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: site.name,
+  url: site.url,
+  description: site.description,
+  sameAs: [site.github, site.linkedin].filter((u) => u.startsWith("http")),
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -55,6 +64,10 @@ export default function RootLayout({
       className={`${inter.variable} ${geistMono.variable}`}
     >
       <body className="antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {/* Marks the document as script-enabled before first paint, so the
             scroll-reveal styles only hide content that JS can reveal again. */}
         <script

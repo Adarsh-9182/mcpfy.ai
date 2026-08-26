@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Templates",
   description:
     "Deploy-ready MCP starters for every framework and use case. Clone a template and ship in under a minute.",
+  alternates: { canonical: "/templates" },
 };
 
 export default function TemplatesPage() {

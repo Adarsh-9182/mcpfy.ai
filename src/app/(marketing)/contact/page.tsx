@@ -7,6 +7,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact",
   description: `Book a call with the ${site.name} team.`,
+  alternates: { canonical: "/contact" },
 };
 
 const points = [

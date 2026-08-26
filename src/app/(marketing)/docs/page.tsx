@@ -9,6 +9,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Docs",
   description: `Guides, API reference and quickstarts for the ${site.name} SDK and Cloud.`,
+  alternates: { canonical: "/docs" },
 };
 
 const groups = [

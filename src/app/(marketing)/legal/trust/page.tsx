@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/site/legal-layout";
 
-export const metadata: Metadata = { title: "Trust Center" };
+export const metadata: Metadata = {
+  title: "Trust Center",
+  alternates: { canonical: "/legal/trust" },
+};
 
 export default function TrustPage() {
   return (
