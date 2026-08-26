@@ -7,6 +7,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Pricing",
   description: `Simple, usage-based pricing for ${site.name}. Start free, scale as your MCP apps grow.`,
+  alternates: { canonical: "/pricing" },
 };
 
 export default function PricingPage() {

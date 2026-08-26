@@ -8,6 +8,7 @@ const page = getProductPage("vibe");
 export const metadata: Metadata = {
   title: page.navTitle,
   description: page.subtitle,
+  alternates: { canonical: "/vibe" },
 };
 
 export default function Page() {

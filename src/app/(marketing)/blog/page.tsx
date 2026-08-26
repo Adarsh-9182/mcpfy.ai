@@ -8,6 +8,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Blog",
   description: `Product updates, engineering notes and MCP guides from the ${site.name} team.`,
+  alternates: { canonical: "/blog" },
 };
 
 const posts = [
