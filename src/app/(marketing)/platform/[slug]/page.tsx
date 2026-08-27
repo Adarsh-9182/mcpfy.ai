@@ -15,7 +15,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const page = getPlatformPage(slug);
   if (!page) return {};
-  return { title: page.navTitle, description: page.subtitle };
+  return {
+    title: page.navTitle,
+    description: page.subtitle,
+    alternates: { canonical: `/platform/${slug}` },
+  };
 }
 
 export default async function PlatformFeaturePage({
